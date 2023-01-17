@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
-import { getProviders, signIn } from "next-auth/react";
+import { ClientSafeProvider, getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
 
@@ -41,18 +41,20 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Text>Sign in</Text>
               </Center>
               <Stack spacing={4}>
-                {Object.values(providers).map((provider) => (
-                  <Button
-                    key={provider.name}
-                    onClick={() =>
-                      signIn(provider.id, {
-                        callbackUrl: callbackUrl?.toString(),
-                      })
-                    }
-                  >
-                    Sign in with {provider.name}
-                  </Button>
-                ))}
+                {Object.values(providers).map(
+                  (provider: ClientSafeProvider) => (
+                    <Button
+                      key={provider.name}
+                      onClick={() =>
+                        signIn(provider.id, {
+                          callbackUrl: callbackUrl?.toString(),
+                        })
+                      }
+                    >
+                      Sign in with {provider.name}
+                    </Button>
+                  )
+                )}
               </Stack>
             </Stack>
           </CardBody>
