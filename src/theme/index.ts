@@ -5,6 +5,22 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 };
 
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  styles: {
+    global: {
+      body: {
+        bg: "#000000",
+      },
+    },
+  },
+  components: {
+    Card: {
+      defaultProps: {
+        variant: "outline",
+      },
+    },
+  },
+});
 
 export default theme;
