@@ -1,20 +1,24 @@
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-
 import { api } from "../utils/api";
+import { ChakraProvider, cookieStorageManager } from "@chakra-ui/react";
+import theme from "../theme";
+import Layout from "../components/layout";
 
-import "../styles/globals.css";
-
-const MyApp: AppType<{ session: Session | null }> = ({
+const App: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <ChakraProvider colorModeManager={cookieStorageManager} theme={theme}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ChakraProvider>
     </SessionProvider>
   );
 };
 
-export default api.withTRPC(MyApp);
+export default api.withTRPC(App);
