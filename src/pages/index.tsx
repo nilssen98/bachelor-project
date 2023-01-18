@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Verifire</title>
+        <title>Configify</title>
       </Head>
       <Center minH={"100vh"}>
         <AuthShowcase />

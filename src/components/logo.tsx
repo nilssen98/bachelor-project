@@ -6,7 +6,7 @@ export default function Logo() {
   return (
     <HStack spacing={1} sx={{"userSelect": "none"}}>
       <Image color={"red"} height={56} width={56} alt={"logo"} src={logo} />
-      <Text fontWeight={600} letterSpacing={2} fontSize={"4xl"}>VERIFIRE</Text>
+      <Text fontWeight={600} letterSpacing={3} fontSize={"4xl"}>CONFIGIFY</Text>
     </HStack>
   );
 }
