@@ -7,7 +7,7 @@ import { prisma } from "../../../server/db";
 
 export const authOptions: NextAuthOptions = {
   pages: {
-    signIn: '/auth/signin',
+    signIn: "/auth/signin",
   },
   callbacks: {
     session({ session, user }) {
@@ -17,6 +17,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
