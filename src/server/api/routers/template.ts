@@ -26,10 +26,24 @@ export const templateRouter = createTRPCRouter({
         content: z.string(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.prisma.template.create({
         data: {
           ...input,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.template.deleteMany({
+        where: {
+          id: input.id,
           userId: ctx.session.user.id,
         },
       });
