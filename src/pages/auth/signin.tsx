@@ -6,7 +6,6 @@ import {
   Center,
   Stack,
   VStack,
-  Input,
   Divider,
   HStack,
 } from "@chakra-ui/react";
@@ -17,6 +16,7 @@ import { useRouter } from "next/router";
 import Logo from "../../components/logo";
 import PasswordInput from "../../components/PasswordInput";
 import { FaGoogle } from "react-icons/fa";
+import EmailInput from "../../components/emailInput";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -56,7 +56,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Text>Sign in</Text>
               </Center>
               <Stack spacing={4}>
-                <Input placeholder={"Email"} />
+                <EmailInput />
                 <PasswordInput />
                 <Button disabled={true}>Sign in</Button>
                 <HStack alignItems={"center"} justifyContent={"center"}>
