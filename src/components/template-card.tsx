@@ -19,8 +19,6 @@ type Props = {
   lastModified: Date;
 };
 
-//TODO - Change icons when react-icons is installed, and modify size based on page
-
 export default function TemplateCard(props: Props) {
   return (
     <>
