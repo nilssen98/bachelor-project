@@ -6,11 +6,17 @@ import {
   Center,
   Stack,
   VStack,
+  Divider,
+  HStack,
 } from "@chakra-ui/react";
-import { NextPage } from "next";
-import { ClientSafeProvider, getProviders, signIn } from "next-auth/react";
+import type { NextPage } from "next";
+import type { ClientSafeProvider } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
+import PasswordInput from "../../components/passwordInput";
+import { FaGoogle } from "react-icons/fa";
+import EmailInput from "../../components/emailInput";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -21,6 +27,15 @@ export async function getServerSideProps() {
 
 interface PageProps {
   providers: ReturnType<typeof getProviders>;
+}
+
+function getLogo(provider: ClientSafeProvider): JSX.Element {
+  switch (provider.name) {
+    case "Google":
+      return <FaGoogle />;
+    default:
+      return <Text>No logo</Text>;
+  }
 }
 
 const SignIn: NextPage<PageProps> = (props) => {
@@ -41,10 +56,19 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Text>Sign in</Text>
               </Center>
               <Stack spacing={4}>
+                <EmailInput />
+                <PasswordInput />
+                <Button disabled={true}>Sign in</Button>
+                <HStack alignItems={"center"} justifyContent={"center"}>
+                  <Divider />
+                  <Text>or</Text>
+                  <Divider />
+                </HStack>
                 {Object.values(providers).map(
                   (provider: ClientSafeProvider) => (
                     <Button
                       key={provider.name}
+                      leftIcon={getLogo(provider)}
                       onClick={() =>
                         signIn(provider.id, {
                           callbackUrl: callbackUrl?.toString(),
