@@ -6,11 +6,16 @@ import {
   Center,
   Stack,
   VStack,
+  Input,
+  Divider,
+  HStack,
 } from "@chakra-ui/react";
-import { NextPage } from "next";
-import { ClientSafeProvider, getProviders, signIn } from "next-auth/react";
+import type { NextPage } from "next";
+import type { ClientSafeProvider } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
+import PasswordInput from "../../components/PasswordInput";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -41,6 +46,14 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Text>Sign in</Text>
               </Center>
               <Stack spacing={4}>
+                <Input placeholder={"Email"} />
+                <PasswordInput />
+                <Button disabled={true}>Sign in</Button>
+                <HStack alignItems={"center"} justifyContent={"center"}>
+                  <Divider />
+                  <Text>or</Text>
+                  <Divider />
+                </HStack>
                 {Object.values(providers).map(
                   (provider: ClientSafeProvider) => (
                     <Button
