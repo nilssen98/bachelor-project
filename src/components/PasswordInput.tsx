@@ -4,9 +4,11 @@ import {
   Icon,
   Input,
   InputGroup,
+  InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
 import type { InputProps } from "@chakra-ui/react";
+import { BsKeyFill } from "react-icons/bs";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 type Props = InputProps;
@@ -18,6 +20,9 @@ export default function PasswordInput(props: Props) {
   return (
     <>
       <InputGroup>
+        <InputLeftElement>
+          <Icon as={BsKeyFill} />
+        </InputLeftElement>
         <Input
           {...props}
           type={show ? "text" : "password"}

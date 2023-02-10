@@ -14,7 +14,7 @@ import type { ClientSafeProvider } from "next-auth/react";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
-import PasswordInput from "../../components/PasswordInput";
+import PasswordInput from "../../components/passwordInput";
 import { FaGoogle } from "react-icons/fa";
 import EmailInput from "../../components/emailInput";
 
