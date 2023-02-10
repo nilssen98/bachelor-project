@@ -12,8 +12,8 @@ export default function Layout({ children }: { children: ReactElement }) {
         minDistance={100}
       /> */}
       <Flex
-        height={"100vh"}
-        width={"100vw"}
+        minHeight={"100vh"}
+        maxWidth={"100vw"}
         justifyContent={"center"}
         sx={{
           backgroundImage: `radial-gradient(#343a40 2px, transparent 2px), radial-gradient(#343a40 2px, transparent 2px)`,
