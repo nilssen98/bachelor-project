@@ -9,16 +9,42 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { type NextPage } from "next";
+import Loading from "../components/loading";
 import { api } from "../utils/api";
 
 const TemplatesPage: NextPage = () => {
-  const { data: templates } = api.template.getAll.useQuery();
+  const {
+    data: templates,
+    refetch,
+    isLoading: isLoadingTemplate,
+  } = api.template.getAll.useQuery();
+
+  const { mutate: addTemplate, isLoading: isAddingTemplate } =
+    api.template.add.useMutation({
+      onSuccess: () => refetch(),
+    });
+
+  const handleAdd = () => {
+    if (templates) {
+      addTemplate({
+        name: `Template ${templates.length + 1}`,
+        content: "",
+      });
+    }
+  };
+
+  if (isLoadingTemplate) {
+    return <Loading />;
+  }
+
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
         <Text fontSize={"5xl"}>Templates</Text>
         <HStack width={"full"}>
-          <Button>Add new</Button>
+          <Button disabled={isAddingTemplate} onClick={handleAdd}>
+            Add new
+          </Button>
           <Input placeholder={"Search"} />
         </HStack>
         <Grid w={"full"} templateColumns="repeat(5, 1fr)" gap={4}>
