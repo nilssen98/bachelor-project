@@ -61,7 +61,9 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Button disabled={true}>Sign in</Button>
                 <HStack alignItems={"center"} justifyContent={"center"}>
                   <Divider />
-                  <Text>or</Text>
+                  <Text pb={1} userSelect={"none"}>
+                    or
+                  </Text>
                   <Divider />
                 </HStack>
                 {Object.values(providers).map(
