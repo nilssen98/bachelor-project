@@ -16,6 +16,7 @@ import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
 import PasswordInput from "../../components/PasswordInput";
+import { FaGoogle } from "react-icons/fa";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -26,6 +27,15 @@ export async function getServerSideProps() {
 
 interface PageProps {
   providers: ReturnType<typeof getProviders>;
+}
+
+function getLogo(provider: ClientSafeProvider): JSX.Element {
+  switch (provider.name) {
+    case "Google":
+      return <FaGoogle />;
+    default:
+      return <Text>No logo</Text>;
+  }
 }
 
 const SignIn: NextPage<PageProps> = (props) => {
@@ -58,6 +68,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                   (provider: ClientSafeProvider) => (
                     <Button
                       key={provider.name}
+                      leftIcon={getLogo(provider)}
                       onClick={() =>
                         signIn(provider.id, {
                           callbackUrl: callbackUrl?.toString(),
