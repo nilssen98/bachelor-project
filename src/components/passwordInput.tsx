@@ -14,7 +14,7 @@ import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 type Props = InputProps;
 
 export default function PasswordInput(props: Props) {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<boolean>(false);
   const handleClick = () => setShow(!show);
 
   return (
