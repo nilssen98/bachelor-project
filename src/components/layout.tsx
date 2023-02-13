@@ -1,8 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import type { ReactElement } from "react";
 import BackgroundCollection from "./background-collection";
+import Navbar from "./navbar";
 
 export default function Layout({ children }: { children: ReactElement }) {
+  const navbarHeight = 42;
+
   return (
     <>
       {/* <BackgroundCollection
@@ -11,8 +14,9 @@ export default function Layout({ children }: { children: ReactElement }) {
         imageHeight={50}
         minDistance={100}
       /> */}
+      <Navbar height={navbarHeight} />
       <Flex
-        height={"100vh"}
+        minH={`calc(100vh - ${navbarHeight}px)`}
         width={"100vw"}
         justifyContent={"center"}
         sx={{
