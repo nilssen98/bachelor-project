@@ -34,6 +34,7 @@ export default function TemplateCard(props: Props) {
             <Menu>
               <MenuButton
                 background={"none"}
+                boxSize={0}
                 as={IconButton}
                 icon={<Icon as={BiDotsVerticalRounded} />}
               />
@@ -43,7 +44,7 @@ export default function TemplateCard(props: Props) {
               </MenuList>
             </Menu>
           </HStack>
-          <Text fontSize={"xs"} align={"left"}>
+          <Text paddingLeft={1} fontSize={"xs"} align={"left"}>
             {props.files} configuration files
           </Text>
           <HStack>

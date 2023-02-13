@@ -35,6 +35,7 @@ export default function ConfigurationCard(props: Props) {
             <Menu>
               <MenuButton
                 background={"none"}
+                boxSize={0}
                 as={IconButton}
                 icon={<Icon as={BiDotsVerticalRounded} />}
               />
