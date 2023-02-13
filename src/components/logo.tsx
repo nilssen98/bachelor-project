@@ -1,6 +1,7 @@
 import { HStack, Text } from "@chakra-ui/react";
 import type { StackProps, TypographyProps } from "@chakra-ui/react";
 import Image from "next/image";
+import omit from "lodash-es/omit";
 import logo from "../../public/logo.svg";
 
 type Props = {
@@ -9,8 +10,10 @@ type Props = {
 } & StackProps;
 
 export default function Logo(props: Props) {
+  const hStackBaseProps = omit(props, ["logoHeight", "fontSize"]);
+
   return (
-    <HStack spacing={4} sx={{ userSelect: "none" }} {...props}>
+    <HStack spacing={4} sx={{ userSelect: "none" }} {...hStackBaseProps}>
       <Image
         color={"red"}
         alt={"logo"}
