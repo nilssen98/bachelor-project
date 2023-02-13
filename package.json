@@ -7,7 +7,8 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "db:push": "dotenv -e .env.development -- yarn prisma db push"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.4.9",
