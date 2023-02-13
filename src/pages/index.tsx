@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Configify</title>
       </Head>
-      <Center minH={"100vh"}>
+      <Center>
         <AuthShowcase />
       </Center>
     </>
