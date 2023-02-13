@@ -17,7 +17,7 @@ export default function Layout({ children }: { children: ReactElement }) {
       <Navbar height={navbarHeight} />
       <Flex
         minH={`calc(100vh - ${navbarHeight}px)`}
-        width={"100vw"}
+        maxWidth={"100vw"}
         justifyContent={"center"}
         sx={{
           backgroundImage: `radial-gradient(#343a40 2px, transparent 2px), radial-gradient(#343a40 2px, transparent 2px)`,
