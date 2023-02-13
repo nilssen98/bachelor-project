@@ -22,17 +22,18 @@ type Props = {
 export default function TemplateCard(props: Props) {
   return (
     <>
-      <Card variant={"outline"} padding={4} size={"lg"} width={300}>
+      <Card variant={"outline"} padding={4} size={"lg"} width={400}>
         <VStack alignItems={"start"}>
           <HStack w={"full"}>
             <HStack flex={1}>
               <Icon as={HiDocumentText} />
-              <Text fontWeight={"bold"} fontSize={"lg"}>
+              <Text noOfLines={1} fontWeight={"bold"} fontSize={"lg"}>
                 {props.name}
               </Text>
             </HStack>
             <Menu>
               <MenuButton
+                background={"none"}
                 as={IconButton}
                 icon={<Icon as={BiDotsVerticalRounded} />}
               />

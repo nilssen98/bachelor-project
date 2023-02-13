@@ -11,9 +11,9 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import { CiEdit } from "react-icons/ci";
-import { IoIosClose, IoMdSettings } from "react-icons/io";
+import { IoMdClose, IoMdSettings } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { FcCheckmark } from "react-icons/all";
+import { FcCheckmark } from "react-icons/fc";
 type Props = {
   name: string;
   validated: boolean;
@@ -23,17 +23,18 @@ type Props = {
 export default function ConfigurationCard(props: Props) {
   return (
     <>
-      <Card variant={"outline"} padding={4} size={"lg"} width={300}>
-        <VStack alignItems={"start"}>
+      <Card variant={"outline"} padding={4} size={"lg"} width={400}>
+        <VStack alignItems={"start"} spacing={2}>
           <HStack w={"full"}>
             <HStack flex={1}>
               <Icon as={IoMdSettings} />
-              <Text fontWeight={"bold"} fontSize={"lg"}>
+              <Text noOfLines={1} fontWeight={"bold"} fontSize={"lg"}>
                 {props.name}
               </Text>
             </HStack>
             <Menu>
               <MenuButton
+                background={"none"}
                 as={IconButton}
                 icon={<Icon as={BiDotsVerticalRounded} />}
               />
@@ -45,8 +46,9 @@ export default function ConfigurationCard(props: Props) {
           </HStack>
           <HStack>
             <Icon
-              as={props.validated ? FcCheckmark : IoIosClose}
+              as={props.validated ? FcCheckmark : IoMdClose}
               color={"red.500"}
+              boxSize={4}
             />
             <Text fontSize={"xs"} align={"left"}>
               {props.validated ? "validated" : "not validated"}
