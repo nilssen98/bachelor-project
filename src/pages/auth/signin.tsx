@@ -46,9 +46,9 @@ const SignIn: NextPage<PageProps> = (props) => {
   } = useRouter();
 
   return (
-    <Center minH={"100vh"}>
+    <Center height={"full"}>
       <VStack spacing={8}>
-        <Logo />
+        <Logo logoHeight={56} />
         <Card width={"xs"}>
           <CardBody>
             <Stack spacing={6}>
