@@ -30,7 +30,7 @@ export default function Navbar(props: Props) {
         }}
       >
         <Logo fontSize={"1xl"} logoHeight={32} spacing={1.5} />
-        <Link href={"/profile"}>
+        <Link href={"/profile/general"}>
           {status === "authenticated" ? (
             <Avatar
               size={"sm"}
