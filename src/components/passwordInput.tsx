@@ -29,7 +29,7 @@ export default function PasswordInput(props: Props) {
           placeholder={"Password"}
         />
         <InputRightElement>
-          <Button variant={"ghost"} onClick={handleClick}>
+          <Button variant={"ghost"} isDisabled={props.isDisabled} onClick={handleClick} >
             {show ? <Icon as={IoEyeOutline} /> : <Icon as={IoEyeOffOutline} />}
           </Button>
         </InputRightElement>

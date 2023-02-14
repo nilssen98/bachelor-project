@@ -56,9 +56,9 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Text>Sign in</Text>
               </Center>
               <Stack spacing={4}>
-                <EmailInput />
-                <PasswordInput />
-                <Button disabled={true}>Sign in</Button>
+                <EmailInput isDisabled />
+                <PasswordInput isDisabled />
+                <Button isDisabled>Sign in</Button>
                 <HStack alignItems={"center"} justifyContent={"center"}>
                   <Divider />
                   <Text pb={1} userSelect={"none"}>
