@@ -1,5 +1,8 @@
+import { useMemo } from "react";
 import { Avatar, HStack } from "@chakra-ui/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { generateColor } from "../utils/colorUtils";
 import Logo from "./logo";
 
 interface Props {
@@ -7,6 +10,13 @@ interface Props {
 }
 
 export default function Navbar(props: Props) {
+  const { data: session, status } = useSession();
+
+  const bgColor = useMemo<string>(
+    () => generateColor(session?.user?.email || ""),
+    [session]
+  );
+
   return (
     <>
       <HStack
@@ -21,7 +31,15 @@ export default function Navbar(props: Props) {
       >
         <Logo fontSize={"1xl"} logoHeight={32} spacing={1.5} />
         <Link href={"/profile"}>
-          <Avatar size={"sm"} />
+          {status === "authenticated" ? (
+            <Avatar
+              size={"sm"}
+              bg={bgColor}
+              src={session?.user?.image || undefined}
+            />
+          ) : (
+            <Avatar size={"sm"} />
+          )}
         </Link>
       </HStack>
     </>
