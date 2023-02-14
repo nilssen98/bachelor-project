@@ -1,5 +1,5 @@
 import { Avatar, HStack } from "@chakra-ui/react";
-import { signOut } from "next-auth/react";
+import Link from "next/link";
 import Logo from "./logo";
 
 interface Props {
@@ -16,13 +16,9 @@ export default function Navbar(props: Props) {
         justify={"space-between"}
       >
         <Logo fontSize={"1xl"} logoHeight={32} spacing={1.5} />
-        <Avatar
-          size={"sm"}
-          onClick={() => void signOut()}
-          sx={{
-            cursor: "pointer",
-          }}
-        />
+        <Link href={"/profile"}>
+          <Avatar size={"sm"} />
+        </Link>
       </HStack>
     </>
   );
