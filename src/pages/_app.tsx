@@ -5,6 +5,10 @@ import { api } from "../utils/api";
 import { ChakraProvider, cookieStorageManager } from "@chakra-ui/react";
 import theme from "../theme";
 import Layout from "../components/layout";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en.json";
+
+TimeAgo.addDefaultLocale(en);
 
 const App: AppType<{ session: Session | null }> = ({
   Component,
