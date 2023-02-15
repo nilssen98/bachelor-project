@@ -14,6 +14,7 @@ import { CiEdit } from "react-icons/ci";
 import { IoMdClose, IoMdSettings } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FcCheckmark } from "react-icons/fc";
+import ReactTimeAgo from "react-time-ago";
 
 interface Props {
   name: string;
@@ -58,7 +59,9 @@ export default function ConfigurationCard(props: Props) {
           </HStack>
           <HStack>
             <Icon as={CiEdit} />
-            <Text fontSize={"xs"}>30m ago</Text>
+            <Text fontSize={"xs"}>
+              <ReactTimeAgo date={props.lastModified} />
+            </Text>
           </HStack>
         </VStack>
       </Card>

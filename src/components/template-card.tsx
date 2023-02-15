@@ -13,6 +13,7 @@ import {
 import { CiEdit } from "react-icons/ci";
 import { HiDocumentText } from "react-icons/hi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import ReactTimeAgo from "react-time-ago";
 
 interface Props {
   name: string;
@@ -50,7 +51,9 @@ export default function TemplateCard(props: Props) {
           </Text>
           <HStack>
             <Icon as={CiEdit} />
-            <Text fontSize={"xs"}>30m ago</Text>
+            <Text fontSize={"xs"}>
+              <ReactTimeAgo date={props.lastModified} />
+            </Text>
           </HStack>
         </VStack>
       </Card>
