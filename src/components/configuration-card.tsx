@@ -14,11 +14,12 @@ import { CiEdit } from "react-icons/ci";
 import { IoMdClose, IoMdSettings } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FcCheckmark } from "react-icons/fc";
-type Props = {
+
+interface Props {
   name: string;
   validated: boolean;
   lastModified: Date;
-};
+}
 
 export default function ConfigurationCard(props: Props) {
   return (

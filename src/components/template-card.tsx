@@ -13,11 +13,12 @@ import {
 import { CiEdit } from "react-icons/ci";
 import { HiDocumentText } from "react-icons/hi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-type Props = {
+
+interface Props {
   name: string;
   files: number;
   lastModified: Date;
-};
+}
 
 export default function TemplateCard(props: Props) {
   return (
