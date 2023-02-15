@@ -1,17 +1,10 @@
 import { Button } from "@chakra-ui/react";
 import type { ButtonProps } from "@chakra-ui/react";
 
-type Props = {
-  onClick: () => void;
-} & ButtonProps;
-
-//TODO - Modify size to fit with template page when its ready
-export default function ImportButton(props: Props) {
+export default function ImportButton(props: ButtonProps) {
   return (
     <>
-      <Button {...props} onClick={props.onClick}>
-        Add new
-      </Button>
+      <Button {...props}>Add new</Button>
     </>
   );
 }
