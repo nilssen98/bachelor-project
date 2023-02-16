@@ -47,7 +47,7 @@ const TemplatesPage: NextPage = () => {
           </Button>
           <Input placeholder={"Search"} />
         </HStack>
-        <Grid w={"full"} templateColumns="repeat(5, 1fr)" gap={4}>
+        <Grid w={"full"} templateColumns="repeat(3, 1fr)" gap={4}>
           {templates?.map((template, idx) => (
             <GridItem w={"100%"} key={idx}>
               <TemplateCard
