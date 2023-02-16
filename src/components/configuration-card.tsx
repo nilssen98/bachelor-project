@@ -20,30 +20,45 @@ interface Props {
   name: string;
   validated: boolean;
   lastModified: Date;
+  onDelete?: () => void;
+  onClick?: () => void;
+  onEdit?: () => void;
 }
 
 export default function ConfigurationCard(props: Props) {
   return (
     <>
-      <Card variant={"outline"} padding={4} size={"lg"} width={330}>
+      <Card
+        onClick={props.onClick}
+        variant={"outline"}
+        padding={4}
+        size={"lg"}
+        width={"100%"}
+      >
         <VStack alignItems={"start"} spacing={2}>
           <HStack w={"full"}>
             <HStack flex={1}>
               <Icon as={IoMdSettings} />
-              <Text noOfLines={1} fontWeight={"bold"} fontSize={"lg"}>
+              <Text noOfLines={1} fontWeight={"medium"} fontSize={"2xl"}>
                 {props.name}
               </Text>
             </HStack>
             <Menu>
               <MenuButton
                 background={"none"}
-                boxSize={0}
                 as={IconButton}
-                icon={<Icon as={BiDotsVerticalRounded} />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                icon={<Icon boxSize={7} as={BiDotsVerticalRounded} />}
               />
-              <MenuList>
+              <MenuList
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
                 <MenuItem>Edit</MenuItem>
-                <MenuItem>Delete</MenuItem>
+                <MenuItem onClick={props.onDelete}>Delete</MenuItem>
               </MenuList>
             </Menu>
           </HStack>
@@ -51,16 +66,20 @@ export default function ConfigurationCard(props: Props) {
             <Icon
               as={props.validated ? FcCheckmark : IoMdClose}
               color={"red.500"}
-              boxSize={4}
+              boxSize={5}
             />
-            <Text fontSize={"xs"} align={"left"}>
-              {props.validated ? "validated" : "not validated"}
+            <Text textColor={"gray.400"} align={"left"}>
+              {props.validated ? "validated" : "invalid"}
             </Text>
           </HStack>
           <HStack>
             <Icon as={CiEdit} />
-            <Text fontSize={"xs"}>
-              <ReactTimeAgo date={props.lastModified} />
+            <Text textColor={"gray.400"}>
+              {props.lastModified ? (
+                <ReactTimeAgo date={props.lastModified} />
+              ) : (
+                "Couldn't fetch"
+              )}
             </Text>
           </HStack>
         </VStack>
