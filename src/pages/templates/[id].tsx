@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import ConfigurationCard from "../../components/configuration-card";
 import Loading from "../../components/loading";
+import BackButton from "../../components/back-button";
 
 const ConfigurationPage: NextPage = () => {
   const router = useRouter();
@@ -74,6 +75,7 @@ const ConfigurationPage: NextPage = () => {
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
+        <BackButton />
         <Text fontSize={"4xl"}>{`Templates / ${
           template?.name as string
         }`}</Text>
