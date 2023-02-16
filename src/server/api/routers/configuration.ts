@@ -1,14 +1,18 @@
+import { Input } from "@chakra-ui/react";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const configurationRouter = createTRPCRouter({
-  getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.configuration.findMany({
-      where: {
-        userId: ctx.session.user.id,
-      },
-    });
-  }),
+  getAll: protectedProcedure
+    .input(z.object({ templateId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.configuration.findMany({
+        where: {
+          userId: ctx.session.user.id,
+          ...(input.templateId ? { templateId: input.templateId } : {}),
+        },
+      });
+    }),
   get: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
