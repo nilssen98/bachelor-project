@@ -1,5 +1,3 @@
-import type { AppProps } from "next/app";
-import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { api } from "../utils/api";
@@ -11,7 +9,7 @@ import React from "react";
 import type { NextPage } from "next";
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement | ReactNode) => ReactNode;
+  getLayout?: (page: ReactElement) => ReactNode;
 };
 
 interface Props {

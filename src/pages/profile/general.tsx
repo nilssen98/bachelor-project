@@ -1,9 +1,11 @@
+import type { ReactElement } from "react";
 import { Button, Text } from "@chakra-ui/react";
-import ProfileSidebarLayout from "../../components/profileSidebarLayout";
 import { signOut } from "next-auth/react";
 import { MdLogout } from "react-icons/md";
+import type { NextPageWithLayout } from "../_app";
+import ProfileSidebarLayout from "../../components/profileSidebarLayout";
 
-function GeneralPage() {
+const GeneralPage: NextPageWithLayout = () => {
   return (
     <>
       <Text fontSize={"4xl"} my={4}>
@@ -14,8 +16,10 @@ function GeneralPage() {
       </Button>
     </>
   );
-}
+};
 
-GeneralPage.PageLayout = ProfileSidebarLayout;
+GeneralPage.getLayout = function getLayout(page: ReactElement) {
+  return <ProfileSidebarLayout>{page}</ProfileSidebarLayout>;
+};
 
 export default GeneralPage;
