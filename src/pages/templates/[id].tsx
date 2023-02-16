@@ -40,6 +40,10 @@ const ConfigurationPage: NextPage = () => {
     onSuccess: () => refetch(),
   });
 
+  const { mutate: deleteConfiguration } = api.configuration.delete.useMutation({
+    onSuccess: () => refetch(),
+  });
+
   if (isLoadingConfigurations || isLoadingTemplate) {
     return <Loading />;
   }
@@ -53,6 +57,18 @@ const ConfigurationPage: NextPage = () => {
         content: "",
       });
     }
+  };
+
+  const handleCardClick = () => {
+    return;
+  };
+
+  const handleDelete = (configurationId: string) => {
+    deleteConfiguration({ id: configurationId });
+  };
+
+  const handleEdit = () => {
+    return;
   };
 
   return (
@@ -70,6 +86,9 @@ const ConfigurationPage: NextPage = () => {
                 name={configuration.name}
                 validated={false}
                 lastModified={configuration.updatedAt}
+                onClick={handleCardClick}
+                onDelete={() => handleDelete(configuration.id)}
+                onEdit={handleEdit}
               />
             </GridItem>
           ))}
