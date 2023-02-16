@@ -1,6 +1,5 @@
 import {
   Button,
-  Card,
   Grid,
   GridItem,
   HStack,
@@ -9,8 +8,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { type NextPage } from "next";
-import Loading from "../components/loading";
-import { api } from "../utils/api";
+import { useRouter } from "next/router";
+import Loading from "../../components/loading";
+import TemplateCard from "../../components/template-card";
+import { api } from "../../utils/api";
 
 const TemplatesPage: NextPage = () => {
   const {
@@ -24,6 +25,12 @@ const TemplatesPage: NextPage = () => {
       onSuccess: () => refetch(),
     });
 
+  const { mutate: deleteTemplate } = api.template.delete.useMutation({
+    onSuccess: () => refetch(),
+  });
+
+  const router = useRouter();
+
   const handleAdd = () => {
     if (templates) {
       addTemplate({
@@ -33,6 +40,18 @@ const TemplatesPage: NextPage = () => {
     }
   };
 
+  const handleDelete = (templateId: string) => {
+    deleteTemplate({ id: templateId });
+  };
+
+  const handleEdit = () => {
+    return;
+  };
+
+  const handleCardClick = async (templateId: string) => {
+    await router.push(`/${router.pathname}/${templateId}`);
+  };
+
   if (isLoadingTemplate) {
     return <Loading />;
   }
@@ -40,19 +59,24 @@ const TemplatesPage: NextPage = () => {
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <Text fontSize={"5xl"}>Templates</Text>
+        <Text fontSize={"4xl"}>Templates</Text>
         <HStack width={"full"}>
           <Button disabled={isAddingTemplate} onClick={handleAdd}>
             Add new
           </Button>
           <Input placeholder={"Search"} />
         </HStack>
-        <Grid w={"full"} templateColumns="repeat(5, 1fr)" gap={4}>
+        <Grid w={"full"} templateColumns="repeat(3, 1fr)" gap={4}>
           {templates?.map((template, idx) => (
             <GridItem w={"100%"} key={idx}>
-              <Card p={4}>
-                <Text>{template.name}</Text>
-              </Card>
+              <TemplateCard
+                name={template.name}
+                files={2}
+                lastModified={template.updatedAt}
+                onClick={() => handleCardClick(template.id)}
+                onDelete={() => handleDelete(template.id)}
+                onEdit={handleEdit}
+              />
             </GridItem>
           ))}
         </Grid>

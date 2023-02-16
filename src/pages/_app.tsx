@@ -8,6 +8,13 @@ import type { ReactElement, ReactNode } from "react";
 import React from "react";
 import type { NextPage } from "next";
 
+
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en.json";
+
+TimeAgo.addDefaultLocale(en);
+
+
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -21,6 +28,7 @@ interface Props {
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: Props) => {
   const getLayout = Component.getLayout ?? ((page) => page);
+
 
   return (
     <SessionProvider session={session}>
