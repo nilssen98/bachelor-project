@@ -1,6 +1,5 @@
 import {
   Button,
-  Card,
   Grid,
   GridItem,
   HStack,
@@ -11,6 +10,7 @@ import {
 import { type NextPage } from "next";
 import Loading from "../components/loading";
 import { api } from "../utils/api";
+import TemplateCard from "../components/template-card";
 
 const TemplatesPage: NextPage = () => {
   const {
@@ -50,9 +50,11 @@ const TemplatesPage: NextPage = () => {
         <Grid w={"full"} templateColumns="repeat(5, 1fr)" gap={4}>
           {templates?.map((template, idx) => (
             <GridItem w={"100%"} key={idx}>
-              <Card p={4}>
-                <Text>{template.name}</Text>
-              </Card>
+              <TemplateCard
+                name={template.name}
+                files={2}
+                lastModified={template.updatedAt}
+              />
             </GridItem>
           ))}
         </Grid>

@@ -24,7 +24,7 @@ interface Props {
 export default function TemplateCard(props: Props) {
   return (
     <>
-      <Card variant={"outline"} padding={4} size={"lg"} width={400}>
+      <Card variant={"outline"} padding={4} size={"lg"} width={330}>
         <VStack alignItems={"start"}>
           <HStack w={"full"}>
             <HStack flex={1}>
