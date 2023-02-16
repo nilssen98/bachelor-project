@@ -1,9 +1,13 @@
 import { Box, Flex } from "@chakra-ui/react";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import BackgroundCollection from "./background-collection";
 import Navbar from "./navbar";
 
-export default function Layout({ children }: { children: ReactElement }) {
+export default function Layout({
+  children,
+}: {
+  children: ReactElement | ReactNode;
+}) {
   const navbarHeight = 42;
 
   return (

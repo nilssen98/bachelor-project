@@ -14,4 +14,6 @@ export default withAuth(function middleware(req) {
   return NextResponse.next();
 });
 
-export const config = { matcher: ["/", "/templates/:path*", "/profile"] };
+export const config = {
+  matcher: ["/", "/templates/:path*", "/profile/:path*"],
+};
