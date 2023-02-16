@@ -1,4 +1,5 @@
-import { Center, Text } from "@chakra-ui/react";
+import { Center, Text, VStack } from "@chakra-ui/react";
+import Animation from "../components/404animation";
 
 export default function Custom404() {
   return (
@@ -10,7 +11,10 @@ export default function Custom404() {
         height: "full",
       }}
     >
-      <Text fontSize={"7xl"}>404 - Page Not Found</Text>
+      <VStack>
+        <Animation />
+        <Text fontSize={"7xl"}>404 - Page Not Found</Text>
+      </VStack>
     </Center>
   );
 }
