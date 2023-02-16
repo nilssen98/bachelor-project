@@ -8,6 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { type NextPage } from "next";
+import { useRouter } from "next/router";
 import Loading from "../../components/loading";
 import TemplateCard from "../../components/template-card";
 import { api } from "../../utils/api";
@@ -24,6 +25,12 @@ const TemplatesPage: NextPage = () => {
       onSuccess: () => refetch(),
     });
 
+  const { mutate: deleteTemplate } = api.template.delete.useMutation({
+    onSuccess: () => refetch(),
+  });
+
+  const router = useRouter();
+
   const handleAdd = () => {
     if (templates) {
       addTemplate({
@@ -31,6 +38,18 @@ const TemplatesPage: NextPage = () => {
         content: "",
       });
     }
+  };
+
+  const handleDelete = (templateId: string) => {
+    deleteTemplate({ id: templateId });
+  };
+
+  const handleEdit = () => {
+    return;
+  };
+
+  const handleCardClick = async (templateId: string) => {
+    await router.push(`/${router.pathname}/${templateId}`);
   };
 
   if (isLoadingTemplate) {
@@ -54,6 +73,9 @@ const TemplatesPage: NextPage = () => {
                 name={template.name}
                 files={2}
                 lastModified={template.updatedAt}
+                onClick={() => handleCardClick(template.id)}
+                onDelete={() => handleDelete(template.id)}
+                onEdit={handleEdit}
               />
             </GridItem>
           ))}
