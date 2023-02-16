@@ -74,7 +74,9 @@ const ConfigurationPage: NextPage = () => {
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <Text fontSize={"4xl"}>{template?.name as string}</Text>
+        <Text fontSize={"4xl"}>{`Templates / ${
+          template?.name as string
+        }`}</Text>
         <HStack width={"full"}>
           <Button onClick={handleAdd}>Add new</Button>
           <Input placeholder={"Search"} />

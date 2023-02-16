@@ -59,7 +59,7 @@ const TemplatesPage: NextPage = () => {
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <Text fontSize={"5xl"}>Templates</Text>
+        <Text fontSize={"4xl"}>Templates</Text>
         <HStack width={"full"}>
           <Button disabled={isAddingTemplate} onClick={handleAdd}>
             Add new
