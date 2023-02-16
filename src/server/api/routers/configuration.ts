@@ -4,7 +4,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const configurationRouter = createTRPCRouter({
   getAll: protectedProcedure
-    .input(z.object({ templateId: z.string() }))
+    .input(z.object({ templateId: z.string().optional() }))
     .query(({ ctx, input }) => {
       return ctx.prisma.configuration.findMany({
         where: {
