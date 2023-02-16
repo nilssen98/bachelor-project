@@ -8,9 +8,9 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { type NextPage } from "next";
-import Loading from "../components/loading";
-import { api } from "../utils/api";
-import TemplateCard from "../components/template-card";
+import Loading from "../../components/loading";
+import TemplateCard from "../../components/template-card";
+import { api } from "../../utils/api";
 
 const TemplatesPage: NextPage = () => {
   const {
