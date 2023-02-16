@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex, Link, Stack } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/router";
 
@@ -12,14 +12,20 @@ export default function ProfileSidebarLayout({
   return (
     <>
       <Flex direction={"row"}>
-        <Flex width={200} direction={"column"} alignItems={"flex-start"}>
-          <Button onClick={() => void router.push("/profile/general")}>
+        <Stack
+          width={200}
+          direction={"column"}
+          alignItems={"flex-start"}
+          spacing={6}
+          py={8}
+        >
+          <Link onClick={() => void router.push("/profile/general")}>
             General
-          </Button>
-          <Button onClick={() => void router.push("/profile/connections")}>
+          </Link>
+          <Link onClick={() => void router.push("/profile/connections")}>
             Connections
-          </Button>
-        </Flex>
+          </Link>
+        </Stack>
         <Flex direction={"column"}>{children}</Flex>
       </Flex>
     </>
