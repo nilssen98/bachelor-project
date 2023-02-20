@@ -14,6 +14,22 @@ export const prisma =
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
 
+/**
+ * Delete expired verification tokens.
+ */
+prisma.$use(async (params, next) => {
+  if (params.model == "VerificationToken" && params.action == "create") {
+    await prisma.verificationToken.deleteMany({
+      where: {
+        expires: {
+          lte: new Date(),
+        },
+      },
+    });
+  }
+  return next(params);
+});
+
 if (env.NODE_ENV !== "production") {
   global.prisma = prisma;
 }
