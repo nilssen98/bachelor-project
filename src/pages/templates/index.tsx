@@ -48,8 +48,8 @@ const TemplatesPage: NextPage = () => {
     return;
   };
 
-  const handleCardClick = async (templateId: string) => {
-    await router.push(`/${router.pathname}/${templateId}`);
+  const handleCardClick = (templateId: string): Promise<boolean> => {
+    return router.push(`/${router.pathname}/${templateId}`);
   };
 
   if (isLoadingTemplate) {
@@ -73,7 +73,7 @@ const TemplatesPage: NextPage = () => {
                 name={template.name}
                 files={2}
                 lastModified={template.updatedAt}
-                onClick={() => handleCardClick(template.id)}
+                onClick={void handleCardClick(template.id)}
                 onDelete={() => handleDelete(template.id)}
                 onEdit={handleEdit}
               />
