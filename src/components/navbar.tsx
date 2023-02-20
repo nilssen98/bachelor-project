@@ -29,7 +29,7 @@ export default function Navbar(props: Props) {
           margin: "0 auto",
         }}
       >
-        <Logo fontSize={"1xl"} logoHeight={32} spacing={1.5} />
+        <Logo clickable fontSize={"1xl"} logoHeight={32} spacing={1.5} />
         <Link href={"/profile/general"}>
           {status === "authenticated" ? (
             <Avatar

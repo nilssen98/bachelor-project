@@ -1,5 +1,6 @@
 import { HStack, Text } from "@chakra-ui/react";
 import type { StackProps, TypographyProps } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import omit from "lodash-es/omit";
 import logo from "../../public/logo.svg";
@@ -7,13 +8,41 @@ import logo from "../../public/logo.svg";
 type Props = {
   logoHeight?: number;
   fontSize?: TypographyProps["fontSize"];
+  clickable?: boolean;
+  onClick?: () => void;
 } & StackProps;
 
 export default function Logo(props: Props) {
-  const hStackBaseProps = omit(props, ["logoHeight", "fontSize"]);
+  const hStackBaseProps = omit(props, [
+    "logoHeight",
+    "fontSize",
+    "clickable",
+    "onClick",
+  ]);
+
+  const router = useRouter();
+  const navigateHome = () => router.push("/");
+
+  function handleClick() {
+    if (props.clickable) {
+      if (props.onClick) {
+        props.onClick();
+      } else {
+        void navigateHome();
+      }
+    }
+  }
 
   return (
-    <HStack spacing={4} sx={{ userSelect: "none" }} {...hStackBaseProps}>
+    <HStack
+      spacing={4}
+      onClick={handleClick}
+      sx={{
+        userSelect: "none",
+        cursor: props.clickable ? "pointer" : "default",
+      }}
+      {...hStackBaseProps}
+    >
       <Image
         color={"red"}
         alt={"logo"}
