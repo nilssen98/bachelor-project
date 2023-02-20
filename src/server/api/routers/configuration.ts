@@ -34,14 +34,16 @@ export const configurationRouter = createTRPCRouter({
       })
     )
     .mutation(({ ctx, input }) => {
-      const parsedContent: Prisma.JsonValue | undefined = JSON.parse(
-        input.content || ""
-      ) as string;
+      let parsedContent: Prisma.JsonValue | undefined = undefined;
+
+      if (input.content) {
+        parsedContent = JSON.parse(input.content) as Prisma.JsonValue;
+      }
 
       return ctx.prisma.configuration.create({
         data: {
           ...input,
-          content: parsedContent,
+          ...(parsedContent ? { content: parsedContent } : {}),
           userId: ctx.session.user.id,
         },
       });
