@@ -13,10 +13,31 @@ import { api } from "../../utils/api";
 import ConfigurationCard from "../../components/configuration-card";
 import Loading from "../../components/loading";
 import BackButton from "../../components/back-button";
+import { useFilePicker } from "use-file-picker";
+import { useEffect } from "react";
+import type { Prisma } from "@prisma/client";
 
 const TemplatePage: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
+
+  const [openFileSelector, { filesContent, loading }] = useFilePicker({
+    accept: ".json",
+    multiple: false,
+  });
+
+  useEffect(() => {
+    if (filesContent.length > 0) {
+      const file = filesContent[0];
+      if (template && file) {
+        addConfiguration({
+          templateId: template.id,
+          name: file.name,
+          content: file.content,
+        });
+      }
+    }
+  }, [filesContent]);
 
   const { data: template, isLoading: isLoadingTemplate } =
     api.template.get.useQuery(
@@ -50,12 +71,7 @@ const TemplatePage: NextPage = () => {
   }
 
   const handleAdd = () => {
-    if (template && configurations) {
-      addConfiguration({
-        templateId: template.id,
-        name: `Configuration ${configurations?.length + 1}`,
-      });
-    }
+    openFileSelector();
   };
 
   const handleCardClick = async (configurationId: string) => {
