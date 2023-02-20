@@ -44,18 +44,25 @@ const SignIn: NextPage<PageProps> = (props) => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [disableInputs, setDisableInputs] = useState<boolean>(false);
 
   const {
     query: { callbackUrl },
   } = useRouter();
 
   async function handleEmailSignIn() {
+    setDisableInputs(true);
     await signIn("email", {
       email: email,
       password: password,
-    }).then(() => {
-      // Signed in . . .
-    });
+      redirect: false,
+    })
+      .then(() => {
+        // Signed in . . .
+      })
+      .finally(() => {
+        setDisableInputs(false);
+      });
   }
 
   return (
@@ -71,13 +78,18 @@ const SignIn: NextPage<PageProps> = (props) => {
               <Stack spacing={4}>
                 <EmailInput
                   value={email}
+                  isDisabled={disableInputs}
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <PasswordInput
                   value={password}
+                  isDisabled={disableInputs}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <Button onClick={() => void handleEmailSignIn()}>
+                <Button
+                  isDisabled={disableInputs}
+                  onClick={() => void handleEmailSignIn()}
+                >
                   Sign in
                 </Button>
                 <HStack alignItems={"center"} justifyContent={"center"}>
