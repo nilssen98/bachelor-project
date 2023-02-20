@@ -55,7 +55,7 @@ const SignIn: NextPage<PageProps> = (props) => {
     await signIn("email", {
       email: email,
       password: password,
-      redirect: false,
+      redirect: true,
     })
       .then(() => {
         // Signed in . . .
