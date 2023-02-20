@@ -73,7 +73,7 @@ const TemplatesPage: NextPage = () => {
                 name={template.name}
                 files={2}
                 lastModified={template.updatedAt}
-                onClick={void handleCardClick(template.id)}
+                onClick={() => void handleCardClick(template.id)}
                 onDelete={() => handleDelete(template.id)}
                 onEdit={handleEdit}
               />
