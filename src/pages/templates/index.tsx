@@ -9,6 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useFilePicker } from "use-file-picker";
 import Loading from "../../components/loading";
 import TemplateCard from "../../components/template-card";
 import { api } from "../../utils/api";
@@ -32,12 +34,25 @@ const TemplatesPage: NextPage = () => {
   const router = useRouter();
 
   const handleAdd = () => {
-    if (templates) {
-      addTemplate({
-        name: `Template ${templates.length + 1}`,
-      });
-    }
+    openFileSelector();
   };
+
+  const [openFileSelector, { filesContent, loading }] = useFilePicker({
+    accept: ".json",
+    multiple: false,
+  });
+
+  useEffect(() => {
+    if (filesContent.length > 0) {
+      const file = filesContent[0];
+      if (file) {
+        addTemplate({
+          name: file.name.split(".json")[0] || file.name,
+          content: file.content,
+        });
+      }
+    }
+  }, [filesContent]);
 
   const handleDelete = (templateId: string) => {
     deleteTemplate({ id: templateId });
