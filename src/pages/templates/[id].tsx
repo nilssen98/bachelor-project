@@ -32,7 +32,7 @@ const TemplatePage: NextPage = () => {
       if (template && file) {
         addConfiguration({
           templateId: template.id,
-          name: file.name,
+          name: file.name.split(".json")[0],
           content: file.content,
         });
       }
