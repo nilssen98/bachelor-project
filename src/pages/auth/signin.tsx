@@ -66,8 +66,12 @@ const SignIn: NextPage<PageProps> = (props) => {
                   </Text>
                   <Divider />
                 </HStack>
-                {Object.values(providers).map(
-                  (provider: ClientSafeProvider) => (
+                {Object.values(providers)
+                  .filter(
+                    (provider: ClientSafeProvider) =>
+                      provider.name.toLowerCase() !== "email"
+                  )
+                  .map((provider: ClientSafeProvider) => (
                     <Button
                       key={provider.name}
                       leftIcon={getLogo(provider)}
@@ -79,8 +83,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                     >
                       Sign in with {provider.name}
                     </Button>
-                  )
-                )}
+                  ))}
               </Stack>
             </Stack>
           </CardBody>
