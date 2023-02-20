@@ -14,7 +14,7 @@ import ConfigurationCard from "../../components/configuration-card";
 import Loading from "../../components/loading";
 import BackButton from "../../components/back-button";
 
-const ConfigurationPage: NextPage = () => {
+const TemplatePage: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
 
@@ -102,4 +102,4 @@ const ConfigurationPage: NextPage = () => {
   );
 };
 
-export default ConfigurationPage;
+export default TemplatePage;
