@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -23,13 +24,18 @@ export const templateRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        content: z.string(),
+        content: z.string().optional(),
       })
     )
     .mutation(({ ctx, input }) => {
+      const parsedContent: Prisma.JsonValue | undefined = JSON.parse(
+        input.content || ""
+      ) as string;
+
       return ctx.prisma.template.create({
         data: {
           ...input,
+          content: parsedContent,
           userId: ctx.session.user.id,
         },
       });
