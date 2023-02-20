@@ -58,8 +58,8 @@ const TemplatePage: NextPage = () => {
     }
   };
 
-  const handleCardClick = () => {
-    return;
+  const handleCardClick = async (configurationId: string) => {
+    await router.push(`/configurations/${configurationId}`);
   };
 
   const handleDelete = (configurationId: string) => {
@@ -88,7 +88,7 @@ const TemplatePage: NextPage = () => {
                 name={configuration.name}
                 validated={false}
                 lastModified={configuration.updatedAt}
-                onClick={handleCardClick}
+                onClick={() => void handleCardClick(configuration.id)}
                 onDelete={() => handleDelete(configuration.id)}
                 onEdit={handleEdit}
               />
