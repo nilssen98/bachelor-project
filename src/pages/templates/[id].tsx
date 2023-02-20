@@ -54,8 +54,6 @@ const TemplatePage: NextPage = () => {
       addConfiguration({
         templateId: template.id,
         name: `Configuration ${configurations?.length + 1}`,
-        status: "",
-        content: "",
       });
     }
   };

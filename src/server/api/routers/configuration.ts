@@ -1,4 +1,5 @@
 import { Input } from "@chakra-ui/react";
+import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -28,14 +29,19 @@ export const configurationRouter = createTRPCRouter({
       z.object({
         templateId: z.string(),
         name: z.string(),
-        status: z.string(),
-        content: z.string(),
+        valid: z.boolean().optional(),
+        content: z.string().optional(),
       })
     )
     .mutation(({ ctx, input }) => {
+      const parsedContent: Prisma.JsonValue | undefined = JSON.parse(
+        input.content || ""
+      ) as string;
+
       return ctx.prisma.configuration.create({
         data: {
           ...input,
+          content: parsedContent,
           userId: ctx.session.user.id,
         },
       });

@@ -35,7 +35,6 @@ const TemplatesPage: NextPage = () => {
     if (templates) {
       addTemplate({
         name: `Template ${templates.length + 1}`,
-        content: "",
       });
     }
   };
