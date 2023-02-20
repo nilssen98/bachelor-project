@@ -40,6 +40,9 @@ export default function Navbar(props: Props) {
             bg={bgColor}
             onClick={navigateProfile}
             src={session?.user?.image || undefined}
+            sx={{
+              cursor: "pointer",
+            }}
           />
         ) : (
           <Button variant={"ghost"} onClick={navigateLogin}>
