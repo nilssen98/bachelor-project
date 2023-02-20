@@ -23,6 +23,12 @@ const ConfigurationPage: NextPage = () => {
   return (
     <>
       <Text>{configuration?.name}</Text>
+      {configuration?.content &&
+        Object.entries(configuration?.content).map(([key, value], idx) => (
+          <Text key={idx}>
+            {key.toString()}: {(value as string).toString()}
+          </Text>
+        ))}
     </>
   );
 };
