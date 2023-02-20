@@ -1,8 +1,9 @@
 import { Button, Icon, Text } from "@chakra-ui/react";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 
 export default function BackButton() {
+  const router = useRouter();
   return (
     <Button
       px={0}
