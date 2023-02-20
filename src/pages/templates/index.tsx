@@ -63,7 +63,7 @@ const TemplatesPage: NextPage = () => {
   };
 
   const handleCardClick = (templateId: string): Promise<boolean> => {
-    return router.push(`/${router.pathname}/${templateId}`);
+    return router.push(`${router.pathname}/${templateId}`);
   };
 
   if (isLoadingTemplate) {
