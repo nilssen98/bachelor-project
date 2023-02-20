@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Text,
@@ -41,9 +42,21 @@ function getLogo(provider: ClientSafeProvider): JSX.Element {
 const SignIn: NextPage<PageProps> = (props) => {
   const { providers } = props;
 
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const {
     query: { callbackUrl },
   } = useRouter();
+
+  async function handleEmailSignIn() {
+    await signIn("email", {
+      email: email,
+      password: password,
+    }).then(() => {
+      // Signed in . . .
+    });
+  }
 
   return (
     <Center height={"full"}>
@@ -56,9 +69,17 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Text>Sign in</Text>
               </Center>
               <Stack spacing={4}>
-                <EmailInput isDisabled />
-                <PasswordInput isDisabled />
-                <Button isDisabled>Sign in</Button>
+                <EmailInput
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <PasswordInput
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button onClick={() => void handleEmailSignIn()}>
+                  Sign in
+                </Button>
                 <HStack alignItems={"center"} justifyContent={"center"}>
                   <Divider />
                   <Text pb={1} userSelect={"none"}>
