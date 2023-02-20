@@ -68,7 +68,7 @@ model Template {
 model Configuration {
     id         String    @id @default(cuid())
     name       String
-    valid      Boolean
+    valid      Boolean   @default(false)
     content    Json?
     createdAt  DateTime  @default(now())
     updatedAt  DateTime  @updatedAt
