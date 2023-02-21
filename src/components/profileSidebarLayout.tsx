@@ -1,6 +1,7 @@
-import { Flex, Link, Stack } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { Flex, Link, Stack } from "@chakra-ui/react";
 
 const pages = ["general", "connections"];
 
@@ -25,8 +26,9 @@ export default function ProfileSidebarLayout({
           {pages.map((page, idx) => (
             <Link
               key={idx}
+              as={NextLink}
               fontWeight={page === currentPage ? "bold" : "normal"}
-              onClick={() => void router.push(`/profile/${page}`)}
+              href={`/profile/${page}`}
               sx={{
                 textTransform: "capitalize",
               }}
