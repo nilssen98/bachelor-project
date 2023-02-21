@@ -1,9 +1,10 @@
 import { Text, VStack } from "@chakra-ui/react";
 import Lottie from "react-lottie";
+import type { Options } from "react-lottie";
 import animationData from "/public/assets/animations/404-page-not-found-animation-lottie.json";
 
 export default function Custom404() {
-  const defaultOptions = {
+  const defaultOptions: Options = {
     loop: true,
     autoplay: true,
     animationData: animationData as never,
