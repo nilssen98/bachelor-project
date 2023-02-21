@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Avatar, Button, HStack } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { generateColor } from "../utils/colorUtils";
 import Logo from "./logo";
@@ -11,10 +11,6 @@ interface Props {
 
 export default function Navbar(props: Props) {
   const { data: session, status } = useSession();
-
-  const router = useRouter();
-  const navigateLogin = () => void router.push("/auth/signin");
-  const navigateProfile = () => void router.push("/profile/general");
 
   const bgColor = useMemo<string>(
     () => generateColor(session?.user?.email || ""),
@@ -35,19 +31,20 @@ export default function Navbar(props: Props) {
       >
         <Logo clickable fontSize={"1xl"} logoHeight={32} spacing={1.5} />
         {status === "authenticated" ? (
-          <Avatar
-            size={"sm"}
-            bg={bgColor}
-            onClick={navigateProfile}
-            src={session?.user?.image || undefined}
-            sx={{
-              cursor: "pointer",
-            }}
-          />
+          <Link passHref href={"/profile/general"}>
+            <Avatar
+              size={"sm"}
+              bg={bgColor}
+              src={session?.user?.image || undefined}
+              sx={{
+                cursor: "pointer",
+              }}
+            />
+          </Link>
         ) : (
-          <Button variant={"ghost"} onClick={navigateLogin}>
-            Login
-          </Button>
+          <Link passHref href={"/auth/signin"}>
+            <Button variant={"ghost"}>Login</Button>
+          </Link>
         )}
       </HStack>
     </>
