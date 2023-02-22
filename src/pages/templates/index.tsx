@@ -14,6 +14,7 @@ import { useFilePicker } from "use-file-picker";
 import Loading from "../../components/loading";
 import TemplateCard from "../../components/template-card";
 import { api } from "../../utils/api";
+import CustomBreadcrumb from "../../components/custom-breadcrumb";
 
 const TemplatesPage: NextPage = () => {
   const {
@@ -73,7 +74,7 @@ const TemplatesPage: NextPage = () => {
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <Text fontSize={"4xl"}>Templates</Text>
+        <CustomBreadcrumb />
         <HStack width={"full"}>
           <Button disabled={isAddingTemplate} onClick={handleAdd}>
             Add new
