@@ -81,11 +81,11 @@ const SignIn: NextPage<PageProps> = (props) => {
                   isDisabled={disableInputs}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <PasswordInput
+                {/*<PasswordInput
                   value={password}
                   isDisabled={disableInputs}
                   onChange={(e) => setPassword(e.target.value)}
-                />
+                />*/}
                 <Button
                   isDisabled={disableInputs}
                   onClick={() => void handleEmailSignIn()}
