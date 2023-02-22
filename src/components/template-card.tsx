@@ -30,10 +30,15 @@ export default function TemplateCard(props: Props) {
     <>
       <Card
         onClick={props.onClick}
-        variant={"outline"}
         padding={4}
         size={"lg"}
         width={"100%"}
+        userSelect={"none"}
+        cursor={"pointer"}
+        transition={"background-color 200ms ease"}
+        _hover={{
+          bg: "#2a303c",
+        }}
       >
         <VStack alignItems={"start"}>
           <HStack w={"full"}>
