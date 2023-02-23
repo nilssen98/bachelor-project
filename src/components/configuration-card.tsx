@@ -9,6 +9,7 @@ import {
   IconButton,
   MenuList,
   MenuItem,
+  Tooltip,
 } from "@chakra-ui/react";
 import { CiEdit } from "react-icons/ci";
 import { IoMdClose, IoMdSettings } from "react-icons/io";
@@ -45,9 +46,16 @@ export default function ConfigurationCard(props: Props) {
           <HStack w={"full"}>
             <HStack flex={1}>
               <Icon as={IoMdSettings} />
-              <Text noOfLines={1} fontWeight={"medium"} fontSize={"2xl"}>
-                {props.name}
-              </Text>
+              <Tooltip label={props.name}>
+                <Text
+                  maxWidth={"220px"}
+                  noOfLines={1}
+                  fontWeight={"medium"}
+                  fontSize={"2xl"}
+                >
+                  {props.name}
+                </Text>
+              </Tooltip>
             </HStack>
             <Menu>
               <MenuButton
