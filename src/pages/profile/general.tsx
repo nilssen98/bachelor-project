@@ -16,7 +16,12 @@ const GeneralPage: NextPageWithLayout = () => {
       <Text fontSize={"xl"}>
         {`Email: ${session.data?.user?.email || "No email"}`}
       </Text>
-      <Button onClick={() => void signOut()} leftIcon={<MdLogout />}>
+      <Button
+        color={"red.300"}
+        _hover={{ color: "red.400", bg: "red.900" }}
+        onClick={() => void signOut()}
+        leftIcon={<MdLogout />}
+      >
         Sign out
       </Button>
     </>
