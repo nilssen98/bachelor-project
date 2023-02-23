@@ -11,7 +11,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import type { ClientSafeProvider } from "next-auth/react";
+import { ClientSafeProvider, useSession } from "next-auth/react";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
@@ -45,6 +45,14 @@ const SignIn: NextPage<PageProps> = (props) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [disableInputs, setDisableInputs] = useState<boolean>(false);
+
+  const router = useRouter();
+  const session = useSession();
+
+  // If the user is already signed in, redirect to home page
+  if (session.status === "authenticated") {
+    void router.push("/");
+  }
 
   const {
     query: { callbackUrl },
@@ -81,11 +89,11 @@ const SignIn: NextPage<PageProps> = (props) => {
                   isDisabled={disableInputs}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <PasswordInput
+                {/*<PasswordInput
                   value={password}
                   isDisabled={disableInputs}
                   onChange={(e) => setPassword(e.target.value)}
-                />
+                />*/}
                 <Button
                   isDisabled={disableInputs}
                   onClick={() => void handleEmailSignIn()}
