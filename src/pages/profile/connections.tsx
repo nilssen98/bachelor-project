@@ -4,7 +4,7 @@ import { getProviders } from "next-auth/react";
 import type { ClientSafeProvider } from "next-auth/react";
 import { api } from "../../utils/api";
 import type { NextPageWithLayout } from "../_app";
-import ProfileSidebarLayout from "../../components/profileSidebarLayout";
+import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
 import CurrentConnections from "../../components/current-connections";
 import Loading from "../../components/loading";
 import AddConnections from "../../components/add-connections";

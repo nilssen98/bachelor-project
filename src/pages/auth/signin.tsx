@@ -16,9 +16,9 @@ import { useSession } from "next-auth/react";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
-import PasswordInput from "../../components/passwordInput";
+import PasswordInput from "../../components/password-input";
 import { FaGoogle } from "react-icons/fa";
-import EmailInput from "../../components/emailInput";
+import EmailInput from "../../components/email-input";
 import { MdOutlineEmail } from "react-icons/md";
 
 export async function getServerSideProps() {
