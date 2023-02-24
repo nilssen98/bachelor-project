@@ -11,13 +11,13 @@ interface Props {
 export default function CurrentConnections(props: Props) {
   return (
     <>
-      <Box>
+      <Box width={"full"}>
         <Text fontSize={"2xl"} pb={2}>
           Current Connections
         </Text>
         <VStack alignItems={"flex-start"} spacing={2}>
           {Object.values(props.providers).map((provider) => (
-            <Card key={provider} width={200} height={16} variant={"outline"}>
+            <Card key={provider} width={"full"} height={16} variant={"outline"}>
               <CardBody>
                 <HStack alignItems={"center"} spacing={2}>
                   {getLogo(provider)}
