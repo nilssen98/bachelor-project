@@ -13,6 +13,7 @@ import {
 import { FaGoogle } from "react-icons/fa";
 import { IoMailOpenOutline } from "react-icons/io5";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import { MdLinkOff } from "react-icons/md";
 
 interface Props {
   provider: string;
@@ -39,7 +40,7 @@ export default function ConnectionCard(props: Props) {
             <HStack alignItems={"center"} spacing={2}>
               {getLogo(props.provider)}
               <Text
-                fontSize={"sm"}
+                fontSize={"1xl"}
                 sx={{
                   textTransform: "capitalize",
                 }}
@@ -47,14 +48,16 @@ export default function ConnectionCard(props: Props) {
                 {props.provider}
               </Text>
             </HStack>
-            <Menu>
+            <Menu autoSelect={false}>
               <MenuButton
                 background={"none"}
                 as={IconButton}
-                icon={<Icon as={BiDotsVerticalRounded} />}
+                icon={<Icon fontSize={"md"} as={BiDotsVerticalRounded} />}
               />
               <MenuList>
-                <MenuItem color={"red.500"}>Disconnect</MenuItem>
+                <MenuItem color={"red.500"} icon={<MdLinkOff />}>
+                  {`Disconnect ${props.provider}`}
+                </MenuItem>
               </MenuList>
             </Menu>
           </HStack>
