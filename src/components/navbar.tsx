@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Avatar, Button, HStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, HStack, Stack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { generateColor } from "../utils/colorUtils";
@@ -19,34 +19,33 @@ export default function Navbar(props: Props) {
 
   return (
     <>
-      <HStack
-        as={"nav"}
-        h={`${props.height}px`}
-        p={1}
-        maxW={"5xl"}
-        justify={"space-between"}
-        sx={{
-          margin: "0 auto",
-        }}
-      >
-        <Logo clickable fontSize={"1xl"} logoHeight={32} spacing={1.5} />
-        {status === "authenticated" ? (
-          <Link passHref href={"/profile/general"}>
-            <Avatar
-              size={"sm"}
-              bg={bgColor}
-              src={session?.user?.image || undefined}
-              sx={{
-                cursor: "pointer",
-              }}
-            />
-          </Link>
-        ) : (
-          <Link passHref href={"/auth/signin"}>
-            <Button variant={"ghost"}>Login</Button>
-          </Link>
-        )}
-      </HStack>
+      <Stack px={4} align={"center"} as={"nav"} h={`${props.height}px`}>
+        <HStack
+          height={"100%"}
+          justify={"space-between"}
+          maxW={"5xl"}
+          w={"full"}
+        >
+          <Logo clickable fontSize={"xl"} logoHeight={36} spacing={2} />
+          {status === "authenticated" ? (
+            <Link passHref href={"/profile/general"}>
+              <Avatar
+                bg={bgColor}
+                src={session?.user?.image || undefined}
+                sx={{
+                  height: "36px",
+                  width: "36px",
+                  cursor: "pointer",
+                }}
+              />
+            </Link>
+          ) : (
+            <Link passHref href={"/auth/signin"}>
+              <Button variant={"ghost"}>Login</Button>
+            </Link>
+          )}
+        </HStack>
+      </Stack>
     </>
   );
 }
