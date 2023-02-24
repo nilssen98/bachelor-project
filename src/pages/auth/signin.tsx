@@ -11,13 +11,15 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { ClientSafeProvider, useSession } from "next-auth/react";
+import type { ClientSafeProvider } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
 import PasswordInput from "../../components/passwordInput";
 import { FaGoogle } from "react-icons/fa";
 import EmailInput from "../../components/emailInput";
+import { MdOutlineEmail } from "react-icons/md";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -30,10 +32,12 @@ interface PageProps {
   providers: ReturnType<typeof getProviders>;
 }
 
-function getLogo(provider: ClientSafeProvider): JSX.Element {
-  switch (provider.name) {
-    case "Google":
+export function getLogo(provider: string): JSX.Element {
+  switch (provider.toLowerCase()) {
+    case "google":
       return <FaGoogle />;
+    case "email":
+      return <MdOutlineEmail />;
     default:
       return <Text>No logo</Text>;
   }
@@ -115,7 +119,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                   .map((provider: ClientSafeProvider) => (
                     <Button
                       key={provider.name}
-                      leftIcon={getLogo(provider)}
+                      leftIcon={getLogo(provider.name)}
                       onClick={() =>
                         signIn(provider.id, {
                           callbackUrl: callbackUrl?.toString(),
