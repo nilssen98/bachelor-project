@@ -1,5 +1,5 @@
-import { Box, Card, CardBody, HStack, Text, VStack } from "@chakra-ui/react";
-import { getLogo } from "../pages/auth/signin";
+import { Box, Text, VStack } from "@chakra-ui/react";
+import ConnectionCard from "./connection-card";
 
 interface Props {
   providers: string[];
@@ -17,22 +17,7 @@ export default function CurrentConnections(props: Props) {
         </Text>
         <VStack alignItems={"flex-start"} spacing={2}>
           {Object.values(props.providers).map((provider) => (
-            <Card key={provider} width={"full"} height={16} variant={"outline"}>
-              <CardBody>
-                <HStack alignItems={"center"} spacing={2}>
-                  {getLogo(provider)}
-                  <Text
-                    fontSize={"sm"}
-                    fontWeight={"bold"}
-                    sx={{
-                      textTransform: "capitalize",
-                    }}
-                  >
-                    {provider}
-                  </Text>
-                </HStack>
-              </CardBody>
-            </Card>
+            <ConnectionCard key={provider} provider={provider} />
           ))}
         </VStack>
       </Box>
