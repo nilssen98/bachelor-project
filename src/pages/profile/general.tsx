@@ -3,7 +3,7 @@ import { Button, Text } from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/react";
 import { MdLogout } from "react-icons/md";
 import type { NextPageWithLayout } from "../_app";
-import ProfileSidebarLayout from "../../components/profileSidebarLayout";
+import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
 
 const GeneralPage: NextPageWithLayout = () => {
   const session = useSession();
