@@ -7,12 +7,14 @@ const defaultContext: ContextProps = {
   path: [],
   navigate: () => void {},
   content: [],
+  isValidPath: false,
 };
 
 interface ContextProps {
   path: string[];
   navigate: (slug: string | string[] | number) => void;
   content: Prisma.JsonObject[];
+  isValidPath: boolean;
 }
 
 const ConfigurationContext: Context<ContextProps> =
@@ -29,12 +31,16 @@ function ConfigurationProvider(props: ProviderProps) {
   const { configuration, children } = props;
   const [path, setPath] = useState<string[]>([]);
   const [content, setContent] = useState<Prisma.JsonObject[]>([configuration]);
+  const [isValidPath, setIsValidPath] = useState<boolean>(false);
 
-  const getConfigurationFromPath = (path: string[]) => {
-    return path.reduce((current, slug) => {
-      return current?.[slug] as Prisma.JsonObject;
-    }, configuration);
-  };
+  // Check if given path is invalid
+  useEffect(() => {
+    setIsValidPath(
+      path.every((slug, idx) => {
+        return content?.[idx]?.[slug] !== undefined;
+      })
+    );
+  }, [path]);
 
   // Update the left and right content when the path changes
   useEffect(() => {
@@ -60,6 +66,12 @@ function ConfigurationProvider(props: ProviderProps) {
     }
   }, [path]);
 
+  const getConfigurationFromPath = (path: string[]) => {
+    return path.reduce((current, slug) => {
+      return current?.[slug] as Prisma.JsonObject;
+    }, configuration);
+  };
+
   const navigate = (slug: string | string[] | number) => {
     let newPath = [...path];
     if (typeof slug === "number") {
@@ -82,6 +94,7 @@ function ConfigurationProvider(props: ProviderProps) {
     path,
     navigate,
     content,
+    isValidPath,
   };
 
   return (
@@ -95,7 +108,9 @@ const useConfiguration = () => {
   const context = useContext(ConfigurationContext);
 
   if (context === undefined) {
-    throw new Error("useCount must be used within a ConfigurationProvider");
+    throw new Error(
+      "useConfiguration must be used within a ConfigurationProvider"
+    );
   }
 
   return context;
