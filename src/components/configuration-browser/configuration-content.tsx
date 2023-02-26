@@ -1,18 +1,65 @@
-import { Icon, Stack, StackDivider, Tag, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Divider,
+  Icon,
+  keyframes,
+  Stack,
+  StackDivider,
+  Tag,
+  Text,
+} from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
-import { useMemo } from "react";
+import { range } from "lodash-es";
+import { useEffect, useMemo, useState } from "react";
 import { MdArrowRight } from "react-icons/md";
 import { useConfiguration } from "./configuration-provider";
 
 export default function ConfigurationContent() {
-  const { navigate, leftContent, rightContent, path } = useConfiguration();
+  const { navigate, path, content } = useConfiguration();
+  const [displayedContent, setDisplayedContent] = useState<Prisma.JsonObject[]>(
+    [...(content.length === 1 ? [...content, {}] : content)]
+  );
+  const [offsetX, setOffsetX] = useState(0);
+
+  useEffect(() => {
+    if (content.length <= 2) {
+      setOffsetX(0);
+    } else {
+      setOffsetX((content.length - 2) * -50);
+    }
+    setDisplayedContent(content);
+  }, [content]);
+
+  const isHidden = (idx: number) => {
+    if (content.length - 1 === idx) return false;
+    if (content.length - 2 === idx) return false;
+    return true;
+  };
+
+  console.log(content);
+
+  // console.log(content.filter(Boolean));
 
   return (
     <>
-      <Stack direction={"row"} divider={<StackDivider />} spacing={0} flex={1}>
-        {leftContent && (
-          <Stack flex={1} py={2} spacing={2}>
-            {Object.entries(leftContent).map(([key, value], idx) => (
+      <Stack
+        transform={`translateX(${offsetX}%)`}
+        transition={"all 0.3s ease-in-out"}
+        direction={"row"}
+        spacing={0}
+        flex={1}
+      >
+        {displayedContent.map((item, idx) => (
+          <Stack
+            transform={`translateX(${idx * 100}%)`}
+            hidden={isHidden(idx)}
+            key={idx}
+            py={2}
+            width={"50%"}
+            spacing={2}
+            position={"absolute"}
+          >
+            {Object.entries(item).map(([key, value], idx) => (
               <ConfigurationField
                 onClick={() => navigate(key)}
                 key={idx}
@@ -22,20 +69,7 @@ export default function ConfigurationContent() {
               />
             ))}
           </Stack>
-        )}
-        {rightContent && (
-          <Stack flex={1} py={2} spacing={2}>
-            {Object.entries(rightContent).map(([key, value], idx) => (
-              <ConfigurationField
-                onClick={() => navigate(key)}
-                key={idx}
-                name={key}
-                active={path[path.length - 1] === key}
-                value={value as Prisma.JsonObject}
-              />
-            ))}
-          </Stack>
-        )}
+        ))}
       </Stack>
     </>
   );
