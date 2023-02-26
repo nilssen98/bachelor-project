@@ -6,13 +6,13 @@ import { createContext, useContext, useState } from "react";
 const defaultContext: ContextProps = {
   path: [],
   navigate: () => void {},
+  content: [],
 };
 
 interface ContextProps {
   path: string[];
   navigate: (slug: string | string[] | number) => void;
-  leftContent?: Prisma.JsonObject;
-  rightContent?: Prisma.JsonObject;
+  content: Prisma.JsonObject[];
 }
 
 const ConfigurationContext: Context<ContextProps> =
@@ -28,23 +28,20 @@ interface ProviderProps {
 function ConfigurationProvider(props: ProviderProps) {
   const { configuration, children } = props;
   const [path, setPath] = useState<string[]>([]);
-  const [leftContent, setLeftContent] = useState<Prisma.JsonObject>();
-  const [rightContent, setRightContent] = useState<Prisma.JsonObject>();
+  const [content, setContent] = useState<Prisma.JsonObject[]>([configuration]);
 
   const getConfigurationFromPath = (path: string[]) => {
     return path.reduce((current, slug) => {
-      return current[slug] as Prisma.JsonObject;
+      return current?.[slug] as Prisma.JsonObject;
     }, configuration);
   };
 
   // Update the left and right content when the path changes
   useEffect(() => {
-    setLeftContent(getConfigurationFromPath(path.slice(0, path.length - 1)));
-    if (path.length === 0) {
-      setRightContent(undefined);
-    } else {
-      setRightContent(getConfigurationFromPath(path));
-    }
+    setContent([
+      configuration,
+      ...path.map((_, idx) => getConfigurationFromPath(path.slice(0, idx + 1))),
+    ]);
   }, [path]);
 
   // Update the path when the router path changes
@@ -68,10 +65,11 @@ function ConfigurationProvider(props: ProviderProps) {
     if (typeof slug === "number") {
       newPath.splice(slug);
     } else if (typeof slug === "string") {
-      if (leftContent && Object.keys(leftContent).includes(slug)) {
+      const currentContent = content[content.length - 2];
+      if (currentContent?.[slug]) {
         newPath.pop();
         newPath.push(slug);
-      } else if (rightContent && Object.keys(rightContent).includes(slug)) {
+      } else {
         newPath.push(slug);
       }
     } else {
@@ -83,8 +81,7 @@ function ConfigurationProvider(props: ProviderProps) {
   const value = {
     path,
     navigate,
-    leftContent,
-    rightContent,
+    content,
   };
 
   return (
