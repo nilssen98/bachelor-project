@@ -1,4 +1,4 @@
-import { Card, CardBody, Stack, StackDivider } from "@chakra-ui/react";
+import { Box, Card, CardBody, Stack, StackDivider } from "@chakra-ui/react";
 import { useState } from "react";
 import ConfigurationContent from "./configuration-content";
 import ConfigurationNavigation from "./configuration-navigation";
@@ -24,12 +24,13 @@ export default function ConfigurationBrowser() {
   return (
     <>
       <Card>
-        <CardBody p={0}>
+        <CardBody p={0} overflow={"hidden"}>
           <Stack
             minH={"xl"}
             height={"100%"}
             divider={<StackDivider />}
             spacing={0}
+            zIndex={1}
           >
             <ConfigurationToolbar
               onSave={handleSave}
