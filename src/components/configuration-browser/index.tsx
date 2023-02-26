@@ -1,7 +1,15 @@
-import { Box, Card, CardBody, Stack, StackDivider } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Card,
+  CardBody,
+  Stack,
+  StackDivider,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import ConfigurationContent from "./configuration-content";
 import ConfigurationNavigation from "./configuration-navigation";
+import { useConfiguration } from "./configuration-provider";
 import ConfigurationStatusBar from "./configuration-status-bar";
 import ConfigurationToolbar from "./configuration-toolbar";
 
@@ -12,6 +20,7 @@ const defaultErrors = [
 
 export default function ConfigurationBrowser() {
   const [searchValue, setSearchValue] = useState<string>("");
+  const { isValidPath } = useConfiguration();
 
   const handleSave = () => {
     return;
@@ -20,6 +29,10 @@ export default function ConfigurationBrowser() {
   const handleClickErrors = () => {
     return;
   };
+
+  if (!isValidPath) {
+    return <Text>Invalid path</Text>;
+  }
 
   return (
     <>
