@@ -1,15 +1,5 @@
-import {
-  Button,
-  Divider,
-  Icon,
-  keyframes,
-  Stack,
-  StackDivider,
-  Tag,
-  Text,
-} from "@chakra-ui/react";
+import { Icon, Stack, Tag, Text } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
-import { range } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import { MdArrowRight } from "react-icons/md";
 import { useConfiguration } from "./configuration-provider";
@@ -27,18 +17,10 @@ export default function ConfigurationContent() {
     } else {
       setOffsetX((content.length - 2) * -50);
     }
-    setDisplayedContent(content);
+    setDisplayedContent([
+      ...(content.length === 1 ? [...content, {}] : content),
+    ]);
   }, [content]);
-
-  const isHidden = (idx: number) => {
-    if (content.length - 1 === idx) return false;
-    if (content.length - 2 === idx) return false;
-    return true;
-  };
-
-  console.log(content);
-
-  // console.log(content.filter(Boolean));
 
   return (
     <>
@@ -52,12 +34,14 @@ export default function ConfigurationContent() {
         {displayedContent.map((item, idx) => (
           <Stack
             transform={`translateX(${idx * 100}%)`}
-            hidden={isHidden(idx)}
             key={idx}
             py={2}
             width={"50%"}
+            height={"100%"}
             spacing={2}
             position={"absolute"}
+            borderRight={displayedContent.length - 1 === idx ? 0 : "1px solid"}
+            borderColor={"gray.600"}
           >
             {Object.entries(item).map(([key, value], idx) => (
               <ConfigurationField
