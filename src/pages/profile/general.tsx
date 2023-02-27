@@ -5,9 +5,14 @@ import { MdLogout } from "react-icons/md";
 import type { NextPageWithLayout } from "../_app";
 import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
 import UserAvatar from "../../components/user-avatar";
+import { api } from "../../utils/api";
 
 const GeneralPage: NextPageWithLayout = () => {
   const session = useSession();
+
+  const { mutate: deleteAccount } = api.me.delete.useMutation({
+    onSuccess: () => signOut(),
+  });
 
   return (
     <>
@@ -40,6 +45,9 @@ const GeneralPage: NextPageWithLayout = () => {
           Sign out
         </Button>
       </HStack>
+      <Button color={"red.300"} onClick={() => void deleteAccount()}>
+        Delete account
+      </Button>
     </>
   );
 };
