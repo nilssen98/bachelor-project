@@ -1,5 +1,14 @@
 import type { ReactElement } from "react";
-import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Card,
+  Heading,
+  HStack,
+  Stack,
+  StackDivider,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/react";
 import { MdLogout } from "react-icons/md";
 import type { NextPageWithLayout } from "../_app";
@@ -45,9 +54,20 @@ const GeneralPage: NextPageWithLayout = () => {
           Sign out
         </Button>
       </HStack>
-      <Button color={"red.300"} onClick={() => void deleteAccount()}>
-        Delete account
-      </Button>
+      <Card>
+        <Stack divider={<StackDivider />}>
+          <Heading size={"md"} p={4}>
+            Delete account
+          </Heading>
+          <Text p={4}>
+            Permanently remove your account and all of its contents. This action
+            is not reversible, so please continue with caution.
+          </Text>
+          <Button m={4} color={"red.300"} onClick={() => deleteAccount()}>
+            Delete
+          </Button>
+        </Stack>
+      </Card>
     </>
   );
 };
