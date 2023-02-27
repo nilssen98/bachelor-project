@@ -76,17 +76,27 @@ function ConfigurationField(props: ConfigurationFieldProps) {
     return typeof props.value;
   }, [props]);
 
-  const getColor = (type: string) => {
-    return generateColor(type, 80, 30);
-  };
+  const valueCount = useMemo(() => {
+    if (Array.isArray(props.value)) {
+      return props.value.length;
+    }
+    if (props.value) {
+      return Object.values(props.value).length;
+    }
+    return undefined;
+  }, [props]);
 
-  if (valueType !== "object") {
+  const color = useMemo(() => {
+    return generateColor(valueType, 80, 30);
+  }, [valueType]);
+
+  if (!["object", "array"].includes(valueType)) {
     return (
       <Stack p={2} px={4} spacing={1} direction={"row"}>
         <Text>{name}: </Text>
         {value ? (
           <Text>
-            {value.toString()} <Tag bg={getColor(valueType)}>{valueType}</Tag>
+            {value.toString()} <Tag bg={color}>{valueType}</Tag>
           </Text>
         ) : (
           <Text color={"gray.500"}>
@@ -114,11 +124,9 @@ function ConfigurationField(props: ConfigurationFieldProps) {
       >
         <Text>
           {props.name}{" "}
-          <Tag bg={getColor(valueType)}>{`${valueType} (${
-            Array.isArray(props.value)
-              ? props.value.length
-              : Object.values(props.value).length
-          })`}</Tag>
+          <Tag bg={color}>
+            {valueCount ? `${valueType} (${valueCount})` : `${valueType}`}
+          </Tag>
         </Text>
         <Icon as={MdArrowRight} fontSize={"xl"} />
       </Stack>
