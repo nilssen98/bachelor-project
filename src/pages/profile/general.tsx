@@ -10,7 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/react";
-import { MdLogout } from "react-icons/md";
+import { MdDelete, MdLogout } from "react-icons/md";
 import type { NextPageWithLayout } from "../_app";
 import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
 import UserAvatar from "../../components/user-avatar";
@@ -66,7 +66,12 @@ const GeneralPage: NextPageWithLayout = () => {
               Permanently remove your account and all of its contents. This
               action is not reversible, please continue with caution.
             </Text>
-            <Button m={4} color={"red.300"} onClick={() => deleteAccount()}>
+            <Button
+              m={4}
+              color={"red.300"}
+              onClick={() => deleteAccount()}
+              leftIcon={<MdDelete />}
+            >
               Delete
             </Button>
           </Stack>
