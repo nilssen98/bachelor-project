@@ -6,9 +6,6 @@ import { useConfiguration } from "./configuration-provider";
 
 export default function ConfigurationContent() {
   const { navigate, path, content } = useConfiguration();
-  const [displayedContent, setDisplayedContent] = useState<Prisma.JsonObject[]>(
-    [...(content.length === 1 ? [...content, {}] : content)]
-  );
   const [offsetX, setOffsetX] = useState(0);
 
   useEffect(() => {
@@ -17,9 +14,6 @@ export default function ConfigurationContent() {
     } else {
       setOffsetX((content.length - 2) * -50);
     }
-    setDisplayedContent([
-      ...(content.length === 1 ? [...content, {}] : content),
-    ]);
   }, [content]);
 
   return (
@@ -31,7 +25,7 @@ export default function ConfigurationContent() {
         spacing={0}
         flex={1}
       >
-        {displayedContent.map((item, idx) => (
+        {content.map((item, idx) => (
           <Stack
             transform={`translateX(${idx * 100}%)`}
             key={idx}
@@ -40,8 +34,9 @@ export default function ConfigurationContent() {
             height={"100%"}
             spacing={2}
             position={"absolute"}
-            borderRight={displayedContent.length - 1 === idx ? 0 : "1px solid"}
+            borderRight={content.length - 1 === idx ? 0 : "1px solid"}
             borderColor={"gray.600"}
+            overflowY={"auto"}
           >
             {Object.entries(item).map(([key, value], idx) => (
               <ConfigurationField
