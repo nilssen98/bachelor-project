@@ -28,46 +28,50 @@ const GeneralPage: NextPageWithLayout = () => {
       <Text fontSize={"4xl"} my={4}>
         General
       </Text>
-      <HStack justifyContent={"space-between"}>
-        <HStack spacing={4}>
-          <UserAvatar
-            sx={{
-              height: "100px",
-              width: "100px",
-            }}
-          />
-          <VStack alignItems={"flex-start"}>
-            <Text fontSize={"3xl"}>
-              {session.data?.user?.name || "No name"}
+      <VStack spacing={4} p={2}>
+        <Card width={"full"}>
+          <HStack p={4} justifyContent={"space-between"}>
+            <HStack spacing={4}>
+              <UserAvatar
+                sx={{
+                  height: "80px",
+                  width: "80px",
+                }}
+              />
+              <VStack alignItems={"flex-start"} spacing={1}>
+                <Text fontSize={"2xl"}>
+                  {session.data?.user?.name || "No name"}
+                </Text>
+                <Text fontSize={"md"}>
+                  {session.data?.user?.email || "No email"}
+                </Text>
+              </VStack>
+            </HStack>
+            <Button
+              color={"red.300"}
+              _hover={{ color: "red.400", bg: "red.900" }}
+              onClick={() => void signOut()}
+              leftIcon={<MdLogout />}
+            >
+              Sign out
+            </Button>
+          </HStack>
+        </Card>
+        <Card>
+          <Stack divider={<StackDivider />}>
+            <Heading size={"md"} p={4}>
+              Delete account
+            </Heading>
+            <Text p={4}>
+              Permanently remove your account and all of its contents. This
+              action is not reversible, please continue with caution.
             </Text>
-            <Text fontSize={"1xl"}>
-              {session.data?.user?.email || "No email"}
-            </Text>
-          </VStack>
-        </HStack>
-        <Button
-          color={"red.300"}
-          _hover={{ color: "red.400", bg: "red.900" }}
-          onClick={() => void signOut()}
-          leftIcon={<MdLogout />}
-        >
-          Sign out
-        </Button>
-      </HStack>
-      <Card>
-        <Stack divider={<StackDivider />}>
-          <Heading size={"md"} p={4}>
-            Delete account
-          </Heading>
-          <Text p={4}>
-            Permanently remove your account and all of its contents. This action
-            is not reversible, so please continue with caution.
-          </Text>
-          <Button m={4} color={"red.300"} onClick={() => deleteAccount()}>
-            Delete
-          </Button>
-        </Stack>
-      </Card>
+            <Button m={4} color={"red.300"} onClick={() => deleteAccount()}>
+              Delete
+            </Button>
+          </Stack>
+        </Card>
+      </VStack>
     </>
   );
 };
