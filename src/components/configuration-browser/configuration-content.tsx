@@ -2,6 +2,7 @@ import { Icon, Stack, Tag, Text } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
 import { useEffect, useMemo, useState } from "react";
 import { MdArrowRight } from "react-icons/md";
+import { generateColor } from "../../utils/colorUtils";
 import { useConfiguration } from "./configuration-provider";
 
 export default function ConfigurationContent() {
@@ -16,6 +17,10 @@ export default function ConfigurationContent() {
     }
   }, [content]);
 
+  const filteredContent = useMemo(() => {
+    return [...(content.length === 1 ? [...content, {}] : content)];
+  }, [content]);
+
   return (
     <>
       <Stack
@@ -25,7 +30,7 @@ export default function ConfigurationContent() {
         spacing={0}
         flex={1}
       >
-        {content.map((item, idx) => (
+        {filteredContent.map((item, idx) => (
           <Stack
             transform={`translateX(${idx * 100}%)`}
             key={idx}
@@ -34,7 +39,7 @@ export default function ConfigurationContent() {
             height={"100%"}
             spacing={2}
             position={"absolute"}
-            borderRight={content.length - 1 === idx ? 0 : "1px solid"}
+            borderRight={filteredContent.length - 1 === idx ? 0 : "1px solid"}
             borderColor={"gray.600"}
             overflowY={"auto"}
           >
@@ -64,30 +69,24 @@ interface ConfigurationFieldProps {
 function ConfigurationField(props: ConfigurationFieldProps) {
   const { name, value } = props;
 
-  if (typeof value === "object") {
+  const valueType = useMemo(() => {
+    if (Array.isArray(props.value)) {
+      return "array";
+    }
+    return typeof props.value;
+  }, [props]);
+
+  const getColor = (type: string) => {
+    return generateColor(type, 80, 30);
+  };
+
+  if (valueType !== "object") {
     return (
-      <ConfigurationFieldNavigation
-        active={props.active}
-        onClick={props.onClick}
-        name={name}
-        value={value}
-      />
-    );
-  }
-
-  return <ConfigurationFieldGeneric name={name} value={value} />;
-}
-
-function ConfigurationFieldGeneric(props: ConfigurationFieldProps) {
-  const valueType = useMemo(() => typeof props.value, [props]);
-
-  return (
-    <>
       <Stack p={2} px={4} spacing={1} direction={"row"}>
-        <Text>{props.name}: </Text>
-        {props.value ? (
+        <Text>{name}: </Text>
+        {value ? (
           <Text>
-            {props.value.toString()} <Tag>{valueType}</Tag>
+            {value.toString()} <Tag bg={getColor(valueType)}>{valueType}</Tag>
           </Text>
         ) : (
           <Text color={"gray.500"}>
@@ -95,17 +94,8 @@ function ConfigurationFieldGeneric(props: ConfigurationFieldProps) {
           </Text>
         )}
       </Stack>
-    </>
-  );
-}
-
-function ConfigurationFieldNavigation(props: ConfigurationFieldProps) {
-  const valueType = useMemo(() => {
-    if (Array.isArray(props.value)) {
-      return `array (${props.value.length})`;
-    }
-    return typeof props.value;
-  }, [props]);
+    );
+  }
 
   return (
     <>
@@ -123,7 +113,12 @@ function ConfigurationFieldNavigation(props: ConfigurationFieldProps) {
         justifyContent={"space-between"}
       >
         <Text>
-          {props.name} <Tag>{valueType}</Tag>
+          {props.name}{" "}
+          <Tag bg={getColor(valueType)}>{`${valueType} (${
+            Array.isArray(props.value)
+              ? props.value.length
+              : Object.values(props.value).length
+          })`}</Tag>
         </Text>
         <Icon as={MdArrowRight} fontSize={"xl"} />
       </Stack>
