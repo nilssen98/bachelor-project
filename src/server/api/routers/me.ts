@@ -12,6 +12,13 @@ export const meRouter = createTRPCRouter({
       },
     });
   }),
+  delete: protectedProcedure.mutation(({ ctx }) => {
+    return ctx.prisma.user.delete({
+      where: {
+        id: ctx.session.user.id,
+      },
+    });
+  }),
   unlink: protectedProcedure
     .input(z.object({ provider: z.string() }))
     .mutation(({ ctx, input }) => {
