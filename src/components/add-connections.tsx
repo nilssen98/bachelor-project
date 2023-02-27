@@ -39,7 +39,7 @@ export default function AddConnections(props: Props) {
                 <Button
                   isDisabled={disabled}
                   onClick={() => {
-                    void signIn(provider);
+                    void signIn(provider.toLowerCase());
                   }}
                   leftIcon={getLogo(provider)}
                 >
