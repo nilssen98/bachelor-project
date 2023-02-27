@@ -15,7 +15,7 @@ export default function ProfileSidebarLayout({
 
   return (
     <>
-      <Flex direction={"row"}>
+      <Flex direction={"row"} height={"full"}>
         <Stack
           width={200}
           direction={"column"}
