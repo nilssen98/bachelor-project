@@ -7,6 +7,8 @@ import ConfigurationBrowser from "../../components/configuration-browser";
 import { ConfigurationProvider } from "../../components/configuration-browser/configuration-provider";
 import Loading from "../../components/loading";
 import { api } from "../../utils/api";
+import ConfigurationNavigator from "../../components/config-navigator";
+import CustomBreadcrumb from "../../components/custom-breadcrumb";
 
 const ConfigurationPage: NextPage = () => {
   const router = useRouter();
@@ -45,6 +47,11 @@ const ConfigurationPage: NextPage = () => {
 
   return (
     <>
+      <CustomBreadcrumb templateId={configuration.templateId!} />
+      <ConfigurationNavigator
+        configId={configuration.id}
+        templateId={configuration.templateId!}
+      />
       <ConfigurationProvider
         configuration={configuration.content as Prisma.JsonObject}
         onPathChange={(path) => void handlePathChange(path)}

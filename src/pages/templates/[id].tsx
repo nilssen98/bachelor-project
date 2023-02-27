@@ -17,6 +17,7 @@ import { useFilePicker } from "use-file-picker";
 import { useEffect } from "react";
 import type { Prisma } from "@prisma/client";
 import ConfigurationNavigator from "../../components/config-navigator";
+import CustomBreadcrumb from "../../components/custom-breadcrumb";
 
 const TemplatePage: NextPage = () => {
   const router = useRouter();
@@ -91,10 +92,8 @@ const TemplatePage: NextPage = () => {
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
         <BackButton />
-        <Text fontSize={"4xl"}>{`Templates / ${
-          template?.name as string
-        }`}</Text>
-        <ConfigurationNavigator templateId={id}></ConfigurationNavigator>
+        <CustomBreadcrumb templateId={id} />
+        <ConfigurationNavigator templateId={id} />
         <HStack width={"full"}>
           <Button onClick={handleAdd}>Add new</Button>
           <Input placeholder={"Search"} />

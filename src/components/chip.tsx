@@ -1,16 +1,5 @@
 import { Tag } from "@chakra-ui/tag";
-import {
-  Button,
-  Center,
-  Divider,
-  HStack,
-  Icon,
-  Menu,
-  MenuButton,
-  StackDivider,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
+import { HStack, Icon, Text, Tooltip } from "@chakra-ui/react";
 import { FcCheckmark } from "react-icons/fc";
 import { IoMdClose } from "react-icons/io";
 
