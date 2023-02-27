@@ -14,6 +14,7 @@ import { FaGoogle } from "react-icons/fa";
 import { IoMailOpenOutline } from "react-icons/io5";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { MdLinkOff } from "react-icons/md";
+import { api } from "../utils/api";
 
 interface Props {
   provider: string;
@@ -32,6 +33,16 @@ function getLogo(provider: string): JSX.Element {
 }
 
 export default function ConnectionCard(props: Props) {
+  const trpc = api.useContext();
+
+  const { mutate: unlink } = api.me.unlink.useMutation({
+    onSuccess: () => trpc.me.invalidate(),
+  });
+
+  function handleDisconnect() {
+    unlink({ provider: props.provider.toLowerCase() });
+  }
+
   return (
     <>
       <Card width={"full"} variant={"outline"}>
@@ -55,7 +66,11 @@ export default function ConnectionCard(props: Props) {
                 icon={<Icon fontSize={"md"} as={BiDotsVerticalRounded} />}
               />
               <MenuList>
-                <MenuItem color={"red.500"} icon={<MdLinkOff />}>
+                <MenuItem
+                  color={"red.500"}
+                  icon={<MdLinkOff />}
+                  onClick={handleDisconnect}
+                >
                   {`Disconnect ${props.provider}`}
                 </MenuItem>
               </MenuList>
