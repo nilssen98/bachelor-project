@@ -43,7 +43,6 @@ export default function ConfigurationBrowser() {
             height={"100%"}
             divider={<StackDivider />}
             spacing={0}
-            zIndex={1}
           >
             <ConfigurationToolbar
               onSave={handleSave}
