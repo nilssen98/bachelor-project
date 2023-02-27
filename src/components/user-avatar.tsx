@@ -1,12 +1,20 @@
 import { Avatar } from "@chakra-ui/react";
 import { useMemo } from "react";
+import omit from "lodash-es/omit";
 import type { AvatarProps } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { generateColor } from "../utils/colorUtils";
 
-type Props = AvatarProps;
+type Props = {
+  /**
+   * Should the avatar display a pointer cursor.
+   */
+  clickable?: boolean;
+} & AvatarProps;
 
 export default function UserAvatar(props: Props) {
+  const avatarProps = omit(props, ["clickable"]);
+
   const { data: session } = useSession();
 
   const bgColor = useMemo<string>(
@@ -17,12 +25,12 @@ export default function UserAvatar(props: Props) {
   return (
     <>
       <Avatar
-        {...props}
+        {...avatarProps}
         bg={bgColor}
         src={session?.user?.image || undefined}
         sx={{
-          cursor: "pointer",
-          ...props.sx,
+          cursor: `${props.clickable ? "pointer" : "default"}`,
+          ...avatarProps.sx,
         }}
       />
     </>

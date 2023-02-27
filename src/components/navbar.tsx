@@ -24,6 +24,7 @@ export default function Navbar(props: Props) {
           {status === "authenticated" ? (
             <Link passHref href={"/profile/general"}>
               <UserAvatar
+                clickable
                 sx={{
                   height: "36px",
                   width: "36px",
