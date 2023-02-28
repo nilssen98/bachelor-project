@@ -20,6 +20,19 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  events: {
+    async linkAccount({ user, account, profile }) {
+      await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          name: user.name == null ? profile.name : undefined,
+          image: user.image == null ? profile.image : undefined,
+        },
+      });
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
