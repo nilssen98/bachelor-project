@@ -2,6 +2,7 @@ import {
   Button,
   Grid,
   GridItem,
+  Heading,
   HStack,
   Input,
   Text,
@@ -74,10 +75,20 @@ const TemplatesPage: NextPage = () => {
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <CustomBreadcrumb />
+        <Heading pt={4} pb={8}>
+          Templates
+        </Heading>
         <HStack width={"full"}>
-          <Button disabled={isAddingTemplate} onClick={handleAdd}>
-            Add new
+          <Button
+            disabled={isAddingTemplate}
+            onClick={handleAdd}
+            bg={"white"}
+            px={8}
+            color={"black"}
+            border={"1px solid white"}
+            _hover={{ bg: "black", color: "white" }}
+          >
+            Add template
           </Button>
           <Input placeholder={"Search"} />
         </HStack>
