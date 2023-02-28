@@ -1,23 +1,35 @@
 import { type NextPage } from "next";
 import {
   Button,
-  Grid,
-  GridItem,
   HStack,
+  Heading,
   Input,
   Text,
   VStack,
+  Stack,
+  StackDivider,
+  Card,
+  Box,
+  Icon,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Divider,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
-import ConfigurationCard from "../../components/configuration-card";
-import Loading from "../../components/loading";
 import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
-import { useEffect } from "react";
-import type { Prisma } from "@prisma/client";
+import { useEffect, useMemo } from "react";
+import type { Configuration } from "@prisma/client";
 import ConfigurationNavigator from "../../components/config-navigator";
-import CustomBreadcrumb from "../../components/custom-breadcrumb";
+import ReactTimeAgo from "react-time-ago";
+import { IoMdSettings } from "react-icons/io";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import Loading from "../../components/loading";
+import Link from "next/link";
 
 const TemplatePage: NextPage = () => {
   const router = useRouter();
@@ -68,9 +80,12 @@ const TemplatePage: NextPage = () => {
     onSuccess: () => refetch(),
   });
 
-  if (isLoadingConfigurations || isLoadingTemplate) {
-    return <Loading />;
-  }
+  const sortedConfigurations = useMemo(() => {
+    return configurations?.sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+  }, [configurations]);
 
   const handleAdd = () => {
     openFileSelector();
@@ -88,33 +103,103 @@ const TemplatePage: NextPage = () => {
     return;
   };
 
+  if (isLoadingConfigurations || isLoadingTemplate) {
+    return <Loading />;
+  }
+
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <BackButton />
-        <CustomBreadcrumb templateId={id} />
-        <ConfigurationNavigator templateId={id} />
+        <Heading pt={4} pb={8}>
+          {template?.name}
+        </Heading>
         <HStack width={"full"}>
-          <Button onClick={handleAdd}>Add new</Button>
+          <Button
+            onClick={handleAdd}
+            bg={"white"}
+            px={8}
+            color={"black"}
+            border={"1px solid white"}
+            _hover={{ bg: "black", color: "white" }}
+          >
+            Add configuration
+          </Button>
           <Input placeholder={"Search"} />
         </HStack>
-        <Grid w={"full"} templateColumns="repeat(3, 1fr)" gap={4}>
-          {configurations?.map((configuration, idx) => (
-            <GridItem maxWidth={"100%"} w={"100%"} key={idx}>
-              <ConfigurationCard
-                name={configuration.name}
-                validated={false}
-                lastModified={configuration.updatedAt}
-                onClick={() => void handleCardClick(configuration.id)}
-                onDelete={() => handleDelete(configuration.id)}
-                onEdit={handleEdit}
-              />
-            </GridItem>
-          ))}
-        </Grid>
+        <Box width={"full"}>
+          <Card>
+            <Stack divider={<StackDivider />} spacing={0}>
+              {sortedConfigurations?.map((configuration, idx) => (
+                <ConfigurationListItem
+                  key={idx}
+                  configuration={configuration}
+                />
+              ))}
+            </Stack>
+          </Card>
+        </Box>
       </VStack>
     </>
   );
 };
 
 export default TemplatePage;
+
+const ConfigurationListItem = ({
+  configuration,
+}: {
+  configuration: Configuration;
+}) => {
+  return (
+    <>
+      <HStack spacing={8} p={4} width={"full"}>
+        <Stack flex={1} align={"start"}>
+          <Link passHref href={`/configurations/${configuration.id}`}>
+            <Text>{configuration.name}</Text>
+          </Link>
+        </Stack>
+        <Stack flex={1} align={"start"} color={"gray.500"}>
+          <Text>
+            {configuration.valid ? (
+              <HStack>
+                <Box h={2} w={2} borderRadius={"full"} bg={"green"} />
+                <Text>valid</Text>
+              </HStack>
+            ) : (
+              <HStack>
+                <Box h={2} w={2} borderRadius={"full"} bg={"red"} />
+                <Text>invalid</Text>
+              </HStack>
+            )}
+          </Text>
+        </Stack>
+        <HStack flex={1} justify={"end"}>
+          {configuration.updatedAt && (
+            <Text color={"gray.500"}>
+              created <ReactTimeAgo date={configuration.updatedAt} />
+            </Text>
+          )}
+          <Menu>
+            <MenuButton
+              color={"gray.500"}
+              background={"none"}
+              as={IconButton}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              icon={<Icon boxSize={7} as={BiDotsVerticalRounded} />}
+            />
+            <MenuList
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <MenuItem>Edit</MenuItem>
+              <MenuItem onClick={() => void {}}>Delete</MenuItem>
+            </MenuList>
+          </Menu>
+        </HStack>
+      </HStack>
+    </>
+  );
+};
