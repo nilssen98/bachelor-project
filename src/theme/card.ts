@@ -1,6 +1,9 @@
 import { defineStyleConfig } from "@chakra-ui/react";
 
-export const cardTheme = defineStyleConfig({
+export const Card = defineStyleConfig({
+  baseStyle: {
+    bg: "black",
+  },
   defaultProps: {
     variant: "outline",
   },

@@ -1,16 +1,12 @@
-import {
-  defineStyleConfig,
-  extendTheme,
-  type ThemeConfig,
-} from "@chakra-ui/react";
-import { cardTheme } from "./card";
+import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
+import { Card } from "./card";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
   useSystemColorMode: true,
 };
 
-const theme = extendTheme({
+const overrides = {
   config,
   styles: {
     global: {
@@ -20,8 +16,8 @@ const theme = extendTheme({
     },
   },
   components: {
-    Card: cardTheme,
+    Card,
   },
-});
+};
 
-export default theme;
+export default extendTheme(overrides);
