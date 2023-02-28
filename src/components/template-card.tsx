@@ -45,7 +45,12 @@ export default function TemplateCard(props: Props) {
             <HStack flex={1}>
               <Icon boxSize={7} as={HiDocumentText} />
               <Tooltip label={props.name}>
-                <Text noOfLines={1} fontWeight={"medium"} fontSize={"2xl"}>
+                <Text
+                  noOfLines={1}
+                  fontWeight={"medium"}
+                  fontSize={"2xl"}
+                  maxWidth={"220px"}
+                >
                   {props.name}
                 </Text>
               </Tooltip>

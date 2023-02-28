@@ -16,6 +16,8 @@ import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
 import { useEffect } from "react";
 import type { Prisma } from "@prisma/client";
+import ConfigurationNavigator from "../../components/config-navigator";
+import CustomBreadcrumb from "../../components/custom-breadcrumb";
 
 const TemplatePage: NextPage = () => {
   const router = useRouter();
@@ -90,16 +92,15 @@ const TemplatePage: NextPage = () => {
     <>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
         <BackButton />
-        <Text fontSize={"4xl"}>{`Templates / ${
-          template?.name as string
-        }`}</Text>
+        <CustomBreadcrumb templateId={id} />
+        <ConfigurationNavigator templateId={id} />
         <HStack width={"full"}>
           <Button onClick={handleAdd}>Add new</Button>
           <Input placeholder={"Search"} />
         </HStack>
         <Grid w={"full"} templateColumns="repeat(3, 1fr)" gap={4}>
           {configurations?.map((configuration, idx) => (
-            <GridItem w={"100%"} key={idx}>
+            <GridItem maxWidth={"100%"} w={"100%"} key={idx}>
               <ConfigurationCard
                 name={configuration.name}
                 validated={false}
