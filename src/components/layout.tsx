@@ -23,7 +23,7 @@ export default function Layout({
         minH={`calc(100vh - ${navbarHeight}px)`}
         justifyContent={"center"}
         width={"100%"}
-        py={8}
+        py={12}
         px={4}
         sx={{
           backgroundImage: `radial-gradient(#343a40 2px, transparent 2px), radial-gradient(#343a40 2px, transparent 2px)`,

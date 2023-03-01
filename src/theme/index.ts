@@ -1,16 +1,14 @@
-import {
-  defineStyleConfig,
-  extendTheme,
-  type ThemeConfig,
-} from "@chakra-ui/react";
-import { cardTheme } from "./card";
+import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
+import { Button } from "./button";
+import { Card } from "./card";
+import { Input } from "./input";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
   useSystemColorMode: true,
 };
 
-const theme = extendTheme({
+const overrides = {
   config,
   styles: {
     global: {
@@ -20,8 +18,20 @@ const theme = extendTheme({
     },
   },
   components: {
-    Card: cardTheme,
+    Card,
+    Button,
+    Input,
+    Divider: {
+      baseStyle: {
+        borderColor: "whiteAlpha.400",
+      },
+    },
+    StackDivider: {
+      baseStyle: {
+        borderColor: "whiteAlpha.400",
+      },
+    },
   },
-});
+};
 
-export default theme;
+export default extendTheme(overrides);
