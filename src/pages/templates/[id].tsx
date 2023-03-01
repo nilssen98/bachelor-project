@@ -26,10 +26,13 @@ import { useEffect, useMemo } from "react";
 import type { Configuration } from "@prisma/client";
 import ConfigurationNavigator from "../../components/config-navigator";
 import ReactTimeAgo from "react-time-ago";
-import { IoMdSettings } from "react-icons/io";
+import { IoMdCog, IoMdSettings } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Loading from "../../components/loading";
 import Link from "next/link";
+import GradientAvatar from "../../components/gradient-avatar";
+import { IoCogOutline } from "react-icons/io5";
+import { MdOutlineSettings, MdSettings } from "react-icons/md";
 
 const TemplatePage: NextPage = () => {
   const router = useRouter();
@@ -109,19 +112,19 @@ const TemplatePage: NextPage = () => {
 
   return (
     <>
+      <BackButton />
+      <HStack pt={4} spacing={4} pb={12} align={"center"}>
+        <GradientAvatar
+          w={12}
+          h={12}
+          id={template?.name}
+          // icon={<Icon boxSize={7} as={HiDocumentText} />}
+        />
+        <Heading>{template?.name}</Heading>
+      </HStack>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <Heading pt={4} pb={8}>
-          {template?.name}
-        </Heading>
         <HStack width={"full"}>
-          <Button
-            onClick={handleAdd}
-            bg={"white"}
-            px={8}
-            color={"black"}
-            border={"1px solid white"}
-            _hover={{ bg: "black", color: "white" }}
-          >
+          <Button onClick={handleAdd} variant={"custom"}>
             Add configuration
           </Button>
           <Input placeholder={"Search"} />
@@ -155,10 +158,13 @@ const ConfigurationListItem = ({
       <HStack spacing={8} p={4} width={"full"}>
         <Stack flex={1} align={"start"}>
           <Link passHref href={`/configurations/${configuration.id}`}>
-            <Text>{configuration.name}</Text>
+            <HStack>
+              <Icon as={MdSettings} boxSize={5} />
+              <Text>{configuration.name}</Text>
+            </HStack>
           </Link>
         </Stack>
-        <Stack flex={1} align={"start"} color={"gray.500"}>
+        <Stack flex={1} align={"start"} color={"whiteAlpha.600"}>
           <Text>
             {configuration.valid ? (
               <HStack>
@@ -175,13 +181,13 @@ const ConfigurationListItem = ({
         </Stack>
         <HStack flex={1} justify={"end"}>
           {configuration.updatedAt && (
-            <Text color={"gray.500"}>
+            <Text color={"whiteAlpha.600"}>
               created <ReactTimeAgo date={configuration.updatedAt} />
             </Text>
           )}
           <Menu>
             <MenuButton
-              color={"gray.500"}
+              color={"whiteAlpha.600"}
               background={"none"}
               as={IconButton}
               onClick={(e) => {

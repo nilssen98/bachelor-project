@@ -1,5 +1,7 @@
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
+import { Button } from "./button";
 import { Card } from "./card";
+import { Input } from "./input";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -17,6 +19,18 @@ const overrides = {
   },
   components: {
     Card,
+    Button,
+    Input,
+    Divider: {
+      baseStyle: {
+        borderColor: "whiteAlpha.400",
+      },
+    },
+    StackDivider: {
+      baseStyle: {
+        borderColor: "whiteAlpha.400",
+      },
+    },
   },
 };
 
