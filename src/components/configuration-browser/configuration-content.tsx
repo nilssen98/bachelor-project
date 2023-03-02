@@ -40,7 +40,7 @@ export default function ConfigurationContent() {
             spacing={2}
             position={"absolute"}
             borderRight={filteredContent.length - 1 === idx ? 0 : "1px solid"}
-            borderColor={"gray.600"}
+            borderColor={"whiteAlpha.400"}
             overflowY={"auto"}
           >
             {Object.entries(item).map(([key, value], idx) => (
