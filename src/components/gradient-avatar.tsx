@@ -24,7 +24,7 @@ export default function GradientAvatar(props: Props) {
     <Avatar
       w={10}
       h={10}
-      background={`linear-gradient(135deg, ${colors[0]!}, ${colors[1]!})`}
+      background={`linear-gradient(135deg, ${colors[0]!} 10%, ${colors[1]!} 90%)`}
       icon={props.icon || <></>}
       {...omit(props, "icon", "id")}
     />
