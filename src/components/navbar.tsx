@@ -1,8 +1,8 @@
-import { Button, Divider, HStack, Stack, VStack } from "@chakra-ui/react";
+import { Button, Divider, HStack, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Logo from "./logo";
-import UserAvatar from "./user-avatar";
+import GradientAvatar from "./gradient-avatar";
 
 interface Props {
   height: number;
@@ -18,7 +18,8 @@ export default function Navbar(props: Props) {
           <Logo clickable fontSize={"xl"} logoHeight={36} spacing={2} />
           {status === "authenticated" ? (
             <Link passHref href={"/profile/general"}>
-              <UserAvatar
+              <GradientAvatar
+                id={session?.user?.id}
                 clickable
                 sx={{
                   height: "36px",

@@ -13,7 +13,7 @@ import { signOut, useSession } from "next-auth/react";
 import { MdDelete, MdLogout } from "react-icons/md";
 import type { NextPageWithLayout } from "../_app";
 import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
-import UserAvatar from "../../components/user-avatar";
+import GradientAvatar from "../../components/gradient-avatar";
 import { api } from "../../utils/api";
 
 const GeneralPage: NextPageWithLayout = () => {
@@ -31,7 +31,8 @@ const GeneralPage: NextPageWithLayout = () => {
       <VStack spacing={4} p={2}>
         <Card width={"full"}>
           <HStack p={4}>
-            <UserAvatar
+            <GradientAvatar
+              id={session.data?.user?.id}
               sx={{
                 height: "52px",
                 width: "52px",
