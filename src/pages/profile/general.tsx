@@ -25,7 +25,7 @@ const GeneralPage: NextPageWithLayout = () => {
 
   return (
     <>
-      <Text fontSize={"4xl"} my={4}>
+      <Text fontSize={"3xl"} my={4}>
         General
       </Text>
       <VStack spacing={4} p={2}>
@@ -34,8 +34,8 @@ const GeneralPage: NextPageWithLayout = () => {
             <HStack spacing={4}>
               <UserAvatar
                 sx={{
-                  height: "80px",
-                  width: "80px",
+                  height: "64px",
+                  width: "64px",
                 }}
               />
               <VStack alignItems={"flex-start"} spacing={1}>
@@ -48,6 +48,7 @@ const GeneralPage: NextPageWithLayout = () => {
               </VStack>
             </HStack>
             <Button
+              variant={"text"}
               color={"red.300"}
               _hover={{ color: "red.400", bg: "red.900" }}
               onClick={() => void signOut()}
@@ -58,7 +59,7 @@ const GeneralPage: NextPageWithLayout = () => {
           </HStack>
         </Card>
         <Card>
-          <Stack divider={<StackDivider />}>
+          <Stack spacing={0} divider={<StackDivider />}>
             <Heading size={"md"} p={4}>
               Delete account
             </Heading>
@@ -67,6 +68,9 @@ const GeneralPage: NextPageWithLayout = () => {
               action is not reversible, please continue with caution.
             </Text>
             <Button
+              variant={"outline"}
+              alignSelf={"end"}
+              borderColor={"red.300"}
               m={4}
               color={"red.300"}
               onClick={() => deleteAccount()}
