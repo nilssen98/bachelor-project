@@ -34,18 +34,13 @@ const GeneralPage: NextPageWithLayout = () => {
             <HStack spacing={4}>
               <UserAvatar
                 sx={{
-                  height: "64px",
-                  width: "64px",
+                  height: "52px",
+                  width: "52px",
                 }}
               />
-              <VStack alignItems={"flex-start"} spacing={1}>
-                <Text fontSize={"2xl"}>
-                  {session.data?.user?.name || "No name"}
-                </Text>
-                <Text fontSize={"md"}>
-                  {session.data?.user?.email || "No email"}
-                </Text>
-              </VStack>
+              <Text fontSize={"2xl"}>
+                {session.data?.user?.email || "No email"}
+              </Text>
             </HStack>
             <Button
               variant={"text"}
