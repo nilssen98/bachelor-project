@@ -26,9 +26,21 @@ const overrides = {
         borderColor: "whiteAlpha.400",
       },
     },
-    StackDivider: {
+    Menu: {
       baseStyle: {
-        borderColor: "whiteAlpha.400",
+        button: {},
+        list: {
+          background: "black",
+        },
+        item: {
+          background: "black",
+          _hover: {
+            background: "whiteAlpha.400",
+          },
+        },
+        groupTitle: {},
+        command: {},
+        divider: {},
       },
     },
   },

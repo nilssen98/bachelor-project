@@ -123,7 +123,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                       key={provider.name}
                       leftIcon={getLogo(provider.name)}
                       onClick={() =>
-                        signIn(provider.id, {
+                        void signIn(provider.id, {
                           callbackUrl: callbackUrl?.toString(),
                         })
                       }
