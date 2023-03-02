@@ -20,6 +20,22 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  events: {
+    /*
+    // This is a workaround for next-auth to update the user's name and image when they link a new account.
+    async linkAccount({ user, account, profile }) {
+      await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          name: user.name == null ? profile.name : undefined,
+          image: user.image == null ? profile.image : undefined,
+        },
+      });
+    },
+     */
+  },
   secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
