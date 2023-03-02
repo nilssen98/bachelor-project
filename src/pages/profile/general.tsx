@@ -30,21 +30,20 @@ const GeneralPage: NextPageWithLayout = () => {
       </Text>
       <VStack spacing={4} p={2}>
         <Card width={"full"}>
-          <HStack p={4} justifyContent={"space-between"}>
-            <HStack spacing={4}>
-              <UserAvatar
-                sx={{
-                  height: "52px",
-                  width: "52px",
-                }}
-              />
-              <Text fontSize={"2xl"}>
-                {session.data?.user?.email || "No email"}
-              </Text>
-            </HStack>
+          <HStack p={4}>
+            <UserAvatar
+              sx={{
+                height: "52px",
+                width: "52px",
+              }}
+            />
+            <Text fontSize={"2xl"} flex={1}>
+              {session.data?.user?.email || "No email"}
+            </Text>
             <Button
               variant={"text"}
               color={"red.300"}
+              justifySelf={"flex-end"}
               _hover={{ color: "red.400", bg: "red.900" }}
               onClick={() => void signOut()}
               leftIcon={<MdLogout />}
