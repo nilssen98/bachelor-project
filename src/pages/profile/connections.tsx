@@ -1,13 +1,39 @@
 import type { ReactElement } from "react";
-import { Text, VStack } from "@chakra-ui/react";
+import { useMemo } from "react";
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Divider,
+  HStack,
+  Icon,
+  Text,
+  Tooltip,
+  VStack,
+} from "@chakra-ui/react";
 import { getProviders } from "next-auth/react";
 import type { ClientSafeProvider } from "next-auth/react";
 import { api } from "../../utils/api";
 import type { NextPageWithLayout } from "../_app";
 import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
-import CurrentConnections from "../../components/current-connections";
 import Loading from "../../components/loading";
-import AddConnections from "../../components/add-connections";
+import { FaGoogle } from "react-icons/fa";
+import { IoMailOpenOutline } from "react-icons/io5";
+import { signIn } from "next-auth/react";
+import ConnectionCard from "../../components/connection-card";
+
+export function getProviderLogo(provider: string): JSX.Element {
+  const fontSize = "md";
+  switch (provider.toLowerCase()) {
+    case "google":
+      return <Icon as={FaGoogle} fontSize={fontSize} />;
+    case "email":
+      return <Icon as={IoMailOpenOutline} fontSize={fontSize} />;
+    default:
+      return <Text>No logo</Text>;
+  }
+}
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -23,20 +49,20 @@ interface PageProps {
 const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
   const { data: me, isLoading: isLoadingMe } = api.me.get.useQuery();
 
-  if (isLoadingMe) {
-    return <Loading />;
-  }
+  const { mutate: unlink } = api.me.unlink.useMutation({
+    onSuccess: () => api.useContext().me.invalidate(),
+  });
 
-  function getCurrentConnections() {
+  const connections: string[] = useMemo(() => {
     const connections = new Array<string>();
     me?.accounts.map((account) => connections.push(account.provider));
     if (me?.emailVerified) {
       connections.push("email");
     }
     return connections;
-  }
+  }, [me]);
 
-  function getProviders() {
+  const providers: string[] = useMemo(() => {
     const providers = new Array<string>();
     Object.values(props.providers).forEach((provider: ClientSafeProvider) => {
       if (provider.name.toLowerCase() !== "email") {
@@ -44,19 +70,71 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
       }
     });
     return providers;
+  }, [props.providers]);
+
+  const handleDisconnect = (provider: string) => {
+    unlink({ provider: provider.toLowerCase() });
+  };
+
+  function isProviderDisabled(provider: string) {
+    return connections.includes(provider.toLowerCase());
+  }
+
+  if (isLoadingMe) {
+    return <Loading />;
   }
 
   return (
     <>
-      <Text fontSize={"4xl"} my={4}>
+      <Text fontSize={"3xl"} my={4}>
         Connections
       </Text>
       <VStack alignItems={"flex-start"} spacing={8}>
-        <AddConnections
-          providers={getProviders()}
-          currentProviders={getCurrentConnections()}
-        />
-        <CurrentConnections providers={getCurrentConnections()} />
+        <Card w={"full"}>
+          <CardBody w={"full"}>
+            <VStack spacing={4} align={"start"}>
+              <Text fontSize={"xl"}>Add new</Text>
+              <Divider />
+              <HStack spacing={4}>
+                {providers.map((provider) => (
+                  <Tooltip
+                    key={provider}
+                    hasArrow
+                    label={
+                      isProviderDisabled(provider)
+                        ? `Already connected to ${provider}`
+                        : `Connect with ${provider}`
+                    }
+                  >
+                    <Button
+                      isDisabled={isProviderDisabled(provider)}
+                      onClick={() => {
+                        void signIn(provider.toLowerCase());
+                      }}
+                      leftIcon={getProviderLogo(provider)}
+                    >
+                      {provider}
+                    </Button>
+                  </Tooltip>
+                ))}
+              </HStack>
+            </VStack>
+          </CardBody>
+        </Card>
+        <Box width={"full"}>
+          {/* <Text fontSize={"2xl"} pb={2}>
+            Current Connections
+          </Text> */}
+          <VStack alignItems={"flex-start"} spacing={2}>
+            {providers.map((provider) => (
+              <ConnectionCard
+                onDisconnect={(provider) => void handleDisconnect(provider)}
+                key={provider}
+                provider={provider}
+              />
+            ))}
+          </VStack>
+        </Box>
       </VStack>
     </>
   );

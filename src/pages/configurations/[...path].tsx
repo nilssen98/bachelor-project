@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+import { Heading, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -7,6 +7,10 @@ import ConfigurationBrowser from "../../components/configuration-browser";
 import { ConfigurationProvider } from "../../components/configuration-browser/configuration-provider";
 import Loading from "../../components/loading";
 import { api } from "../../utils/api";
+import ConfigurationNavigator from "../../components/config-navigator";
+import CustomBreadcrumb from "../../components/custom-breadcrumb";
+import BackButton from "../../components/back-button";
+import { MdSettings } from "react-icons/md";
 
 const ConfigurationPage: NextPage = () => {
   const router = useRouter();
@@ -45,6 +49,15 @@ const ConfigurationPage: NextPage = () => {
 
   return (
     <>
+      <VStack pb={6} spacing={4} align={"start"}>
+        <BackButton />
+        {/* <Icon mt={1} as={MdSettings} boxSize={12} /> */}
+        <Heading>{configuration?.name}</Heading>
+      </VStack>
+      <ConfigurationNavigator
+        configId={configuration.id}
+        templateId={configuration.templateId || ""}
+      />
       <ConfigurationProvider
         configuration={configuration.content as Prisma.JsonObject}
         onPathChange={(path) => void handlePathChange(path)}

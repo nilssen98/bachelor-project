@@ -12,9 +12,9 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { CiEdit } from "react-icons/ci";
-import { HiDocumentText } from "react-icons/hi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import ReactTimeAgo from "react-time-ago";
+import GradientAvatar from "./gradient-avatar";
 
 interface Props {
   name: string;
@@ -35,21 +35,24 @@ export default function TemplateCard(props: Props) {
         width={"100%"}
         userSelect={"none"}
         cursor={"pointer"}
-        transition={"background-color 200ms ease"}
-        _hover={{
-          bg: "#2a303c",
-        }}
+        _hover={{ borderColor: "white" }}
       >
-        <VStack alignItems={"start"}>
+        <VStack spacing={0}>
           <HStack w={"full"}>
-            <HStack flex={1}>
-              <Icon boxSize={7} as={HiDocumentText} />
+            <GradientAvatar
+              id={props.name}
+              // icon={<Icon boxSize={7} as={HiDocumentText} />}
+            />
+            <VStack spacing={0} flex={1} align={"start"}>
               <Tooltip label={props.name}>
-                <Text noOfLines={1} fontWeight={"medium"} fontSize={"2xl"}>
+                <Text noOfLines={1} fontSize={"xl"} maxWidth={"220px"}>
                   {props.name}
                 </Text>
               </Tooltip>
-            </HStack>
+              <Text textColor={"whiteAlpha.600"}>
+                {props.files} configurations
+              </Text>
+            </VStack>
             <Menu>
               <MenuButton
                 background={"none"}
@@ -69,12 +72,9 @@ export default function TemplateCard(props: Props) {
               </MenuList>
             </Menu>
           </HStack>
-          <Text paddingLeft={1} textColor={"gray.400"} align={"left"}>
-            {props.files} configuration files
-          </Text>
-          <HStack>
+          <HStack pt={4} w={"full"}>
             <Icon as={CiEdit} />
-            <Text textColor={"gray.400"}>
+            <Text textColor={"whiteAlpha.600"}>
               {props.lastModified ? (
                 <ReactTimeAgo date={props.lastModified} />
               ) : (

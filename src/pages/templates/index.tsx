@@ -2,6 +2,7 @@ import {
   Button,
   Grid,
   GridItem,
+  Heading,
   HStack,
   Input,
   Text,
@@ -14,6 +15,7 @@ import { useFilePicker } from "use-file-picker";
 import Loading from "../../components/loading";
 import TemplateCard from "../../components/template-card";
 import { api } from "../../utils/api";
+import CustomBreadcrumb from "../../components/custom-breadcrumb";
 
 const TemplatesPage: NextPage = () => {
   const {
@@ -72,11 +74,15 @@ const TemplatesPage: NextPage = () => {
 
   return (
     <>
+      <Heading pb={12}>Your templates</Heading>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <Text fontSize={"4xl"}>Templates</Text>
         <HStack width={"full"}>
-          <Button disabled={isAddingTemplate} onClick={handleAdd}>
-            Add new
+          <Button
+            variant={"custom"}
+            disabled={isAddingTemplate}
+            onClick={handleAdd}
+          >
+            Add template
           </Button>
           <Input placeholder={"Search"} />
         </HStack>

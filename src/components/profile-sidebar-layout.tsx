@@ -15,9 +15,9 @@ export default function ProfileSidebarLayout({
 
   return (
     <>
-      <Flex direction={"row"}>
+      <Flex direction={"row"} height={"full"}>
         <Stack
-          width={200}
+          width={325}
           direction={"column"}
           alignItems={"flex-start"}
           spacing={6}
