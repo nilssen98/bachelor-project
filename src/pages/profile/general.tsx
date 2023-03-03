@@ -13,7 +13,7 @@ import { signOut, useSession } from "next-auth/react";
 import { MdDelete, MdLogout } from "react-icons/md";
 import type { NextPageWithLayout } from "../_app";
 import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
-import UserAvatar from "../../components/user-avatar";
+import GradientAvatar from "../../components/gradient-avatar";
 import { api } from "../../utils/api";
 import ConfirmationDialog from "../../components/confirmation-dialog";
 import { useRef } from "react";
@@ -38,26 +38,21 @@ const GeneralPage: NextPageWithLayout = () => {
       </Text>
       <VStack spacing={4} p={2}>
         <Card width={"full"}>
-          <HStack p={4} justifyContent={"space-between"}>
-            <HStack spacing={4}>
-              <UserAvatar
-                sx={{
-                  height: "64px",
-                  width: "64px",
-                }}
-              />
-              <VStack alignItems={"flex-start"} spacing={1}>
-                <Text fontSize={"2xl"}>
-                  {session.data?.user?.name || "No name"}
-                </Text>
-                <Text fontSize={"md"}>
-                  {session.data?.user?.email || "No email"}
-                </Text>
-              </VStack>
-            </HStack>
+          <HStack p={4}>
+            <GradientAvatar
+              id={session.data?.user?.id}
+              sx={{
+                height: "52px",
+                width: "52px",
+              }}
+            />
+            <Text fontSize={"2xl"} flex={1}>
+              {session.data?.user?.email || "No email"}
+            </Text>
             <Button
               variant={"text"}
               color={"red.300"}
+              justifySelf={"flex-end"}
               _hover={{ color: "red.400", bg: "red.900" }}
               onClick={() => void signOut()}
               leftIcon={<MdLogout />}
