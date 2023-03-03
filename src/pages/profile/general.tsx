@@ -15,9 +15,17 @@ import type { NextPageWithLayout } from "../_app";
 import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
 import UserAvatar from "../../components/user-avatar";
 import { api } from "../../utils/api";
+import ConfirmationDialog from "../../components/confirmation-dialog";
+import { useRef } from "react";
+import { useDisclosure } from "@chakra-ui/react-use-disclosure";
+import { FocusableElement } from "@chakra-ui/utils";
 
 const GeneralPage: NextPageWithLayout = () => {
   const session = useSession();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const cancelRef = useRef<FocusableElement | null>(null);
 
   const { mutate: deleteAccount } = api.me.delete.useMutation({
     onSuccess: () => signOut(),
@@ -73,7 +81,7 @@ const GeneralPage: NextPageWithLayout = () => {
               borderColor={"red.300"}
               m={4}
               color={"red.300"}
-              onClick={() => deleteAccount()}
+              onClick={onOpen}
               leftIcon={<MdDelete />}
             >
               Delete
@@ -81,6 +89,17 @@ const GeneralPage: NextPageWithLayout = () => {
           </Stack>
         </Card>
       </VStack>
+      <ConfirmationDialog
+        leastDestructiveRef={cancelRef}
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirmation={() => {
+          deleteAccount();
+          onClose();
+        }}
+        title={"Delete account?"}
+        body={"Are you sure? You can't undo this action afterwards."}
+      />
     </>
   );
 };
