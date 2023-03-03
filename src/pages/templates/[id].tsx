@@ -24,7 +24,7 @@ import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
 import { useEffect, useMemo } from "react";
 import type { Configuration } from "@prisma/client";
-import ConfigurationNavigator from "../../components/config-navigator";
+import ConfigurationSwitcher from "../../components/configuration-switcher";
 import ReactTimeAgo from "react-time-ago";
 import { IoMdCog, IoMdSettings } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";

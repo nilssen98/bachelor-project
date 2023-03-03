@@ -7,7 +7,7 @@ import ConfigurationBrowser from "../../components/configuration-browser";
 import { ConfigurationProvider } from "../../components/configuration-browser/configuration-provider";
 import Loading from "../../components/loading";
 import { api } from "../../utils/api";
-import ConfigurationNavigator from "../../components/config-navigator";
+import ConfigurationSwitcher from "../../components/configuration-switcher";
 import CustomBreadcrumb from "../../components/custom-breadcrumb";
 import BackButton from "../../components/back-button";
 import { MdSettings } from "react-icons/md";
@@ -54,7 +54,7 @@ const ConfigurationPage: NextPage = () => {
         {/* <Icon mt={1} as={MdSettings} boxSize={12} /> */}
         <Heading>{configuration?.name}</Heading>
       </VStack>
-      <ConfigurationNavigator
+      <ConfigurationSwitcher
         configId={configuration.id}
         templateId={configuration.templateId || ""}
       />

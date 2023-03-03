@@ -9,7 +9,7 @@ interface Props {
   configId?: string;
 }
 
-export default function ConfigurationNavigator(props: Props) {
+export default function ConfigurationSwitcher(props: Props) {
   const router = useRouter();
 
   const { data: configurations } = api.configuration.getAll.useQuery(
