@@ -33,6 +33,7 @@ import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
 import { IoCogOutline } from "react-icons/io5";
 import { MdOutlineSettings, MdSettings } from "react-icons/md";
+import ValidationIcon from "../../components/validation-icon";
 
 const TemplatePage: NextPage = () => {
   const router = useRouter();
@@ -166,17 +167,10 @@ const ConfigurationListItem = ({
         </Stack>
         <Stack flex={1} align={"start"} color={"whiteAlpha.600"}>
           <Text>
-            {configuration.valid ? (
-              <HStack>
-                <Box h={2} w={2} borderRadius={"full"} bg={"green"} />
-                <Text>valid</Text>
-              </HStack>
-            ) : (
-              <HStack>
-                <Box h={2} w={2} borderRadius={"full"} bg={"red"} />
-                <Text>invalid</Text>
-              </HStack>
-            )}
+            <ValidationIcon
+              validated={configuration.valid}
+              includeText={true}
+            />
           </Text>
         </Stack>
         <HStack flex={1} justify={"end"}>
