@@ -2,7 +2,7 @@ import { Button, Grid, GridItem } from "@chakra-ui/react";
 import Chip from "./chip";
 import { api } from "../utils/api";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Props {
   templateId?: string;
@@ -22,6 +22,7 @@ export default function ConfigurationSwitcher(props: Props) {
 
   const nonExpandedDisplay =
     configurations != undefined && configurations.length > 8 ? 7 : 8;
+
   const [displayCount, setDisplayCount] = useState<number>(nonExpandedDisplay);
 
   const handleChipClick = async (configurationId: string) => {
@@ -37,6 +38,11 @@ export default function ConfigurationSwitcher(props: Props) {
     }
   };
 
+  function findChipsPerRow() {
+    const size = Math.floor(window.innerWidth / 120);
+    return size > 8 ? 8 : size;
+  }
+
   function chipExpandButton() {
     if (configurations != undefined && configurations.length > 8) {
       return (
@@ -49,7 +55,12 @@ export default function ConfigurationSwitcher(props: Props) {
 
   return (
     <>
-      <Grid gap={2} w={"full"} paddingY={2} templateColumns={"repeat(8, 1fr)"}>
+      <Grid
+        gap={2}
+        w={"full"}
+        paddingY={2}
+        templateColumns={`repeat(${findChipsPerRow()}, 1fr)`}
+      >
         {configurations?.slice(0, displayCount).map((configuration, idx) => (
           <GridItem w={"100%"} key={idx}>
             <Chip

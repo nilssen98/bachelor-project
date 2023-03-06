@@ -37,7 +37,7 @@ export default function Chip(props: Props) {
             <Text
               paddingBottom={0.5}
               textAlign={"center"}
-              width={"80px"}
+              width={"90px"}
               noOfLines={1}
             >
               {props.name}

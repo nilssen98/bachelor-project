@@ -1,4 +1,6 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
+import type { StackProps } from "@chakra-ui/react/";
+import omit from "lodash-es/omit";
 
 interface Props {
   validated: boolean;
