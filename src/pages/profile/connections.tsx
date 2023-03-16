@@ -7,7 +7,6 @@ import {
   CardBody,
   Divider,
   HStack,
-  Icon,
   Text,
   Tooltip,
   VStack,
@@ -18,22 +17,9 @@ import { api } from "../../utils/api";
 import type { NextPageWithLayout } from "../_app";
 import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
 import Loading from "../../components/loading";
-import { FaGoogle } from "react-icons/fa";
-import { IoMailOpenOutline } from "react-icons/io5";
 import { signIn } from "next-auth/react";
 import ConnectionCard from "../../components/connection-card";
-
-export function getProviderLogo(provider: string): JSX.Element {
-  const fontSize = "md";
-  switch (provider.toLowerCase()) {
-    case "google":
-      return <Icon as={FaGoogle} fontSize={fontSize} />;
-    case "email":
-      return <Icon as={IoMailOpenOutline} fontSize={fontSize} />;
-    default:
-      return <Text>No logo</Text>;
-  }
-}
+import ProviderIcon from "../../components/provider-icon";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -109,7 +95,7 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
                       onClick={() => {
                         void signIn(provider.toLowerCase());
                       }}
-                      leftIcon={getProviderLogo(provider)}
+                      leftIcon={<ProviderIcon provider={provider} />}
                     >
                       {provider}
                     </Button>

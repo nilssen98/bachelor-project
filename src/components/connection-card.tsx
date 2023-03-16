@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { MdLinkOff } from "react-icons/md";
-import { getProviderLogo } from "../pages/profile/connections";
+import ProviderIcon from "./provider-icon";
 
 interface Props {
   provider: string;
@@ -31,7 +31,7 @@ export default function ConnectionCard(props: Props) {
         <CardBody>
           <HStack justifyContent={"space-between"} alignItems={"center"}>
             <HStack alignItems={"center"} spacing={2}>
-              {getProviderLogo(props.provider)}
+              {<ProviderIcon provider={props.provider} />}
               <Text
                 fontSize={"xl"}
                 sx={{
