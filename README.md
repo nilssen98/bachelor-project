@@ -26,3 +26,31 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 ## How do I deploy this?
 
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+
+## Start developing
+
+### Configure your local environment
+
+Copy the .env.local.example file in this directory to .env.local (which will be ignored by Git):
+
+```bash
+cp env.example .env.development
+```
+
+Add details for one or more providers (e.g. Google, GitHub, Email, etc).
+
+
+### Database
+
+Generate the database schema, run:
+
+```bash
+yarn prisma generate
+```
+
+To apply the migrations to the database, run:
+
+```bash
+yarn prisma db push
+```
