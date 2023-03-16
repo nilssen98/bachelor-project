@@ -22,9 +22,6 @@ RUN \
 # 2. Rebuild the source code only when needed
 FROM base AS builder
 
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
