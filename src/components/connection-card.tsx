@@ -9,6 +9,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Tooltip,
 } from "@chakra-ui/react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { MdLinkOff } from "react-icons/md";
@@ -17,6 +18,10 @@ import { getProviderLogo } from "../pages/profile/connections";
 interface Props {
   provider: string;
   onDisconnect: (provider: string) => void;
+  /**
+   * Disable the disconnect button, used for providers that cannot be disconnected.
+   */
+  disabled?: boolean;
 }
 
 export default function ConnectionCard(props: Props) {
@@ -37,11 +42,18 @@ export default function ConnectionCard(props: Props) {
               </Text>
             </HStack>
             <Menu autoSelect={false}>
-              <MenuButton
-                background={"none"}
-                as={IconButton}
-                icon={<Icon boxSize={6} as={BiDotsVerticalRounded} />}
-              />
+              <Tooltip
+                hasArrow
+                label={`Cannot disconnect from the ${props.provider} provider`}
+                isDisabled={!props.disabled}
+              >
+                <MenuButton
+                  background={"none"}
+                  as={IconButton}
+                  isDisabled={props.disabled}
+                  icon={<Icon boxSize={6} as={BiDotsVerticalRounded} />}
+                />
+              </Tooltip>
               <MenuList>
                 <MenuItem
                   color={"red.500"}

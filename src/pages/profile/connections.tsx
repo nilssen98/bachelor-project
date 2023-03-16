@@ -55,7 +55,7 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
 
   const connections: string[] = useMemo(() => {
     const connections = new Array<string>();
-    me?.accounts.map((account) => connections.push(account.provider));
+    me?.accounts.forEach((account) => connections.push(account.provider));
     if (me?.emailVerified) {
       connections.push("email");
     }
@@ -63,18 +63,16 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
   }, [me]);
 
   const providers: string[] = useMemo(() => {
-    const providers = new Array<string>();
-    Object.values(props.providers).forEach((provider: ClientSafeProvider) => {
-      if (provider.name.toLowerCase() !== "email") {
-        providers.push(provider.name);
-      }
-    });
-    return providers;
+    return Object.values(props.providers)
+      .filter(
+        (provider: ClientSafeProvider) =>
+          provider.name.toLowerCase() !== "email"
+      )
+      .map((provider: ClientSafeProvider) => provider.name);
   }, [props.providers]);
 
-  const handleDisconnect = (provider: string) => {
+  const handleDisconnect = (provider: string) =>
     unlink({ provider: provider.toLowerCase() });
-  };
 
   function isProviderDisabled(provider: string) {
     return connections.includes(provider.toLowerCase());
@@ -126,11 +124,12 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
             Current Connections
           </Text> */}
           <VStack alignItems={"flex-start"} spacing={2}>
-            {providers.map((provider) => (
+            {connections.map((provider) => (
               <ConnectionCard
-                onDisconnect={(provider) => void handleDisconnect(provider)}
                 key={provider}
                 provider={provider}
+                disabled={provider.toLowerCase() === "email"}
+                onDisconnect={(provider) => void handleDisconnect(provider)}
               />
             ))}
           </VStack>
