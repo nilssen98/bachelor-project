@@ -25,6 +25,25 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 
 ## How do I deploy this?
 
+### Docker
+
+You can deploy this project with Docker.
+    
+```bash
+docker compose up
+``` 
+
+Or just rebuild the app without touching the database:
+
+```bash
+docker-compose up --build app
+```
+
+Useful options:
+
+`-d` Detached mode: Run containers in the background
+
+
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
 
 
