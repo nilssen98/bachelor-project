@@ -1,0 +1,32 @@
+version: '2.1'
+
+services:
+  app:
+    env_file:
+      - .env.production
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - DATABASE_URL=postgres://root:root@database:5432/root
+    ports:
+      - "3000:3000"
+    depends_on:
+      database:
+        condition: service_started
+
+  database:
+    image: postgres:15.2-alpine3.17
+    # Forward PostgreSQL port 5432 to localhost port 5000, for debugging
+    ports:
+      - "5000:5432"
+    # Automatically start the container when Docker restarts (unless the user has manually stopped it)
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      timeout: 5s
+      retries: 20
