@@ -53,14 +53,12 @@ const SignIn: NextPage<PageProps> = (props) => {
   const router = useRouter();
   const session = useSession();
 
+  const CALLBACK_URL = "/templates";
+
   // If the user is already signed in, redirect to home page
   if (session.status === "authenticated") {
     void router.push("/");
   }
-
-  const {
-    query: { callbackUrl },
-  } = useRouter();
 
   async function handleEmailSignIn() {
     setDisableInputs(true);
@@ -68,6 +66,7 @@ const SignIn: NextPage<PageProps> = (props) => {
       email: email,
       password: password,
       redirect: true,
+      callbackUrl: CALLBACK_URL,
     })
       .then(() => {
         // Signed in . . .
@@ -124,7 +123,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                       leftIcon={getLogo(provider.name)}
                       onClick={() =>
                         void signIn(provider.id, {
-                          callbackUrl: callbackUrl?.toString(),
+                          callbackUrl: CALLBACK_URL,
                         })
                       }
                     >
