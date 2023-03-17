@@ -51,11 +51,11 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
     onSuccess: () => api.useContext().me.invalidate(),
   });
 
-  const connections: string[] = useMemo(() => {
-    const connections = new Array<string>();
-    me?.accounts.forEach((account) => connections.push(account.provider));
+  const connections: Set<string> = useMemo(() => {
+    const connections = new Set<string>();
+    me?.accounts.forEach((account) => connections.add(account.provider));
     if (me?.emailVerified) {
-      connections.push("email");
+      connections.add("email");
     }
     return connections;
   }, [me]);
@@ -73,7 +73,7 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
     unlink({ provider: provider.toLowerCase() });
 
   function isProviderDisabled(provider: string) {
-    return connections.includes(provider.toLowerCase());
+    return connections.has(provider.toLowerCase());
   }
 
   if (isLoadingMe) {
@@ -92,7 +92,7 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
               <Text fontSize={"xl"}>Add new</Text>
               <Divider />
               <HStack spacing={4}>
-                {!connections.includes("email") && (
+                {!connections.has("email") && (
                   <Popover
                     initialFocusRef={initialFocusRef}
                     placement={"bottom"}
@@ -164,7 +164,7 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
             Current Connections
           </Text> */}
           <VStack alignItems={"flex-start"} spacing={2}>
-            {connections.map((provider) => (
+            {[...connections].map((provider) => (
               <ConnectionCard
                 key={provider}
                 provider={provider}
