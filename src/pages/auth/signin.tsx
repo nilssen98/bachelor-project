@@ -17,9 +17,8 @@ import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
 import PasswordInput from "../../components/password-input";
-import { FaGoogle } from "react-icons/fa";
 import EmailInput from "../../components/email-input";
-import { MdOutlineEmail } from "react-icons/md";
+import ProviderIcon from "../../components/provider-icon";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -30,17 +29,6 @@ export async function getServerSideProps() {
 
 interface PageProps {
   providers: ReturnType<typeof getProviders>;
-}
-
-export function getLogo(provider: string): JSX.Element {
-  switch (provider.toLowerCase()) {
-    case "google":
-      return <FaGoogle />;
-    case "email":
-      return <MdOutlineEmail />;
-    default:
-      return <Text>No logo</Text>;
-  }
 }
 
 const SignIn: NextPage<PageProps> = (props) => {
@@ -120,7 +108,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                   .map((provider: ClientSafeProvider) => (
                     <Button
                       key={provider.name}
-                      leftIcon={getLogo(provider.name)}
+                      leftIcon={<ProviderIcon provider={provider.name} />}
                       onClick={() =>
                         void signIn(provider.id, {
                           callbackUrl: CALLBACK_URL,
