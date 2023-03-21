@@ -45,8 +45,6 @@ interface PageProps {
 }
 
 const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
-  const trpc = api.useContext();
-
   const [email, setEmail] = useState<string>("");
   const [emailSubmitting, setEmailSubmitting] = useState<boolean>(false);
 
@@ -55,10 +53,10 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
   const toast = useToast();
   const toastId = "email-verification-toast";
 
-  const { data: me, isLoading: isLoadingMe } = api.me.get.useQuery();
+  const { data: me, isLoading: isLoadingMe, refetch } = api.me.get.useQuery();
 
   const { mutate: unlink } = api.me.unlink.useMutation({
-    onSuccess: () => trpc.me.invalidate(),
+    onSuccess: () => refetch(),
   });
 
   useEffect(() => {
