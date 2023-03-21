@@ -24,13 +24,14 @@ export default function ConfigurationSwitcher(props: Props) {
 
   const [width] = useWindowResize();
 
-  const [displayCount, setDisplayCount] = useState<number>(8);
+  const [displayCount, setDisplayCount] = useState<number | undefined>(8);
   const [elementsRow, setElementsRow] = useState<number>(8);
 
   function findElementsPerRow() {
+    console.log("Find elements called");
     const size = Math.floor((width - 32) / 130);
     setElementsRow(size > 8 ? 8 : size);
-    console.log("Elements per row: ", elementsRow);
+    calculateDisplayedChips();
   }
 
   useEffect(() => {
@@ -42,28 +43,28 @@ export default function ConfigurationSwitcher(props: Props) {
   };
 
   const handleExpandButton = () => {
+    console.log("Handled!");
     setExpanded(!expanded);
-    // if (!expanded) {
-    //  setDisplayCount(configurations != undefined ? configurations.length : 8);
-    //} else {
-    //  setDisplayCount(nonExpandedDisplay);
-    //}
-    someFunctionToCalculateChips();
+    calculateDisplayedChips();
   };
 
-  function someFunctionToCalculateChips() {
-    if (
-      !expanded ||
-      (configurations != undefined && configurations.length == elementsRow)
-    ) {
-      setDisplayCount(elementsRow);
+  function calculateDisplayedChips() {
+    if (!expanded) {
+      if (configurations != undefined && configurations.length == elementsRow)
+        setDisplayCount(elementsRow);
+      else {
+        setDisplayCount(elementsRow - 1);
+      }
     } else {
-      setDisplayCount(elementsRow - 1);
+      setDisplayCount(undefined);
     }
+    console.log("Expanded: ", expanded);
+    console.log("Display count: ", displayCount);
+    console.log("Elements per row", elementsRow);
   }
 
   function chipExpandButton() {
-    if (configurations != undefined && configurations.length > 8) {
+    if (configurations != undefined && configurations.length > elementsRow) {
       return (
         <Button size={"medium"} onClick={handleExpandButton}>
           {expanded ? "See less..." : "View more..."}
@@ -71,7 +72,6 @@ export default function ConfigurationSwitcher(props: Props) {
       );
     }
   }
-
   return (
     <>
       <Grid
