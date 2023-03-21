@@ -19,8 +19,8 @@ type Props = {
 export default function ConfirmationDialog(props: Props) {
   return (
     <>
-      <AlertDialog {...props}>
-        <AlertDialogOverlay />
+      <AlertDialog isCentered {...props}>
+        <AlertDialogOverlay backdropFilter={"auto"} backdropBlur={"5px"} />
         <AlertDialogContent>
           <AlertDialogHeader>{props.title}</AlertDialogHeader>
           <AlertDialogCloseButton />
