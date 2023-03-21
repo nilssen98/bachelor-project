@@ -5,19 +5,19 @@ import {
   Heading,
   HStack,
   Input,
-  Text,
   VStack,
 } from "@chakra-ui/react";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFilePicker } from "use-file-picker";
 import Loading from "../../components/loading";
 import TemplateCard from "../../components/template-card";
 import { api } from "../../utils/api";
-import CustomBreadcrumb from "../../components/custom-breadcrumb";
 
 const TemplatesPage: NextPage = () => {
+  const [search, setSearch] = useState<string>("");
+
   const {
     data: templates,
     refetch,
@@ -32,6 +32,16 @@ const TemplatesPage: NextPage = () => {
   const { mutate: deleteTemplate } = api.template.delete.useMutation({
     onSuccess: () => refetch(),
   });
+
+  const filtered = useMemo(() => {
+    let temp = [...(templates || [])];
+
+    temp = temp.filter((template) => {
+      return template.name.toLowerCase().includes(search.toLowerCase());
+    });
+
+    return temp;
+  }, [templates, search]);
 
   const router = useRouter();
 
@@ -84,10 +94,16 @@ const TemplatesPage: NextPage = () => {
           >
             Add template
           </Button>
-          <Input placeholder={"Search"} />
+          <Input
+            value={search}
+            placeholder={"Search"}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
         </HStack>
         <Grid w={"full"} templateColumns="repeat(3, 1fr)" gap={4}>
-          {templates?.map((template, idx) => (
+          {filtered.map((template, idx) => (
             <GridItem w={"100%"} key={idx}>
               <TemplateCard
                 name={template.name}
