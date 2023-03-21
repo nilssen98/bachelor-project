@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Text,
@@ -37,6 +37,19 @@ const SignIn: NextPage<PageProps> = (props) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [disableInputs, setDisableInputs] = useState<boolean>(false);
+
+  const onEnter = (event: KeyboardEvent) => {
+    if (event.code === "Enter") {
+      void handleEmailSignIn();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keyup", onEnter, false);
+    return () => {
+      window.removeEventListener("keyup", onEnter, false);
+    };
+  }, [onEnter]);
 
   const router = useRouter();
   const session = useSession();
