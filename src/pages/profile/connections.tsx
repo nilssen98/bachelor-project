@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactElement } from "react";
 import {
   Box,
@@ -18,18 +18,20 @@ import {
   PopoverTrigger,
   Text,
   Tooltip,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
-import { getProviders, signOut } from "next-auth/react";
+import { getProviders } from "next-auth/react";
 import type { ClientSafeProvider } from "next-auth/react";
 import { api } from "../../utils/api";
 import type { NextPageWithLayout } from "../_app";
 import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
 import Loading from "../../components/loading";
 import { signIn } from "next-auth/react";
+import { MdSend } from "react-icons/md";
 import ConnectionCard from "../../components/connection-card";
 import ProviderIcon from "../../components/provider-icon";
-import { MdLogout } from "react-icons/md";
+import EmailInput from "../../components/email-input";
 
 export async function getServerSideProps() {
   const providers = await getProviders();
@@ -43,13 +45,23 @@ interface PageProps {
 }
 
 const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
+  const [email, setEmail] = useState<string>("");
+  const [emailSubmitting, setEmailSubmitting] = useState<boolean>(false);
+
   const initialFocusRef = useRef(null);
+
+  const toast = useToast();
+  const toastId = "email-verification-toast";
 
   const { data: me, isLoading: isLoadingMe } = api.me.get.useQuery();
 
   const { mutate: unlink } = api.me.unlink.useMutation({
     onSuccess: () => api.useContext().me.invalidate(),
   });
+
+  useEffect(() => {
+    setEmail(me?.email ?? "");
+  }, [me]);
 
   const connections: Set<string> = useMemo(() => {
     const connections = new Set<string>();
@@ -71,6 +83,38 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
 
   const handleDisconnect = (provider: string) =>
     unlink({ provider: provider.toLowerCase() });
+
+  function handleEmailSignIn(onClose: () => void) {
+    setEmailSubmitting(true);
+    signIn("email", {
+      email: email,
+      redirect: false,
+    })
+      .then(() => {
+        onClose();
+        toast({
+          id: toastId,
+          title: "Email sent!",
+          description: "Check your inbox for a verification link.",
+          status: "success",
+          duration: 7000,
+          isClosable: true,
+        });
+      })
+      .catch(() => {
+        toast({
+          id: toastId,
+          title: "Failed to send email!",
+          description: "Please try again later.",
+          status: "error",
+          duration: 7000,
+          isClosable: true,
+        });
+      })
+      .finally(() => {
+        setEmailSubmitting(false);
+      });
+  }
 
   function isProviderDisabled(provider: string) {
     return connections.has(provider.toLowerCase());
@@ -98,40 +142,57 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
                     placement={"bottom"}
                     closeOnBlur={true}
                   >
-                    <PopoverTrigger>
-                      <Button leftIcon={<ProviderIcon provider={"email"} />}>
-                        Email
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <PopoverHeader pt={4} fontWeight={"bold"} border={"0"}>
-                        Setup Email
-                      </PopoverHeader>
-                      <PopoverArrow />
-                      <PopoverCloseButton />
-                      <PopoverBody>
-                        To setup email, sign out and then sign in with your
-                        email. Accounts with the same email will be merged.
-                      </PopoverBody>
-                      <PopoverFooter
-                        border={"0"}
-                        display={"flex"}
-                        alignItems={"center"}
-                        justifyContent={"flex-end"}
-                        pb={4}
-                      >
-                        <Button
-                          variant={"text"}
-                          colorScheme={"red"}
-                          leftIcon={<Icon as={MdLogout} />}
-                          onClick={() => {
-                            void signOut();
-                          }}
-                        >
-                          Sign out
-                        </Button>
-                      </PopoverFooter>
-                    </PopoverContent>
+                    {({ onClose }) => (
+                      <>
+                        <PopoverTrigger>
+                          <Button
+                            leftIcon={<ProviderIcon provider={"email"} />}
+                          >
+                            Email
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <PopoverHeader
+                            pt={4}
+                            fontWeight={"bold"}
+                            border={"0"}
+                          >
+                            Email connection
+                          </PopoverHeader>
+                          <PopoverArrow />
+                          <PopoverCloseButton />
+                          <PopoverBody>
+                            <VStack alignItems={"flex-start"}>
+                              <Text textAlign={"left"} whiteSpace={"pre-line"}>
+                                {`Send a verification link to your email address to connect.`}
+                              </Text>
+                              <EmailInput
+                                value={email}
+                                isDisabled={emailSubmitting}
+                                onChange={(e) => setEmail(e.target.value)}
+                              />
+                            </VStack>
+                          </PopoverBody>
+                          <PopoverFooter
+                            border={"0"}
+                            display={"flex"}
+                            alignItems={"center"}
+                            justifyContent={"flex-end"}
+                            pb={4}
+                          >
+                            <Button
+                              colorScheme={"blue"}
+                              isLoading={emailSubmitting}
+                              loadingText={"Sending . . ."}
+                              rightIcon={<Icon as={MdSend} />}
+                              onClick={() => handleEmailSignIn(onClose)}
+                            >
+                              Send
+                            </Button>
+                          </PopoverFooter>
+                        </PopoverContent>
+                      </>
+                    )}
                   </Popover>
                 )}
                 {providers.map((provider) => (
