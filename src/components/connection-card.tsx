@@ -19,12 +19,22 @@ interface Props {
   provider: string;
   onDisconnect: (provider: string) => void;
   /**
-   * Disable the disconnect button, used for providers that cannot be disconnected.
+   * Number of connections that the user has.
    */
-  disabled?: boolean;
+  connections: number;
 }
 
 export default function ConnectionCard(props: Props) {
+  const disconnectDisabled =
+    props.connections < 2 || props.provider.toLowerCase() === "email";
+
+  function getLabel() {
+    if (props.connections < 2 && !(props.provider.toLowerCase() === "email")) {
+      return "You must have at least one connection!";
+    }
+    return `Cannot disconnect from the ${props.provider} provider`;
+  }
+
   return (
     <>
       <Card width={"full"} variant={"outline"}>
@@ -44,13 +54,13 @@ export default function ConnectionCard(props: Props) {
             <Menu autoSelect={false}>
               <Tooltip
                 hasArrow
-                label={`Cannot disconnect from the ${props.provider} provider`}
-                isDisabled={!props.disabled}
+                label={getLabel()}
+                isDisabled={!disconnectDisabled}
               >
                 <MenuButton
                   background={"none"}
                   as={IconButton}
-                  isDisabled={props.disabled}
+                  isDisabled={disconnectDisabled}
                   icon={<Icon boxSize={6} as={BiDotsVerticalRounded} />}
                 />
               </Tooltip>

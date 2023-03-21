@@ -229,7 +229,7 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
               <ConnectionCard
                 key={provider}
                 provider={provider}
-                disabled={provider.toLowerCase() === "email"}
+                connections={connections.size}
                 onDisconnect={(provider) => void handleDisconnect(provider)}
               />
             ))}
