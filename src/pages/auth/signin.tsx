@@ -77,6 +77,7 @@ const SignIn: NextPage<PageProps> = (props) => {
               <Stack spacing={4}>
                 <EmailInput
                   value={email}
+                  verify
                   isDisabled={disableInputs}
                   onChange={(e) => setEmail(e.target.value)}
                 />
