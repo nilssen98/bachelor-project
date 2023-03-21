@@ -112,7 +112,7 @@ const TemplatePage: NextPage = () => {
 
   return (
     <>
-      <BackButton />
+      <BackButton href={"/templates"} />
       <HStack pt={4} spacing={4} pb={12} align={"center"}>
         <GradientAvatar
           w={12}

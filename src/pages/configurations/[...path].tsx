@@ -50,7 +50,7 @@ const ConfigurationPage: NextPage = () => {
   return (
     <>
       <VStack pb={6} spacing={4} align={"start"}>
-        <BackButton />
+        <BackButton href={`/templates/${configuration.templateId || ""}`} />
         {/* <Icon mt={1} as={MdSettings} boxSize={12} /> */}
         <Heading>{configuration?.name}</Heading>
       </VStack>
