@@ -1,7 +1,9 @@
-import { Text, VStack } from "@chakra-ui/react";
+import { Button, Text, VStack } from "@chakra-ui/react";
 import Lottie from "react-lottie";
 import type { Options } from "react-lottie";
-import animationData from "/public/assets/animations/404-page-not-found-animation-lottie.json";
+import animationData from "public/assets/animations/404_animation_lottie.json";
+import NextLink from "next/link";
+import { Link } from "@chakra-ui/react";
 
 export default function Custom404() {
   const defaultOptions: Options = {
@@ -24,11 +26,21 @@ export default function Custom404() {
       <Lottie
         options={defaultOptions}
         style={{
-          height: "unset",
+          height: "30%",
           width: "unset",
+          pointerEvents: "none",
         }}
       />
-      <Text fontSize={"7xl"}>404 - Page Not Found</Text>
+      <Text fontSize={"6xl"}>Oops, Page not found</Text>
+      <Text color={"gray.400"} fontSize={"xl"}>
+        The page you are trying to reach does not exist
+      </Text>
+      <Text color={"gray.400"} fontSize={"xl"}>
+        <Link fontWeight={"medium"} as={NextLink} href="/">
+          Click here
+        </Link>{" "}
+        to go to the home page
+      </Text>
     </VStack>
   );
 }
