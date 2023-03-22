@@ -10,23 +10,26 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { MdHome } from "react-icons/md";
-import { useConfiguration } from "./configuration-provider";
+import { useConfigurationRouter } from "./configuration-provider";
 
 export default function ConfigurationNavigation() {
-  const { path, navigate } = useConfiguration();
+  const router = useConfigurationRouter();
   return (
     <>
       <Box p={4} overflowX={"auto"}>
         <Breadcrumb>
-          <BreadcrumbItem onClick={() => navigate(0)}>
+          <BreadcrumbItem onClick={() => router.set([])}>
             <BreadcrumbLink alignItems={"center"}>
               <Center>
                 <Icon fontSize={"2xl"} as={MdHome} />
               </Center>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          {path.map((path, idx) => (
-            <BreadcrumbItem onClick={() => navigate(idx + 1)} key={idx}>
+          {router.path.map((path, idx) => (
+            <BreadcrumbItem
+              onClick={() => router.set(router.path.slice(idx + 1))}
+              key={idx}
+            >
               <BreadcrumbLink>
                 <Tag>
                   <Text fontSize={"md"}>{path}</Text>
