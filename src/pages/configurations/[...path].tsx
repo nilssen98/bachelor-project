@@ -31,6 +31,14 @@ const ConfigurationPage: NextPage = () => {
       }
     );
 
+  const { data: template, isLoading: isLoadingTemplate } =
+    api.template.get.useQuery(
+      { id: configuration?.templateId || "" },
+      {
+        enabled: configuration?.templateId !== undefined,
+      }
+    );
+
   const handlePathChange = async (path: string[]) => {
     if (configuration) {
       await router.push(
@@ -39,7 +47,7 @@ const ConfigurationPage: NextPage = () => {
     }
   };
 
-  if (isLoadingConfiguration) {
+  if (isLoadingConfiguration || isLoadingTemplate) {
     return <Loading />;
   }
 
@@ -60,6 +68,7 @@ const ConfigurationPage: NextPage = () => {
       />
       <ConfigurationProvider
         configuration={configuration.content as Prisma.JsonObject}
+        schema={template?.content as Prisma.JsonObject}
         onPathChange={(path) => void handlePathChange(path)}
         routerPath={path}
       >
