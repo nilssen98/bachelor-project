@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Configuration } from "@prisma/client";
 import ConfigurationSwitcher from "../../components/configuration-switcher";
 import ReactTimeAgo from "react-time-ago";
@@ -35,6 +35,8 @@ import { IoCogOutline } from "react-icons/io5";
 import { MdOutlineSettings, MdSettings } from "react-icons/md";
 
 const TemplatePage: NextPage = () => {
+  const [search, setSearch] = useState<string>("");
+
   const router = useRouter();
   const id = router.query.id as string;
 
@@ -84,11 +86,16 @@ const TemplatePage: NextPage = () => {
   });
 
   const sortedConfigurations = useMemo(() => {
-    return configurations?.sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
-  }, [configurations]);
+    return configurations
+      ?.filter(
+        (configurations) =>
+          configurations.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+      )
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+  }, [configurations, search]);
 
   const handleAdd = () => {
     openFileSelector();
@@ -127,7 +134,11 @@ const TemplatePage: NextPage = () => {
           <Button onClick={handleAdd} variant={"custom"}>
             Add configuration
           </Button>
-          <Input placeholder={"Search"} />
+          <Input
+            value={search}
+            placeholder={"Search"}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </HStack>
         <Box width={"full"}>
           <Card>
