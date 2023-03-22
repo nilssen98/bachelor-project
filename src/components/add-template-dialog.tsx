@@ -9,8 +9,18 @@ import {
   ModalOverlay,
 } from "@chakra-ui/modal";
 import type { ModalProps } from "@chakra-ui/modal";
-import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Icon,
+  IconButton,
+  Input,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import type { FileContent } from "use-file-picker";
+import { BsFiletypeJson } from "react-icons/bs";
+import { MdClear, MdFileUpload } from "react-icons/md";
 
 enum Steps {
   UploadFile = 0,
@@ -59,34 +69,50 @@ export default function AddTemplateDialog(props: Props) {
           <>
             <VStack spacing={2} alignItems={"flex-start"}>
               <Text>{getBodyText()}</Text>
-              <HStack>
-                <Button
-                  onClick={
-                    isFileSelected()
-                      ? props.clearFileSelection
-                      : props.openFileSelector
-                  }
+              <Button
+                width={"full"}
+                leftIcon={<MdFileUpload />}
+                onClick={props.openFileSelector}
+                isDisabled={isFileSelected()}
+              >
+                Upload
+              </Button>
+              {isFileSelected() ? (
+                <HStack
+                  width={"full"}
+                  pl={2}
+                  borderRadius={4}
+                  bg={"whiteAlpha.200"}
                 >
-                  {isFileSelected() ? "Clear" : "Upload"}
-                </Button>
-                <Text>
-                  {isFileSelected()
-                    ? `${props.fileContent[0]?.name || ""}`
-                    : "No file selected"}
-                </Text>
-              </HStack>
+                  <Icon as={BsFiletypeJson} />
+                  <Text flex={1}>{props.fileContent[0]?.name || ""}</Text>
+                  <IconButton
+                    variant={"ghost"}
+                    justifySelf={"flex-end"}
+                    onClick={props.clearFileSelection}
+                    aria-label={"Clear file selection"}
+                    icon={<MdClear />}
+                  />
+                </HStack>
+              ) : (
+                <HStack width={"full"} justifyContent={"center"}>
+                  <Text>No file selected</Text>
+                </HStack>
+              )}
             </VStack>
           </>
         );
       case Steps.SetName:
         return (
           <>
-            <Text>{getBodyText()}</Text>
-            <Input
-              placeholder={"Template Name"}
-              value={templateName}
-              onChange={(e) => setTemplateName(e.target.value)}
-            />
+            <VStack alignItems={"flex-start"} spacing={2}>
+              <Text>{getBodyText()}</Text>
+              <Input
+                placeholder={"Template Name"}
+                value={templateName}
+                onChange={(e) => setTemplateName(e.target.value)}
+              />
+            </VStack>
           </>
         );
     }
@@ -134,7 +160,6 @@ export default function AddTemplateDialog(props: Props) {
             </Button>
             <Button
               colorScheme={"blue"}
-              mr={3}
               isDisabled={props.fileContent.length === 0}
               onClick={step === Steps.UploadFile ? goNext : handleUpload}
             >
