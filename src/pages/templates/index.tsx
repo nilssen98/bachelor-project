@@ -14,8 +14,6 @@ import { useFilePicker } from "use-file-picker";
 import Loading from "../../components/loading";
 import TemplateCard from "../../components/template-card";
 import { api } from "../../utils/api";
-import type { Template } from "@prisma/client";
-import jaroWinkler from "jaro-winkler";
 
 const TemplatesPage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
@@ -36,23 +34,11 @@ const TemplatesPage: NextPage = () => {
   });
 
   const filtered = useMemo(() => {
-    if (search === "") {
-      return templates || [];
-    }
-
     let temp = [...(templates || [])];
-    const threshold = 0.3;
 
-    temp = temp
-      .map((template: Template) => ({
-        ...template,
-        similarity: jaroWinkler(
-          template.name.toLowerCase(),
-          search.toLowerCase()
-        ),
-      }))
-      .filter((template) => template.similarity >= threshold)
-      .sort((a, b) => b.similarity - a.similarity);
+    temp = temp.filter((template) => {
+      return template.name.toLowerCase().includes(search.toLowerCase());
+    });
 
     return temp;
   }, [templates, search]);
