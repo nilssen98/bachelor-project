@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Modal,
   ModalBody,
@@ -9,7 +9,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/modal";
 import type { ModalProps } from "@chakra-ui/modal";
-import { Button, Input, Text } from "@chakra-ui/react";
+import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import type { FileContent } from "use-file-picker";
 
 enum Steps {
@@ -27,6 +27,12 @@ type Props = {
 export default function AddTemplateDialog(props: Props) {
   const [step, setStep] = useState<Steps>(Steps.UploadFile);
   const [templateName, setTemplateName] = useState<string>("");
+
+  useEffect(() => {
+    if (step === Steps.SetName) {
+      setTemplateName(props.fileContent[0]?.name.split(".")[0] || "");
+    }
+  }, [step, props.fileContent]);
 
   function getTitle() {
     switch (step) {
@@ -51,8 +57,25 @@ export default function AddTemplateDialog(props: Props) {
       case Steps.UploadFile:
         return (
           <>
-            <Text>{getBodyText()}</Text>
-            <Button onClick={props.openFileSelector}>Upload</Button>
+            <VStack spacing={2} alignItems={"flex-start"}>
+              <Text>{getBodyText()}</Text>
+              <HStack>
+                <Button
+                  onClick={
+                    isFileSelected()
+                      ? props.clearFileSelection
+                      : props.openFileSelector
+                  }
+                >
+                  {isFileSelected() ? "Clear" : "Upload"}
+                </Button>
+                <Text>
+                  {isFileSelected()
+                    ? `${props.fileContent[0]?.name || ""}`
+                    : "No file selected"}
+                </Text>
+              </HStack>
+            </VStack>
           </>
         );
       case Steps.SetName:
@@ -77,14 +100,24 @@ export default function AddTemplateDialog(props: Props) {
     setStep(step + 1);
   }
 
+  function isFileSelected() {
+    return props.fileContent.length > 0;
+  }
+
   function handleCancel() {
     setStep(Steps.UploadFile);
+    props.clearFileSelection();
+    props.onClose();
+  }
+
+  function handleUpload() {
+    props.uploadFile();
     props.onClose();
   }
 
   return (
     <>
-      <Modal {...props}>
+      <Modal isCentered {...props}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getTitle()}</ModalHeader>
@@ -103,7 +136,7 @@ export default function AddTemplateDialog(props: Props) {
               colorScheme={"blue"}
               mr={3}
               isDisabled={props.fileContent.length === 0}
-              onClick={step === Steps.UploadFile ? goNext : props.uploadFile}
+              onClick={step === Steps.UploadFile ? goNext : handleUpload}
             >
               {step === Steps.UploadFile ? "Next" : "Confirm"}
             </Button>
