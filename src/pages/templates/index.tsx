@@ -34,13 +34,12 @@ const TemplatesPage: NextPage = () => {
   });
 
   const filtered = useMemo(() => {
-    let temp = [...(templates || [])];
-
-    temp = temp.filter((template) => {
-      return template.name.toLowerCase().includes(search.toLowerCase());
-    });
-
-    return temp;
+    return (
+      templates?.filter(
+        (template) =>
+          template.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+      ) || []
+    );
   }, [templates, search]);
 
   const router = useRouter();
