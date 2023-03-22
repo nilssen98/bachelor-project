@@ -16,7 +16,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Divider,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
@@ -24,15 +23,12 @@ import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
 import { useEffect, useMemo, useState } from "react";
 import type { Configuration } from "@prisma/client";
-import ConfigurationSwitcher from "../../components/configuration-switcher";
 import ReactTimeAgo from "react-time-ago";
-import { IoMdCog, IoMdSettings } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
-import { IoCogOutline } from "react-icons/io5";
-import { MdOutlineSettings, MdSettings } from "react-icons/md";
+import { MdSettings } from "react-icons/md";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
