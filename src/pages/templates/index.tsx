@@ -14,6 +14,8 @@ import { useFilePicker } from "use-file-picker";
 import Loading from "../../components/loading";
 import TemplateCard from "../../components/template-card";
 import { api } from "../../utils/api";
+import type { Template } from "@prisma/client";
+import levenshtein from "fast-levenshtein";
 
 const TemplatesPage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
@@ -34,10 +36,25 @@ const TemplatesPage: NextPage = () => {
   });
 
   const filtered = useMemo(() => {
+    if (search === "") {
+      return templates || [];
+    }
+
     let temp = [...(templates || [])];
 
+    // Calculate maxDistance dynamically based on the search term length
+    const maxDistance = Math.ceil(search.length * 0.9); // 90% of the search term length
+
     temp = temp.filter((template) => {
-      return template.name.toLowerCase().includes(search.toLowerCase());
+      const distance = levenshtein.get(search, template.name);
+      return distance <= maxDistance;
+    });
+
+    // Sort the filtered list based on the Levenshtein distance
+    temp.sort((a: Template, b: Template) => {
+      const distanceA = levenshtein.get(search, a.name);
+      const distanceB = levenshtein.get(search, b.name);
+      return distanceA - distanceB;
     });
 
     return temp;

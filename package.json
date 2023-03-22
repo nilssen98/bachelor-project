@@ -21,6 +21,7 @@
     "@trpc/next": "^10.8.1",
     "@trpc/react-query": "^10.8.1",
     "@trpc/server": "^10.8.1",
+    "fast-levenshtein": "^3.0.0",
     "framer-motion": "^6",
     "javascript-time-ago": "^2.5.9",
     "lodash-es": "^4.17.21",
@@ -38,6 +39,7 @@
     "zod": "^3.20.2"
   },
   "devDependencies": {
+    "@types/fast-levenshtein": "^0.0.2",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
