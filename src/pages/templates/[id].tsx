@@ -16,6 +16,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
@@ -29,9 +30,12 @@ import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
 import { MdSettings } from "react-icons/md";
+import AddConfigurationDialog from "../../components/add-configuration-dialog";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
   const id = router.query.id as string;
@@ -127,7 +131,7 @@ const TemplatePage: NextPage = () => {
       </HStack>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
         <HStack width={"full"}>
-          <Button onClick={handleAdd} variant={"custom"}>
+          <Button onClick={onOpen} isLoading={isOpen} variant={"custom"}>
             Add configuration
           </Button>
           <Input
@@ -149,6 +153,7 @@ const TemplatePage: NextPage = () => {
           </Card>
         </Box>
       </VStack>
+      <AddConfigurationDialog isOpen={isOpen} onClose={onClose} />
     </>
   );
 };
