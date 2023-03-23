@@ -68,6 +68,7 @@ const ConfigurationPage: NextPage = () => {
       />
       <ConfigurationProvider
         configuration={configuration.content as Prisma.JsonObject}
+        errors={configuration.errors}
         schema={template?.content as Prisma.JsonObject}
         onPathChange={(path) => void handlePathChange(path)}
         routerPath={path}

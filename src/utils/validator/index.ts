@@ -1,4 +1,5 @@
 import Ajv from "ajv";
+import type { ValidationResult } from "./types";
 
 export const ajv = new Ajv({
   allErrors: true,
@@ -21,7 +22,7 @@ export const validate = ({
 }: {
   schema: string;
   configuration: string;
-}) => {
+}): ValidationResult => {
   if (!isValidJson(schema)) {
     return {
       valid: false,
@@ -44,7 +45,7 @@ export const validate = ({
       valid: false,
       errors: validate.errors.map((error) => ({
         path: error.instancePath,
-        message: error.message,
+        message: error.message || "",
       })),
     };
   }

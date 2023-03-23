@@ -2,16 +2,19 @@ import type { Prisma } from "@prisma/client";
 import type { Context, ReactNode } from "react";
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
+import type { ValidationError } from "../../utils/validator/types";
 
 const defaultContext: ContextProps = {
   content: [],
   isValidPath: false,
+  errors: [],
 };
 
 interface ContextProps {
   content: Prisma.JsonObject[];
   useConfigRouter?: ReturnType<typeof useConfigRouter>;
   isValidPath: boolean;
+  errors: ValidationError[];
 }
 
 const ConfigurationContext: Context<ContextProps> =
@@ -20,13 +23,14 @@ const ConfigurationContext: Context<ContextProps> =
 interface ProviderProps {
   children: ReactNode;
   configuration: Prisma.JsonObject;
+  errors: ValidationError[];
   schema?: Prisma.JsonObject;
   onPathChange?: (path: string[]) => void;
   routerPath?: string[];
 }
 
 function ConfigurationProvider(props: ProviderProps) {
-  const { configuration, schema, children } = props;
+  const { configuration, children } = props;
   const [content, setContent] = useState<Prisma.JsonObject[]>([configuration]);
   const [isValidPath, setIsValidPath] = useState<boolean>(false);
 
@@ -52,7 +56,7 @@ function ConfigurationProvider(props: ProviderProps) {
         getConfigurationFromPath(router.path.slice(0, idx + 1))
       ),
     ]);
-  }, [router]);
+  }, [router.path]);
 
   // Update the path when the router path changes
   useEffect(() => {
@@ -73,6 +77,7 @@ function ConfigurationProvider(props: ProviderProps) {
     useConfigRouter: router,
     content,
     isValidPath,
+    errors: props.errors,
   };
 
   return (
@@ -98,13 +103,17 @@ const useConfigRouter = (basePath?: string[]) => {
     setPath(newPath);
   };
 
+  console.log(content);
+
   const push = (slug: string) => {
     const newPath = [...path];
     const currentContent = content[content.length - 2];
     if (currentContent?.[slug]) {
+      console.log("popping first...");
       newPath.pop();
       newPath.push(slug);
     } else {
+      console.log("not poppin...");
       newPath.push(slug);
     }
     setPath(newPath);
@@ -131,9 +140,9 @@ const useConfiguration = () => {
     );
   }
 
-  const { content, isValidPath } = context;
+  const { content, isValidPath, errors } = context;
 
-  return { content, isValidPath };
+  return { content, isValidPath, errors };
 };
 
 const useConfigurationRouter = () => {
