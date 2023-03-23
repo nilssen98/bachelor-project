@@ -130,7 +130,7 @@ export default function AddTemplateDialog(props: Props) {
     return props.fileContent.length > 0;
   }
 
-  function handleCancel() {
+  function handleClose() {
     setStep(Steps.UploadFile);
     props.clearFileSelection();
     props.onClose();
@@ -143,18 +143,18 @@ export default function AddTemplateDialog(props: Props) {
 
   return (
     <>
-      <Modal isCentered {...props}>
+      <Modal isCentered {...props} onClose={handleClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getTitle()}</ModalHeader>
-          <ModalCloseButton onClick={handleCancel} />
+          <ModalCloseButton onClick={handleClose} />
           <ModalBody>{getBody()}</ModalBody>
           <ModalFooter>
             <Button
               colorScheme={"blue"}
               variant={"ghost"}
               mr={3}
-              onClick={step === Steps.UploadFile ? handleCancel : goBack}
+              onClick={step === Steps.UploadFile ? handleClose : goBack}
             >
               {step === Steps.UploadFile ? "Cancel" : "Back"}
             </Button>
