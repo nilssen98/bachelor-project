@@ -1,6 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
 import { z } from "zod";
+import { validate } from "../../../utils/validator";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const configurationRouter = createTRPCRouter({
@@ -22,6 +23,9 @@ export const configurationRouter = createTRPCRouter({
           userId: ctx.session.user.id,
           id: input.id,
         },
+        include: {
+          errors: true,
+        },
       });
     }),
   add: protectedProcedure
@@ -33,20 +37,53 @@ export const configurationRouter = createTRPCRouter({
         content: z.string().optional(),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       let parsedContent: Prisma.JsonValue | undefined = undefined;
 
+      // Parse the content to JSON format if exists
       if (input.content) {
         parsedContent = JSON.parse(input.content) as Prisma.JsonValue;
       }
 
-      return ctx.prisma.configuration.create({
+      // Get the template schema
+      const schema = await ctx.prisma.template.findFirst({
+        where: {
+          id: input.templateId,
+        },
+      });
+
+      // Validate the configuration
+      const validator = validate({
+        schema: JSON.stringify(schema?.content || ""),
+        configuration: input.content || "",
+      });
+
+      // Create the configuration and store it
+      const configuration = await ctx.prisma.configuration.create({
         data: {
           ...input,
           ...(parsedContent ? { content: parsedContent } : {}),
           userId: ctx.session.user.id,
+          valid: validator.valid,
         },
       });
+
+      // If the configuration is not valid, create configuration errors
+      if (!validator.valid && configuration && configuration.id) {
+        await Promise.all(
+          validator.errors.map(async (error) => {
+            await ctx.prisma.configurationError.create({
+              data: {
+                configurationId: configuration.id,
+                path: error.path,
+                message: error.message || "",
+              },
+            });
+          })
+        );
+      }
+
+      return configuration;
     }),
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
