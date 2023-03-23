@@ -48,12 +48,11 @@ export default function ConfigurationBrowser() {
               onSave={handleSave}
               searchValue={searchValue}
               onSearchValueChanged={(newValue) => setSearchValue(newValue)}
-              errors={defaultErrors}
               onClickErrors={handleClickErrors}
             />
             <ConfigurationNavigation />
             <ConfigurationContent />
-            <ConfigurationStatusBar errors={defaultErrors} />
+            <ConfigurationStatusBar />
           </Stack>
         </CardBody>
       </Card>
