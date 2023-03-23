@@ -1,4 +1,5 @@
 import type { Prisma } from "@prisma/client";
+import { range } from "lodash-es";
 import type { Context, ReactNode } from "react";
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
@@ -34,7 +35,7 @@ function ConfigurationProvider(props: ProviderProps) {
   const [content, setContent] = useState<Prisma.JsonObject[]>([configuration]);
   const [isValidPath, setIsValidPath] = useState<boolean>(false);
 
-  const router = useConfigRouter();
+  const router = useConfigRouter({ content, basePath: props.routerPath });
 
   useEffect(() => {
     // Call the onPathChange callback when the path changes
@@ -44,9 +45,10 @@ function ConfigurationProvider(props: ProviderProps) {
 
     // Check if the path is valid
     setIsValidPath(
-      router.path.every((slug, idx) => {
-        return content?.[idx]?.[slug] !== undefined;
-      })
+      true
+      // router.path.every((slug, idx) => {
+      //   return content?.[idx]?.[slug] !== undefined;
+      // })
     );
 
     // Update the content when the path changes
@@ -56,7 +58,7 @@ function ConfigurationProvider(props: ProviderProps) {
         getConfigurationFromPath(router.path.slice(0, idx + 1))
       ),
     ]);
-  }, [router.path]);
+  }, [router.path, configuration]);
 
   // Update the path when the router path changes
   useEffect(() => {
@@ -87,8 +89,14 @@ function ConfigurationProvider(props: ProviderProps) {
   );
 }
 
-const useConfigRouter = (basePath?: string[]) => {
-  const { content } = useContext(ConfigurationContext);
+const useConfigRouter = ({
+  basePath,
+  content,
+}: {
+  basePath?: string[];
+  content: Prisma.JsonValue[];
+}) => {
+  // const { content } = useContext(ConfigurationContext);
   const [path, setPath] = useState<string[]>([]);
 
   useEffect(() => {
@@ -103,24 +111,31 @@ const useConfigRouter = (basePath?: string[]) => {
     setPath(newPath);
   };
 
-  console.log(content);
-
   const push = (slug: string) => {
     const newPath = [...path];
     const currentContent = content[content.length - 2];
     if (currentContent?.[slug]) {
-      console.log("popping first...");
       newPath.pop();
       newPath.push(slug);
     } else {
-      console.log("not poppin...");
       newPath.push(slug);
     }
     setPath(newPath);
   };
 
   const set = (newPath: string[]) => {
-    setPath(newPath);
+    const filteredPath: string[] = [];
+
+    let temp = content[0];
+    newPath.forEach((slug, idx) => {
+      const currentContent: Prisma.JsonValue | undefined = temp?.[slug];
+      if (typeof currentContent === "object") {
+        filteredPath.push(slug);
+        temp = currentContent;
+      }
+    });
+
+    setPath(filteredPath);
   };
 
   return {
