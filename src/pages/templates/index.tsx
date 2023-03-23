@@ -106,7 +106,7 @@ const TemplatesPage: NextPage = () => {
             <GridItem w={"100%"} key={idx}>
               <TemplateCard
                 name={template.name}
-                files={2}
+                files={template._count.configurations}
                 lastModified={template.updatedAt}
                 onClick={() => void handleCardClick(template.id)}
                 onDelete={() => handleDelete(template.id)}

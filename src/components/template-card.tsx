@@ -50,7 +50,7 @@ export default function TemplateCard(props: Props) {
                 </Text>
               </Tooltip>
               <Text textColor={"whiteAlpha.600"}>
-                {props.files} configurations
+                {`${props.files} configuration${props.files !== 1 ? "s" : ""}`}
               </Text>
             </VStack>
             <Menu>
