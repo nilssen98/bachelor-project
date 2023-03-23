@@ -50,7 +50,7 @@ export default function ConfigurationContent() {
             borderColor={"whiteAlpha.400"}
             overflowY={"auto"}
           >
-            {Object.entries(item).map(([key, val], idx2) => (
+            {Object.entries(item || {}).map(([key, val], idx2) => (
               <ConfigurationField
                 onClick={() => router.push(key)}
                 key={idx2}
