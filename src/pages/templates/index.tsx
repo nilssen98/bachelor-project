@@ -58,12 +58,12 @@ const TemplatesPage: NextPage = () => {
     multiple: false,
   });
 
-  function uploadFile() {
+  function uploadFile(name = filesContent[0]?.name.split(".")[0] || "") {
     if (filesContent.length > 0) {
       const file = filesContent[0];
       if (file) {
         addTemplate({
-          name: file.name.split(".json")[0] || file.name,
+          name: name,
           content: file.content,
         });
       }

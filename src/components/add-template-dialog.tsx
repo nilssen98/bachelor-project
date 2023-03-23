@@ -29,7 +29,7 @@ enum Steps {
 
 type Props = {
   openFileSelector: () => void;
-  uploadFile: () => void;
+  uploadFile: (name: string) => void;
   clearFileSelection: () => void;
   fileContent: FileContent[];
 } & Omit<ModalProps, "children">;
@@ -71,6 +71,7 @@ export default function AddTemplateDialog(props: Props) {
               <Text>{getBodyText()}</Text>
               <Button
                 width={"full"}
+                variant={"ghost"}
                 leftIcon={<MdFileUpload />}
                 onClick={props.openFileSelector}
                 isDisabled={isFileSelected()}
@@ -137,7 +138,7 @@ export default function AddTemplateDialog(props: Props) {
   }
 
   function handleUpload() {
-    props.uploadFile();
+    props.uploadFile(templateName);
     props.onClose();
   }
 
@@ -160,7 +161,7 @@ export default function AddTemplateDialog(props: Props) {
             </Button>
             <Button
               colorScheme={"blue"}
-              isDisabled={props.fileContent.length === 0}
+              isDisabled={!isFileSelected()}
               onClick={step === Steps.UploadFile ? goNext : handleUpload}
             >
               {step === Steps.UploadFile ? "Next" : "Confirm"}
