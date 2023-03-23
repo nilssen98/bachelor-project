@@ -8,10 +8,20 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { MdErrorOutline } from "react-icons/md";
-import { useConfiguration } from "./configuration-provider";
+import type { ValidationError } from "../../utils/validator/types";
+import {
+  useConfiguration,
+  useConfigurationRouter,
+} from "./configuration-provider";
 
 export default function ConfigurationStatusBar() {
   const { errors } = useConfiguration();
+  const router = useConfigurationRouter();
+
+  const handleClick = (error: ValidationError) => {
+    router.set(error.path.split("/").filter((p) => p !== ""));
+  };
+
   return (
     <>
       <Accordion allowToggle>
@@ -19,13 +29,18 @@ export default function ConfigurationStatusBar() {
           {errors &&
             errors.map((error, idx) => (
               <AccordionPanel
-                px={4}
-                py={2}
+                p={0}
+                onClick={() => handleClick}
                 sx={{ borderBottom: "1px solid", borderColor: "gray.700" }}
                 key={idx}
               >
-                {idx}: {error.path === "" ? "root" : error.path} -{" "}
-                {error.message}
+                <AccordionButton
+                  onClick={() => handleClick(error)}
+                  sx={{ "&:hover": { background: "gray.900" } }}
+                >
+                  {idx}: {error.path === "" ? "root" : error.path} -{" "}
+                  {error.message}
+                </AccordionButton>
               </AccordionPanel>
             ))}
           <AccordionButton>
