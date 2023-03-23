@@ -109,8 +109,9 @@ export default function AddTemplateDialog(props: Props) {
             <VStack alignItems={"flex-start"} spacing={2}>
               <Text>{getBodyText()}</Text>
               <Input
-                placeholder={"Template Name"}
                 value={templateName}
+                placeholder={"Template name"}
+                isInvalid={isTemplateNameBlank()}
                 onChange={(e) => setTemplateName(e.target.value)}
               />
             </VStack>
@@ -129,6 +130,10 @@ export default function AddTemplateDialog(props: Props) {
 
   function isFileSelected() {
     return props.fileContent.length > 0;
+  }
+
+  function isTemplateNameBlank() {
+    return templateName.trim().length === 0;
   }
 
   function handleClose() {
@@ -161,7 +166,11 @@ export default function AddTemplateDialog(props: Props) {
             </Button>
             <Button
               colorScheme={"blue"}
-              isDisabled={!isFileSelected()}
+              isDisabled={
+                step === Steps.UploadFile
+                  ? !isFileSelected()
+                  : isTemplateNameBlank()
+              }
               onClick={step === Steps.UploadFile ? goNext : handleUpload}
             >
               {step === Steps.UploadFile ? "Next" : "Confirm"}
