@@ -14,10 +14,10 @@ export default function RenameDialog(props: Props) {
   return (
     <>
       <VStack alignItems={"flex-start"} spacing={2}>
-        <Text>Choose a name for the template</Text>
+        <Text>{`Choose a name for the ${props.type}`}</Text>
         <Input
           value={props.name}
-          placeholder={"Template name"}
+          placeholder={`${props.type} name`}
           isInvalid={isNameBlank()}
           onChange={(e) => props.setName(e.target.value)}
         />
