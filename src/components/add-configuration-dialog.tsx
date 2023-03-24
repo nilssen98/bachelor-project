@@ -15,12 +15,16 @@ import { BsFiletypeJson } from "react-icons/bs";
 import { IoMdCopy } from "react-icons/io";
 import type { FileContent } from "use-file-picker";
 import DialogFileChooser from "./dialog-file-chooser";
+import RenameDialog from "./rename-dialog";
 
 enum Steps {
   ChooseAction = 0,
   CreateNew = 1,
   CloneExisting = 2,
   UploadFile = 3,
+  NewName = 4,
+  CloneName = 5,
+  UploadName = 6,
 }
 
 type Props = {
