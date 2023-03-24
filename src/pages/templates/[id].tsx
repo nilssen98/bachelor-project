@@ -40,7 +40,7 @@ const TemplatePage: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
 
-  const [openFileSelector, { filesContent, loading }] = useFilePicker({
+  const [openFileSelector, { filesContent, loading, clear }] = useFilePicker({
     accept: ".json",
     multiple: false,
   });
@@ -153,7 +153,13 @@ const TemplatePage: NextPage = () => {
           </Card>
         </Box>
       </VStack>
-      <AddConfigurationDialog isOpen={isOpen} onClose={onClose} />
+      <AddConfigurationDialog
+        isOpen={isOpen}
+        onClose={onClose}
+        openFileSelector={handleAdd}
+        clearFileSelection={clear}
+        fileContent={filesContent}
+      />
     </>
   );
 };

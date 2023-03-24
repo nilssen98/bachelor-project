@@ -13,6 +13,8 @@ import type { ModalProps } from "@chakra-ui/modal";
 import { AiOutlineCopy, AiOutlineFileAdd } from "react-icons/ai";
 import { BsFiletypeJson } from "react-icons/bs";
 import { IoMdCopy } from "react-icons/io";
+import type { FileContent } from "use-file-picker";
+import DialogFileChooser from "./dialog-file-chooser";
 
 enum Steps {
   ChooseAction = 0,
@@ -21,7 +23,11 @@ enum Steps {
   UploadFile = 3,
 }
 
-type Props = Omit<ModalProps, "children">;
+type Props = {
+  openFileSelector: () => void;
+  clearFileSelection: () => void;
+  fileContent: FileContent[];
+} & Omit<ModalProps, "children">;
 
 export default function AddConfigurationDialog(props: Props) {
   const [step, setStep] = useState<Steps>(Steps.ChooseAction);
@@ -124,6 +130,11 @@ export default function AddConfigurationDialog(props: Props) {
         return (
           <>
             <Text>Upload file</Text>
+            <DialogFileChooser
+              openFileSelector={props.openFileSelector}
+              clearFileSelection={props.clearFileSelection}
+              fileContent={props.fileContent}
+            />
           </>
         );
     }
