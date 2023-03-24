@@ -12,6 +12,7 @@ import type { ModalProps } from "@chakra-ui/modal";
 import { Button, Input, Text, VStack } from "@chakra-ui/react";
 import type { FileContent } from "use-file-picker";
 import DialogFileChooser from "./dialog-file-chooser";
+import RenameDialog from "./rename-dialog";
 
 enum Steps {
   UploadFile = 0,
@@ -67,15 +68,11 @@ export default function AddTemplateDialog(props: Props) {
       case Steps.SetName:
         return (
           <>
-            <VStack alignItems={"flex-start"} spacing={2}>
-              <Text>{getBodyText()}</Text>
-              <Input
-                value={templateName}
-                placeholder={"Template name"}
-                isInvalid={isTemplateNameBlank()}
-                onChange={(e) => setTemplateName(e.target.value)}
-              />
-            </VStack>
+            <RenameDialog
+              type={"template"}
+              name={templateName}
+              setName={setTemplateName}
+            />
           </>
         );
     }
