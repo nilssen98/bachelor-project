@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, HStack, IconButton, Text } from "@chakra-ui/react";
 import {
   Modal,
@@ -36,6 +36,13 @@ type Props = {
 
 export default function AddConfigurationDialog(props: Props) {
   const [step, setStep] = useState<Steps>(Steps.ChooseAction);
+  const [configurationName, setConfigurationName] = useState<string>("");
+
+  useEffect(() => {
+    if (step === Steps.UploadName) {
+      setConfigurationName(props.fileContent[0]?.name.split(".json")[0] || "");
+    }
+  }, [step, props.fileContent]);
 
   function getTitle() {
     switch (step) {
@@ -110,7 +117,8 @@ export default function AddConfigurationDialog(props: Props) {
               {Object.values(Steps).reduce((acc: JSX.Element[], key) => {
                 if (
                   typeof Steps[key as keyof typeof Steps] === "number" &&
-                  Steps[key as keyof typeof Steps] !== Steps.ChooseAction
+                  Steps[key as keyof typeof Steps] !== Steps.ChooseAction &&
+                  Steps[key as keyof typeof Steps] < Steps.NewName
                 ) {
                   acc.push(getCardButton(Steps[key as keyof typeof Steps]));
                 }
@@ -142,6 +150,16 @@ export default function AddConfigurationDialog(props: Props) {
             />
           </>
         );
+      case Steps.UploadName:
+        return (
+          <>
+            <RenameDialog
+              type={"configuration"}
+              name={configurationName}
+              setName={setConfigurationName}
+            />
+          </>
+        );
     }
   }
 
@@ -149,11 +167,57 @@ export default function AddConfigurationDialog(props: Props) {
     switch (step) {
       case Steps.UploadFile:
         return () => {
+          setStep(Steps.UploadName);
+        };
+      case Steps.UploadName:
+        return () => {
           props.uploadFile(props.fileContent[0]?.name.split(".json")[0] || "");
           props.onClose();
         };
       default:
         return props.onClose;
+    }
+  }
+
+  function getFooterButton() {
+    switch (step) {
+      case Steps.ChooseAction:
+        return (
+          <Button colorScheme={"blue"} onClick={props.onClose}>
+            Close
+          </Button>
+        );
+      case Steps.UploadFile:
+        return (
+          <Button colorScheme={"blue"} onClick={getFooterAction()}>
+            Next
+          </Button>
+        );
+      case Steps.UploadName:
+        return (
+          <Button colorScheme={"blue"} onClick={getFooterAction()}>
+            Submit
+          </Button>
+        );
+      default:
+        return (
+          <Button colorScheme={"blue"} onClick={props.onClose}>
+            Close
+          </Button>
+        );
+    }
+  }
+
+  function handleBack() {
+    switch (step) {
+      case Steps.CreateNew:
+      case Steps.CloneExisting:
+      case Steps.UploadFile:
+        setStep(Steps.ChooseAction);
+        break;
+      case Steps.UploadName:
+        setStep(Steps.UploadFile);
+        break;
     }
   }
 
@@ -172,16 +236,11 @@ export default function AddConfigurationDialog(props: Props) {
           <ModalFooter>
             <HStack spacing={2}>
               {step !== Steps.ChooseAction && (
-                <Button
-                  variant={"ghost"}
-                  onClick={() => setStep(Steps.ChooseAction)}
-                >
+                <Button variant={"ghost"} onClick={handleBack}>
                   Back
                 </Button>
               )}
-              <Button colorScheme={"blue"} onClick={getFooterAction()}>
-                {step === Steps.ChooseAction ? "Close" : "Submit"}
-              </Button>
+              {getFooterButton()}
             </HStack>
           </ModalFooter>
         </ModalContent>
