@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  HStack,
-  IconButton,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, HStack, IconButton, Text } from "@chakra-ui/react";
 import {
   Modal,
   ModalBody,
@@ -73,14 +66,16 @@ export default function AddConfigurationDialog(props: Props) {
     }
 
     return (
-      <VStack
+      <Button
         key={step}
         flex={1}
-        height={180}
         p={2}
-        as={"button"}
-        bg={"whiteAlpha.200"}
-        borderRadius={8}
+        height={180}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        whiteSpace={"break-spaces"}
         onClick={() => setStep(step)}
       >
         <IconButton
@@ -91,7 +86,7 @@ export default function AddConfigurationDialog(props: Props) {
           _hover={{ bg: "transparent" }}
         />
         <Text>{getText()}</Text>
-      </VStack>
+      </Button>
     );
   }
 
