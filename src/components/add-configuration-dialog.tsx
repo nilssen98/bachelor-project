@@ -172,10 +172,10 @@ export default function AddConfigurationDialog(props: Props) {
       case Steps.UploadName:
         return () => {
           props.uploadFile(configurationName);
-          props.onClose();
+          handleClose();
         };
       default:
-        return props.onClose;
+        return handleClose;
     }
   }
 
@@ -183,7 +183,7 @@ export default function AddConfigurationDialog(props: Props) {
     switch (step) {
       case Steps.ChooseAction:
         return (
-          <Button colorScheme={"blue"} onClick={props.onClose}>
+          <Button colorScheme={"blue"} onClick={handleClose}>
             Close
           </Button>
         );
@@ -229,6 +229,12 @@ export default function AddConfigurationDialog(props: Props) {
     }
   }
 
+  function handleClose() {
+    setStep(Steps.ChooseAction);
+    props.clearFileSelection();
+    props.onClose();
+  }
+
   function isFileSelected() {
     return props.fileContent.length > 0;
   }
@@ -243,11 +249,12 @@ export default function AddConfigurationDialog(props: Props) {
         isCentered
         {...props}
         size={step === Steps.ChooseAction ? "xl" : "md"}
+        onCloseComplete={handleClose}
       >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getTitle()}</ModalHeader>
-          <ModalCloseButton onClick={props.onClose} />
+          <ModalCloseButton onClick={handleClose} />
           <ModalBody>{getBody()}</ModalBody>
           <ModalFooter>
             <HStack spacing={2}>
