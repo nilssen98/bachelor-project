@@ -11,6 +11,7 @@ import { BsFiletypeJson } from "react-icons/bs";
 import { MdClear, MdFileUpload } from "react-icons/md";
 
 type Props = {
+  type: "schema" | "configuration";
   openFileSelector: () => void;
   clearFileSelection: () => void;
   fileContent: FileContent[];
@@ -24,7 +25,7 @@ export default function DialogFileChooser(props: Props) {
   return (
     <>
       <VStack spacing={2} alignItems={"flex-start"}>
-        <Text>Upload a JSON schema file</Text>
+        <Text>{`Upload a JSON ${props.type} file`}</Text>
         <Button
           width={"full"}
           variant={"ghost"}

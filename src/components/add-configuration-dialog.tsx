@@ -129,8 +129,8 @@ export default function AddConfigurationDialog(props: Props) {
       case Steps.UploadFile:
         return (
           <>
-            <Text>Upload file</Text>
             <DialogFileChooser
+              type={"configuration"}
               openFileSelector={props.openFileSelector}
               clearFileSelection={props.clearFileSelection}
               fileContent={props.fileContent}

@@ -57,6 +57,7 @@ export default function AddTemplateDialog(props: Props) {
         return (
           <>
             <DialogFileChooser
+              type={"schema"}
               openFileSelector={props.openFileSelector}
               clearFileSelection={props.clearFileSelection}
               fileContent={props.fileContent}
