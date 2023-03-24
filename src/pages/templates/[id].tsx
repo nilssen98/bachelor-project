@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { Configuration } from "@prisma/client";
 import ReactTimeAgo from "react-time-ago";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -44,19 +44,6 @@ const TemplatePage: NextPage = () => {
     accept: ".json",
     multiple: false,
   });
-
-  useEffect(() => {
-    if (filesContent.length > 0) {
-      const file = filesContent[0];
-      if (template && file) {
-        addConfiguration({
-          templateId: template.id,
-          name: file.name.split(".json")[0] || file.name,
-          content: file.content,
-        });
-      }
-    }
-  }, [filesContent]);
 
   const { data: template, isLoading: isLoadingTemplate } =
     api.template.get.useQuery(
@@ -96,6 +83,19 @@ const TemplatePage: NextPage = () => {
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
   }, [configurations, search]);
+
+  function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
+    if (filesContent.length > 0) {
+      const file = filesContent[0];
+      if (template && file) {
+        addConfiguration({
+          templateId: template.id,
+          name: name,
+          content: file.content,
+        });
+      }
+    }
+  }
 
   const handleAdd = () => {
     openFileSelector();
@@ -159,6 +159,7 @@ const TemplatePage: NextPage = () => {
         openFileSelector={handleAdd}
         clearFileSelection={clear}
         fileContent={filesContent}
+        uploadFile={uploadFile}
       />
     </>
   );

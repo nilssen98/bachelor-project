@@ -27,6 +27,7 @@ type Props = {
   openFileSelector: () => void;
   clearFileSelection: () => void;
   fileContent: FileContent[];
+  uploadFile: (name: string) => void;
 } & Omit<ModalProps, "children">;
 
 export default function AddConfigurationDialog(props: Props) {
@@ -140,9 +141,25 @@ export default function AddConfigurationDialog(props: Props) {
     }
   }
 
+  function getFooterAction() {
+    switch (step) {
+      case Steps.UploadFile:
+        return () => {
+          props.uploadFile(props.fileContent[0]?.name.split(".json")[0] || "");
+          props.onClose();
+        };
+      default:
+        return props.onClose;
+    }
+  }
+
   return (
     <>
-      <Modal isCentered {...props} size={"xl"}>
+      <Modal
+        isCentered
+        {...props}
+        size={step === Steps.ChooseAction ? "xl" : "md"}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getTitle()}</ModalHeader>
@@ -158,8 +175,8 @@ export default function AddConfigurationDialog(props: Props) {
                   Back
                 </Button>
               )}
-              <Button colorScheme={"blue"} onClick={props.onClose}>
-                Close
+              <Button colorScheme={"blue"} onClick={getFooterAction()}>
+                {step === Steps.ChooseAction ? "Close" : "Submit"}
               </Button>
             </HStack>
           </ModalFooter>
