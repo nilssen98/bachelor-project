@@ -171,7 +171,7 @@ export default function AddConfigurationDialog(props: Props) {
         };
       case Steps.UploadName:
         return () => {
-          props.uploadFile(props.fileContent[0]?.name.split(".json")[0] || "");
+          props.uploadFile(configurationName);
           props.onClose();
         };
       default:
@@ -189,13 +189,21 @@ export default function AddConfigurationDialog(props: Props) {
         );
       case Steps.UploadFile:
         return (
-          <Button colorScheme={"blue"} onClick={getFooterAction()}>
+          <Button
+            colorScheme={"blue"}
+            isDisabled={!isFileSelected()}
+            onClick={getFooterAction()}
+          >
             Next
           </Button>
         );
       case Steps.UploadName:
         return (
-          <Button colorScheme={"blue"} onClick={getFooterAction()}>
+          <Button
+            colorScheme={"blue"}
+            isDisabled={isTemplateNameBlank()}
+            onClick={getFooterAction()}
+          >
             Submit
           </Button>
         );
@@ -219,6 +227,14 @@ export default function AddConfigurationDialog(props: Props) {
         setStep(Steps.UploadFile);
         break;
     }
+  }
+
+  function isFileSelected() {
+    return props.fileContent.length > 0;
+  }
+
+  function isTemplateNameBlank() {
+    return configurationName.trim().length === 0;
   }
 
   return (
