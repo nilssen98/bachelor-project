@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  HStack,
-  IconButton,
-  Select,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, HStack, IconButton, Text, VStack } from "@chakra-ui/react";
 import {
   Modal,
   ModalBody,
@@ -24,6 +17,10 @@ import type { FileContent } from "use-file-picker";
 import type { Configuration } from "@prisma/client";
 import DialogFileChooser from "./dialog-file-chooser";
 import RenameDialog from "./rename-dialog";
+import type { ChakraStylesConfig, GroupBase } from "chakra-react-select";
+import { Select } from "chakra-react-select";
+
+type ConfigurationOption = Configuration & { value: string; label: string };
 
 enum Steps {
   ChooseAction = 0,
@@ -46,6 +43,8 @@ type Props = {
 export default function AddConfigurationDialog(props: Props) {
   const [step, setStep] = useState<Steps>(Steps.ChooseAction);
   const [configurationName, setConfigurationName] = useState<string>("");
+  const [selectedConfiguration, setSelectedConfiguration] =
+    useState<ConfigurationOption | null>(null);
 
   useEffect(() => {
     if (step === Steps.UploadName) {
@@ -119,6 +118,28 @@ export default function AddConfigurationDialog(props: Props) {
     );
   }
 
+  const chakraSelectStyles: Partial<
+    ChakraStylesConfig<
+      ConfigurationOption,
+      false,
+      GroupBase<ConfigurationOption>
+    >
+  > = {
+    option: (provided, state) => ({
+      ...provided,
+      background: state.isSelected ? "blue.800" : "gray.700",
+      color: "white",
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      background: "gray.700",
+    }),
+    container: (provided) => ({
+      ...provided,
+      width: "100%",
+    }),
+  };
+
   function getBody() {
     switch (step) {
       case Steps.ChooseAction:
@@ -149,13 +170,21 @@ export default function AddConfigurationDialog(props: Props) {
           <>
             <VStack alignItems={"flex-start"} spacing={2}>
               <Text>Clone an already existing configuration</Text>
-              <Select placeholder={"Select option"}>
-                {props.configurations.map((configuration) => (
-                  <option key={configuration.id} value={configuration.id}>
-                    {configuration.name}
-                  </option>
-                ))}
-              </Select>
+              <Select<ConfigurationOption>
+                useBasicStyles
+                isMulti={false}
+                isClearable
+                colorScheme={"blue"}
+                placeholder={"Select a configuration to clone"}
+                chakraStyles={chakraSelectStyles}
+                value={selectedConfiguration}
+                onChange={(option) => setSelectedConfiguration(option)}
+                options={props.configurations.map((configuration) => ({
+                  ...configuration,
+                  value: configuration.id,
+                  label: configuration.name,
+                }))}
+              />
             </VStack>
           </>
         );
@@ -216,7 +245,11 @@ export default function AddConfigurationDialog(props: Props) {
         return (
           <Button
             colorScheme={"blue"}
-            isDisabled={!isFileSelected()}
+            isDisabled={
+              step === Steps.UploadFile
+                ? !isFileSelected()
+                : selectedConfiguration === null
+            }
             onClick={getFooterAction()}
           >
             Next
@@ -244,7 +277,13 @@ export default function AddConfigurationDialog(props: Props) {
   function handleBack() {
     switch (step) {
       case Steps.CreateNew:
+      case Steps.CloneName:
+        setStep(Steps.CloneExisting);
+        break;
       case Steps.CloneExisting:
+        setStep(Steps.ChooseAction);
+        setSelectedConfiguration(null);
+        break;
       case Steps.UploadFile:
         props.clearFileSelection();
         setStep(Steps.ChooseAction);
@@ -257,6 +296,7 @@ export default function AddConfigurationDialog(props: Props) {
 
   function handleClose() {
     setStep(Steps.ChooseAction);
+    setSelectedConfiguration(null);
     props.clearFileSelection();
     props.onClose();
   }
