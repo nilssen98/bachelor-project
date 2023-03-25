@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, HStack, IconButton, Text } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  IconButton,
+  Select,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import {
   Modal,
   ModalBody,
@@ -14,6 +21,7 @@ import { AiOutlineCopy, AiOutlineFileAdd } from "react-icons/ai";
 import { BsFiletypeJson } from "react-icons/bs";
 import { IoMdCopy } from "react-icons/io";
 import type { FileContent } from "use-file-picker";
+import type { Configuration } from "@prisma/client";
 import DialogFileChooser from "./dialog-file-chooser";
 import RenameDialog from "./rename-dialog";
 
@@ -32,6 +40,7 @@ type Props = {
   clearFileSelection: () => void;
   fileContent: FileContent[];
   uploadFile: (name: string) => void;
+  configurations: Configuration[];
 } & Omit<ModalProps, "children">;
 
 export default function AddConfigurationDialog(props: Props) {
@@ -51,9 +60,11 @@ export default function AddConfigurationDialog(props: Props) {
       case Steps.CreateNew:
         return "Create New Configuration";
       case Steps.CloneExisting:
-        return "Clone Existing Configuration";
+        return "Clone Configuration";
       case Steps.UploadFile:
         return "Upload Configuration";
+      case Steps.UploadName:
+        return "Configuration Name";
     }
   }
 
@@ -136,7 +147,16 @@ export default function AddConfigurationDialog(props: Props) {
       case Steps.CloneExisting:
         return (
           <>
-            <Text>Clone existing</Text>
+            <VStack alignItems={"flex-start"} spacing={2}>
+              <Text>Clone an already existing configuration</Text>
+              <Select placeholder={"Select option"}>
+                {props.configurations.map((configuration) => (
+                  <option key={configuration.id} value={configuration.id}>
+                    {configuration.name}
+                  </option>
+                ))}
+              </Select>
+            </VStack>
           </>
         );
       case Steps.UploadFile:
@@ -165,6 +185,10 @@ export default function AddConfigurationDialog(props: Props) {
 
   function getFooterAction() {
     switch (step) {
+      case Steps.CloneExisting:
+        return () => {
+          setStep(Steps.CloneName);
+        };
       case Steps.UploadFile:
         return () => {
           setStep(Steps.UploadName);
@@ -188,6 +212,7 @@ export default function AddConfigurationDialog(props: Props) {
           </Button>
         );
       case Steps.UploadFile:
+      case Steps.CloneExisting:
         return (
           <Button
             colorScheme={"blue"}
@@ -221,6 +246,7 @@ export default function AddConfigurationDialog(props: Props) {
       case Steps.CreateNew:
       case Steps.CloneExisting:
       case Steps.UploadFile:
+        props.clearFileSelection();
         setStep(Steps.ChooseAction);
         break;
       case Steps.UploadName:

@@ -160,6 +160,7 @@ const TemplatePage: NextPage = () => {
         clearFileSelection={clear}
         fileContent={filesContent}
         uploadFile={uploadFile}
+        configurations={configurations || []}
       />
     </>
   );
