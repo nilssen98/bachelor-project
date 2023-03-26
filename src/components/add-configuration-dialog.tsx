@@ -38,6 +38,7 @@ type Props = {
   fileContent: FileContent[];
   uploadFile: (name: string) => void;
   configurations: Configuration[];
+  cloneConfiguration: (id: string, name: string) => void;
 } & Omit<ModalProps, "children">;
 
 export default function AddConfigurationDialog(props: Props) {
@@ -234,11 +235,7 @@ export default function AddConfigurationDialog(props: Props) {
         };
       case Steps.CloneName:
         return () => {
-          console.log("Clone configuration: ", selectedConfiguration?.id);
-          // props.cloneConfiguration(
-          //   selectedConfiguration?.id || "",
-          //   configurationName
-          // );
+          handleClone();
           handleClose();
         };
       default:
@@ -316,6 +313,13 @@ export default function AddConfigurationDialog(props: Props) {
     setSelectedConfiguration(null);
     props.clearFileSelection();
     props.onClose();
+  }
+
+  function handleClone() {
+    props.cloneConfiguration(
+      selectedConfiguration?.id || "",
+      configurationName
+    );
   }
 
   function isFileSelected() {

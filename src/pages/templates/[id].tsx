@@ -72,6 +72,10 @@ const TemplatePage: NextPage = () => {
     onSuccess: () => refetch(),
   });
 
+  const { mutate: cloneConfiguration } = api.configuration.clone.useMutation({
+    onSuccess: () => refetch(),
+  });
+
   const sortedConfigurations = useMemo(() => {
     return configurations
       ?.filter(
@@ -94,6 +98,15 @@ const TemplatePage: NextPage = () => {
           content: file.content,
         });
       }
+    }
+  }
+
+  function handleClone(id: string, name: string) {
+    if (template) {
+      cloneConfiguration({
+        id: id,
+        name: name,
+      });
     }
   }
 
@@ -161,6 +174,7 @@ const TemplatePage: NextPage = () => {
         fileContent={filesContent}
         uploadFile={uploadFile}
         configurations={configurations || []}
+        cloneConfiguration={handleClone}
       />
     </>
   );
