@@ -50,6 +50,9 @@ export default function AddConfigurationDialog(props: Props) {
     if (step === Steps.UploadName) {
       setConfigurationName(props.fileContent[0]?.name.split(".json")[0] || "");
     }
+    if (step === Steps.CloneName) {
+      setConfigurationName(selectedConfiguration?.name || "");
+    }
   }, [step, props.fileContent]);
 
   function getTitle() {
@@ -62,6 +65,7 @@ export default function AddConfigurationDialog(props: Props) {
         return "Clone Configuration";
       case Steps.UploadFile:
         return "Upload Configuration";
+      case Steps.CloneName:
       case Steps.UploadName:
         return "Configuration Name";
     }
@@ -200,6 +204,7 @@ export default function AddConfigurationDialog(props: Props) {
           </>
         );
       case Steps.UploadName:
+      case Steps.CloneName:
         return (
           <>
             <RenameDialog
@@ -225,6 +230,15 @@ export default function AddConfigurationDialog(props: Props) {
       case Steps.UploadName:
         return () => {
           props.uploadFile(configurationName);
+          handleClose();
+        };
+      case Steps.CloneName:
+        return () => {
+          console.log("Clone configuration: ", selectedConfiguration?.id);
+          // props.cloneConfiguration(
+          //   selectedConfiguration?.id || "",
+          //   configurationName
+          // );
           handleClose();
         };
       default:
@@ -256,6 +270,7 @@ export default function AddConfigurationDialog(props: Props) {
           </Button>
         );
       case Steps.UploadName:
+      case Steps.CloneName:
         return (
           <Button
             colorScheme={"blue"}
@@ -277,6 +292,8 @@ export default function AddConfigurationDialog(props: Props) {
   function handleBack() {
     switch (step) {
       case Steps.CreateNew:
+        setStep(Steps.ChooseAction);
+        break;
       case Steps.CloneName:
         setStep(Steps.CloneExisting);
         break;
