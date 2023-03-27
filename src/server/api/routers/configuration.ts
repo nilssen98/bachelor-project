@@ -3,6 +3,7 @@ import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { validate } from "../../../utils/validator";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import omit from "lodash-es/omit";
 
 export const configurationRouter = createTRPCRouter({
   getAll: protectedProcedure
@@ -92,6 +93,41 @@ export const configurationRouter = createTRPCRouter({
         where: {
           id: input.id,
           userId: ctx.session.user.id,
+        },
+      });
+    }),
+  clone: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Find the existing configuration by id and userId, including the related ConfigurationError records
+      const existingConfig = await ctx.prisma.configuration.findFirstOrThrow({
+        where: {
+          id: input.id,
+          userId: ctx.session.user.id,
+        },
+        include: {
+          errors: true,
+        },
+      });
+
+      // Clone the configuration with the new name and store it
+      return await ctx.prisma.configuration.create({
+        data: {
+          ...omit(existingConfig, ["id", "errors", "createdAt", "updatedAt"]),
+          name: input.name,
+          userId: ctx.session.user.id,
+          content: existingConfig.content as Prisma.InputJsonValue,
+          errors: {
+            create: existingConfig.errors.map((error) => ({
+              path: error.path,
+              message: error.message,
+            })),
+          },
         },
       });
     }),
