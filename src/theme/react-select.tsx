@@ -1,5 +1,19 @@
+import { HStack, Text } from "@chakra-ui/react";
+import ReactTimeAgo from "react-time-ago";
 import type { ChakraStylesConfig, GroupBase } from "chakra-react-select";
 import type { ConfigurationOption } from "../components/add-configuration-dialog";
+
+export const formattedOptionLabel = ({
+  label,
+  createdAt,
+}: ConfigurationOption) => (
+  <HStack flex={1}>
+    <Text flex={2}>{label}</Text>
+    <Text textColor={"gray.400"}>
+      <ReactTimeAgo color={"gray"} date={createdAt} />
+    </Text>
+  </HStack>
+);
 
 const dot = (isValid: boolean) => ({
   display: "flex",
