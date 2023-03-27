@@ -17,7 +17,7 @@ export default function RenameDialog(props: Props) {
         <Text>{`Choose a name for the ${props.type}`}</Text>
         <Input
           value={props.name}
-          placeholder={`${props.type} name`}
+          placeholder={`Name of the ${props.type}`}
           isInvalid={isNameBlank()}
           onChange={(e) => props.setName(e.target.value)}
         />
