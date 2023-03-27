@@ -13,7 +13,7 @@ import type { ModalProps } from "@chakra-ui/modal";
 import { Select } from "chakra-react-select";
 import {
   chakraSelectStyles,
-  formattedOptionLabel,
+  FormattedConfigurationOption,
 } from "../theme/react-select";
 import { AiOutlineCopy, AiOutlineFileAdd } from "react-icons/ai";
 import { BsFiletypeJson } from "react-icons/bs";
@@ -164,11 +164,13 @@ export default function AddConfigurationDialog(props: Props) {
                 isMulti={false}
                 isClearable
                 colorScheme={"blue"}
-                formatOptionLabel={formattedOptionLabel}
                 placeholder={"Select a configuration to clone"}
                 chakraStyles={chakraSelectStyles}
                 value={selectedConfiguration}
                 onChange={(option) => setSelectedConfiguration(option)}
+                components={{
+                  Option: FormattedConfigurationOption,
+                }}
                 options={props.configurations.map((configuration) => ({
                   ...configuration,
                   value: configuration.id,
