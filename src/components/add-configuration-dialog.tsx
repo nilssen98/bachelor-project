@@ -17,7 +17,6 @@ import {
 } from "../theme/react-select";
 import { AiOutlineCopy, AiOutlineFileAdd } from "react-icons/ai";
 import { BsFiletypeJson } from "react-icons/bs";
-import { IoMdCopy } from "react-icons/io";
 import type { FileContent } from "use-file-picker";
 import type { Configuration } from "@prisma/client";
 import DialogFileChooser from "./dialog-file-chooser";
@@ -84,7 +83,6 @@ export default function AddConfigurationDialog(props: Props) {
         case Steps.CreateNew:
           return AiOutlineFileAdd;
         case Steps.CloneExisting:
-          // return IoMdCopy;
           return AiOutlineCopy;
         case Steps.UploadFile:
           return BsFiletypeJson;
@@ -94,10 +92,8 @@ export default function AddConfigurationDialog(props: Props) {
     function getText() {
       switch (step) {
         case Steps.CreateNew:
-          // return "New configuration from scratch";
           return "Create a new configuration from scratch";
         case Steps.CloneExisting:
-          // return "Clone an already existing configuration";
           return "Create a copy of an already existing configuration";
         case Steps.UploadFile:
           return "Upload a configuration from a JSON file";
