@@ -77,16 +77,18 @@ const TemplatePage: NextPage = () => {
   });
 
   const sortedConfigurations = useMemo(() => {
-    return configurations
-      ?.filter(
-        (configurations) =>
-          configurations.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      )
-      .sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
-  }, [configurations, search]);
+    return configurations?.sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+  }, [configurations]);
+
+  const filteredConfigurations = useMemo(() => {
+    return sortedConfigurations?.filter(
+      (configuration) =>
+        configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+  }, [sortedConfigurations, search]);
 
   function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
     if (filesContent.length > 0) {
@@ -156,7 +158,7 @@ const TemplatePage: NextPage = () => {
         <Box width={"full"}>
           <Card>
             <Stack divider={<StackDivider />} spacing={0}>
-              {sortedConfigurations?.map((configuration, idx) => (
+              {filteredConfigurations?.map((configuration, idx) => (
                 <ConfigurationListItem
                   key={idx}
                   configuration={configuration}
@@ -173,7 +175,7 @@ const TemplatePage: NextPage = () => {
         clearFileSelection={clear}
         fileContent={filesContent}
         uploadFile={uploadFile}
-        configurations={configurations || []}
+        configurations={sortedConfigurations || []}
         cloneConfiguration={handleClone}
       />
     </>
