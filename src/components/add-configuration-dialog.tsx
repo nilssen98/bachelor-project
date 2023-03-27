@@ -10,6 +10,8 @@ import {
   ModalOverlay,
 } from "@chakra-ui/modal";
 import type { ModalProps } from "@chakra-ui/modal";
+import { Select } from "chakra-react-select";
+import { chakraSelectStyles } from "../theme/react-select";
 import { AiOutlineCopy, AiOutlineFileAdd } from "react-icons/ai";
 import { BsFiletypeJson } from "react-icons/bs";
 import { IoMdCopy } from "react-icons/io";
@@ -17,10 +19,12 @@ import type { FileContent } from "use-file-picker";
 import type { Configuration } from "@prisma/client";
 import DialogFileChooser from "./dialog-file-chooser";
 import RenameDialog from "./rename-dialog";
-import type { ChakraStylesConfig, GroupBase } from "chakra-react-select";
-import { Select } from "chakra-react-select";
 
-type ConfigurationOption = Configuration & { value: string; label: string };
+// Custom type to represent a configuration option in the react-select dropdown
+export type ConfigurationOption = Configuration & {
+  value: string;
+  label: string;
+};
 
 enum Steps {
   ChooseAction = 0,
@@ -122,44 +126,6 @@ export default function AddConfigurationDialog(props: Props) {
       </Button>
     );
   }
-
-  const dot = (isValid: boolean) => ({
-    display: "flex",
-    alignItems: "center",
-
-    ":before": {
-      backgroundColor: isValid ? "green" : "red",
-      borderRadius: 10,
-      content: '" "',
-      display: "block",
-      marginRight: 3,
-      height: 2,
-      width: 2,
-    },
-  });
-
-  const chakraSelectStyles: Partial<
-    ChakraStylesConfig<
-      ConfigurationOption,
-      false,
-      GroupBase<ConfigurationOption>
-    >
-  > = {
-    option: (provided, state) => ({
-      ...provided,
-      background: state.isSelected ? "blue.800" : "gray.700",
-      color: "white",
-      ...dot(state.data.valid),
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      background: "gray.700",
-    }),
-    container: (provided) => ({
-      ...provided,
-      width: "100%",
-    }),
-  };
 
   function getBody() {
     switch (step) {
