@@ -52,13 +52,12 @@ export default function AddConfigurationDialog(props: Props) {
     useState<ConfigurationOption | null>(null);
 
   useEffect(() => {
-    if (step === Steps.UploadName) {
-      setConfigurationName(props.fileContent[0]?.name.split(".json")[0] || "");
-    }
-    if (step === Steps.CloneName) {
-      setConfigurationName(selectedConfiguration?.name || "");
-    }
-  }, [step, props.fileContent]);
+    setConfigurationName(props.fileContent[0]?.name.split(".json")[0] || "");
+  }, [props.fileContent]);
+
+  useEffect(() => {
+    setConfigurationName(selectedConfiguration?.name || "");
+  }, [selectedConfiguration]);
 
   function getTitle() {
     switch (step) {
