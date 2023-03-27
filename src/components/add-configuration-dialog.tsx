@@ -123,6 +123,21 @@ export default function AddConfigurationDialog(props: Props) {
     );
   }
 
+  const dot = (isValid: boolean) => ({
+    display: "flex",
+    alignItems: "center",
+
+    ":before": {
+      backgroundColor: isValid ? "green" : "red",
+      borderRadius: 10,
+      content: '" "',
+      display: "block",
+      marginRight: 3,
+      height: 2,
+      width: 2,
+    },
+  });
+
   const chakraSelectStyles: Partial<
     ChakraStylesConfig<
       ConfigurationOption,
@@ -134,6 +149,7 @@ export default function AddConfigurationDialog(props: Props) {
       ...provided,
       background: state.isSelected ? "blue.800" : "gray.700",
       color: "white",
+      ...dot(state.data.valid),
     }),
     menuList: (provided) => ({
       ...provided,
