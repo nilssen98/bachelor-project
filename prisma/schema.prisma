@@ -69,7 +69,7 @@ model ConfigurationError {
     id              String         @id @default(cuid())
     path            String
     message         String
-    Configuration   Configuration? @relation(fields: [configurationId], references: [id])
+    Configuration   Configuration? @relation(fields: [configurationId], references: [id], onDelete: Cascade)
     configurationId String?
 }
 
