@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
 import ReactTimeAgo from "react-time-ago";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -30,8 +30,7 @@ import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
 import { MdSettings } from "react-icons/md";
-import { useDisclosure } from "@chakra-ui/react-use-disclosure";
-import { FocusableElement } from "@chakra-ui/utils";
+import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/confirmation-dialog";
 import AddConfigurationDialog from "../../components/add-configuration-dialog";
 
