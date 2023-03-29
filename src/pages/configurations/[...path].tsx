@@ -1,7 +1,8 @@
-import { Heading, HStack, Icon, Text, VStack } from "@chakra-ui/react";
+import { Heading, HStack, Icon, Stack, Text, VStack } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import type { ReactElement } from "react";
 import { useEffect, useMemo, useState } from "react";
 import ConfigurationBrowser from "../../components/configuration-browser";
 import { ConfigurationProvider } from "../../components/configuration-browser/configuration-provider";
@@ -9,6 +10,7 @@ import Loading from "../../components/loading";
 import { api } from "../../utils/api";
 import ConfigurationSwitcher from "../../components/configuration-switcher";
 import BackButton from "../../components/back-button";
+import type { NextPageWithLayout } from "../_app";
 
 const ConfigurationPage: NextPage = () => {
   const router = useRouter();
@@ -46,7 +48,7 @@ const ConfigurationPage: NextPage = () => {
   }, [path]);
 
   const handlePathChange = (newPath: string[]) => {
-    if (path?.toString() !== newPath.toString()) {
+    if (path?.toString() !== newPath.toString() && newPath.length !== 0) {
       void router.push(`/configurations/${id}/${newPath.join("/")}`);
     }
   };
