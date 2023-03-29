@@ -287,7 +287,7 @@ export default function AddConfigurationDialog(props: Props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getTitle()}</ModalHeader>
-          <ModalCloseButton onClick={handleClose} />
+          <ModalCloseButton />
           <ModalBody>{getBody()}</ModalBody>
           <ModalFooter>
             <HStack spacing={2}>
