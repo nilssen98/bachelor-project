@@ -27,7 +27,7 @@ interface ProviderProps {
   errors: ValidationError[];
   schema?: Prisma.JsonObject;
   onPathChange?: (path: string[]) => void;
-  initialPath?: string[];
+  path?: string[];
 }
 
 function ConfigurationProvider(props: ProviderProps) {
@@ -35,7 +35,7 @@ function ConfigurationProvider(props: ProviderProps) {
   const [content, setContent] = useState<Prisma.JsonObject[]>([configuration]);
   const [isValidPath, setIsValidPath] = useState<boolean>(false);
 
-  const router = useConfigRouter({ content, initialPath: props.initialPath });
+  const router = useConfigRouter({ content, initialPath: props.path });
 
   useEffect(() => {
     // Check if the path is valid
@@ -89,7 +89,13 @@ const useConfigRouter = ({
   content: Prisma.JsonValue[];
 }) => {
   // const { content } = useContext(ConfigurationContext);
-  const [path, setPath] = useState<string[]>(initialPath || []);
+  const [path, setPath] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (initialPath) {
+      setPath(initialPath);
+    }
+  }, [initialPath]);
 
   const back = () => {
     const newPath = [...path];
