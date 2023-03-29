@@ -27,7 +27,7 @@ interface ProviderProps {
   errors: ValidationError[];
   schema?: Prisma.JsonObject;
   onPathChange?: (path: string[]) => void;
-  routerPath?: string[];
+  initialPath?: string[];
 }
 
 function ConfigurationProvider(props: ProviderProps) {
@@ -35,14 +35,9 @@ function ConfigurationProvider(props: ProviderProps) {
   const [content, setContent] = useState<Prisma.JsonObject[]>([configuration]);
   const [isValidPath, setIsValidPath] = useState<boolean>(false);
 
-  const router = useConfigRouter({ content, basePath: props.routerPath });
+  const router = useConfigRouter({ content, initialPath: props.initialPath });
 
   useEffect(() => {
-    // Call the onPathChange callback when the path changes
-    if (props.onPathChange) {
-      props.onPathChange(router.path);
-    }
-
     // Check if the path is valid
     setIsValidPath(
       true
@@ -60,14 +55,11 @@ function ConfigurationProvider(props: ProviderProps) {
     ]);
   }, [router.path, configuration]);
 
-  // Update the path when the router path changes
   useEffect(() => {
-    if (props.routerPath) {
-      if (props.routerPath.join("/") !== router.path.join("/")) {
-        router.set(props.routerPath);
-      }
+    if (props.onPathChange) {
+      props.onPathChange(router.path);
     }
-  }, [props.routerPath]);
+  }, [router.path]);
 
   const getConfigurationFromPath = (path: string[]) => {
     return path.reduce((current, slug) => {
@@ -90,20 +82,14 @@ function ConfigurationProvider(props: ProviderProps) {
 }
 
 const useConfigRouter = ({
-  basePath,
+  initialPath,
   content,
 }: {
-  basePath?: string[];
+  initialPath?: string[];
   content: Prisma.JsonValue[];
 }) => {
   // const { content } = useContext(ConfigurationContext);
-  const [path, setPath] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (basePath) {
-      setPath(basePath);
-    }
-  }, [basePath]);
+  const [path, setPath] = useState<string[]>(initialPath || []);
 
   const back = () => {
     const newPath = [...path];
@@ -113,7 +99,7 @@ const useConfigRouter = ({
 
   const push = (slug: string) => {
     const newPath = [...path];
-    const currentContent = content[content.length - 2];
+    const currentContent = content[content.length - 2] as Prisma.JsonObject;
     if (currentContent?.[slug]) {
       newPath.pop();
       newPath.push(slug);
@@ -126,12 +112,12 @@ const useConfigRouter = ({
   const set = (newPath: string[]) => {
     const filteredPath: string[] = [];
 
-    let temp = content[0];
-    newPath.forEach((slug, idx) => {
-      const currentContent: Prisma.JsonValue | undefined = temp?.[slug];
+    let temp = content[0] as Prisma.JsonObject;
+    newPath.forEach((slug) => {
+      const currentContent = temp?.[slug];
       if (typeof currentContent === "object") {
         filteredPath.push(slug);
-        temp = currentContent;
+        temp = currentContent as Prisma.JsonObject;
       }
     });
 
@@ -170,7 +156,7 @@ const useConfigurationRouter = () => {
   }
 
   if (!context.useConfigRouter) {
-    throw new Error("configuration router is not defined");
+    throw new Error("Configuration router is not defined");
   }
 
   return context.useConfigRouter;
