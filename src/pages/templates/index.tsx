@@ -5,18 +5,23 @@ import {
   Heading,
   HStack,
   Input,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useFilePicker } from "use-file-picker";
 import Loading from "../../components/loading";
 import TemplateCard from "../../components/template-card";
 import { api } from "../../utils/api";
+import AddTemplateDialog from "../../components/add-template-dialog";
 
 const TemplatesPage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
+  const finalRef = useRef(null);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
     data: templates,
@@ -48,22 +53,22 @@ const TemplatesPage: NextPage = () => {
     openFileSelector();
   };
 
-  const [openFileSelector, { filesContent, loading }] = useFilePicker({
+  const [openFileSelector, { filesContent, loading, clear }] = useFilePicker({
     accept: ".json",
     multiple: false,
   });
 
-  useEffect(() => {
+  function uploadFile(name = filesContent[0]?.name.split(".")[0] || "") {
     if (filesContent.length > 0) {
       const file = filesContent[0];
       if (file) {
         addTemplate({
-          name: file.name.split(".json")[0] || file.name,
+          name: name,
           content: file.content,
         });
       }
     }
-  }, [filesContent]);
+  }
 
   const handleDelete = (templateId: string) => {
     deleteTemplate({ id: templateId });
@@ -86,11 +91,7 @@ const TemplatesPage: NextPage = () => {
       <Heading pb={12}>Your templates</Heading>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
         <HStack width={"full"}>
-          <Button
-            variant={"custom"}
-            disabled={isAddingTemplate}
-            onClick={handleAdd}
-          >
+          <Button variant={"custom"} isLoading={isOpen} onClick={onOpen}>
             Add template
           </Button>
           <Input
@@ -106,7 +107,7 @@ const TemplatesPage: NextPage = () => {
             <GridItem w={"100%"} key={idx}>
               <TemplateCard
                 name={template.name}
-                files={2}
+                files={template._count.configurations}
                 lastModified={template.updatedAt}
                 onClick={() => void handleCardClick(template.id)}
                 onDelete={() => handleDelete(template.id)}
@@ -116,6 +117,15 @@ const TemplatesPage: NextPage = () => {
           ))}
         </Grid>
       </VStack>
+      <AddTemplateDialog
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+        openFileSelector={handleAdd}
+        uploadFile={uploadFile}
+        fileContent={filesContent}
+        clearFileSelection={clear}
+      />
     </>
   );
 };

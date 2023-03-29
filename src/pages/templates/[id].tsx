@@ -16,6 +16,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
@@ -32,30 +33,20 @@ import { MdSettings } from "react-icons/md";
 import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/confirmation-dialog";
+import AddConfigurationDialog from "../../components/add-configuration-dialog";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const router = useRouter();
   const id = router.query.id as string;
 
-  const [openFileSelector, { filesContent, loading }] = useFilePicker({
+  const [openFileSelector, { filesContent, loading, clear }] = useFilePicker({
     accept: ".json",
     multiple: false,
   });
-
-  useEffect(() => {
-    if (filesContent.length > 0) {
-      const file = filesContent[0];
-      if (template && file) {
-        addConfiguration({
-          templateId: template.id,
-          name: file.name.split(".json")[0] || file.name,
-          content: file.content,
-        });
-      }
-    }
-  }, [filesContent]);
 
   const { data: template, isLoading: isLoadingTemplate } =
     api.template.get.useQuery(
@@ -84,17 +75,45 @@ const TemplatePage: NextPage = () => {
     onSuccess: () => refetch(),
   });
 
+  const { mutate: cloneConfiguration } = api.configuration.clone.useMutation({
+    onSuccess: () => refetch(),
+  });
+
   const sortedConfigurations = useMemo(() => {
-    return configurations
-      ?.filter(
-        (configurations) =>
-          configurations.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      )
-      .sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
-  }, [configurations, search]);
+    return configurations?.sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+  }, [configurations]);
+
+  const filteredConfigurations = useMemo(() => {
+    return sortedConfigurations?.filter(
+      (configuration) =>
+        configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+  }, [sortedConfigurations, search]);
+
+  function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
+    if (filesContent.length > 0) {
+      const file = filesContent[0];
+      if (template && file) {
+        addConfiguration({
+          templateId: template.id,
+          name: name,
+          content: file.content,
+        });
+      }
+    }
+  }
+
+  function handleClone(id: string, name: string) {
+    if (template) {
+      cloneConfiguration({
+        id: id,
+        name: name,
+      });
+    }
+  }
 
   const handleAdd = () => {
     openFileSelector();
@@ -130,7 +149,7 @@ const TemplatePage: NextPage = () => {
       </HStack>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
         <HStack width={"full"}>
-          <Button onClick={handleAdd} variant={"custom"}>
+          <Button onClick={onOpen} isLoading={isOpen} variant={"custom"}>
             Add configuration
           </Button>
           <Input
@@ -142,7 +161,7 @@ const TemplatePage: NextPage = () => {
         <Box width={"full"}>
           <Card>
             <Stack divider={<StackDivider />} spacing={0}>
-              {sortedConfigurations?.map((configuration, idx) => (
+              {filteredConfigurations?.map((configuration, idx) => (
                 <ConfigurationListItem
                   key={idx}
                   configuration={configuration}
@@ -153,6 +172,16 @@ const TemplatePage: NextPage = () => {
           </Card>
         </Box>
       </VStack>
+      <AddConfigurationDialog
+        isOpen={isOpen}
+        onClose={onClose}
+        openFileSelector={handleAdd}
+        clearFileSelection={clear}
+        fileContent={filesContent}
+        uploadFile={uploadFile}
+        configurations={sortedConfigurations || []}
+        cloneConfiguration={handleClone}
+      />
     </>
   );
 };
