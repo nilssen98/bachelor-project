@@ -1,13 +1,13 @@
+import type { FlexProps } from "@chakra-ui/react";
 import { Box, Flex } from "@chakra-ui/react";
+import { omit } from "lodash-es";
 import type { ReactElement, ReactNode } from "react";
 import BackgroundCollection from "./background-collection";
 import Navbar from "./navbar";
 
-export default function Layout({
-  children,
-}: {
-  children: ReactElement | ReactNode;
-}) {
+type Props = FlexProps;
+
+export default function Layout(props: Props) {
   const navbarHeight = 52;
 
   return (
@@ -29,10 +29,12 @@ export default function Layout({
           backgroundImage: `radial-gradient(#343a40 2px, transparent 2px), radial-gradient(#343a40 2px, transparent 2px)`,
           backgroundSize: "120px 120px",
           backgroundPosition: "0 0, 60px 60px",
+          ...props.sx,
         }}
+        {...omit(props, ["sx"])}
       >
         <Box maxW={"5xl"} w={"full"}>
-          {children}
+          {props.children}
         </Box>
       </Flex>
     </>
