@@ -8,6 +8,11 @@ export const templateRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
       },
+      include: {
+        _count: {
+          select: { configurations: true },
+        },
+      },
     });
   }),
   get: protectedProcedure

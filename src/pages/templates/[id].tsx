@@ -16,12 +16,13 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
 import ReactTimeAgo from "react-time-ago";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -29,30 +30,22 @@ import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
 import { MdSettings } from "react-icons/md";
+import type { FocusableElement } from "@chakra-ui/utils";
+import ConfirmationDialog from "../../components/confirmation-dialog";
+import AddConfigurationDialog from "../../components/add-configuration-dialog";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const router = useRouter();
   const id = router.query.id as string;
 
-  const [openFileSelector, { filesContent, loading }] = useFilePicker({
+  const [openFileSelector, { filesContent, loading, clear }] = useFilePicker({
     accept: ".json",
     multiple: false,
   });
-
-  useEffect(() => {
-    if (filesContent.length > 0) {
-      const file = filesContent[0];
-      if (template && file) {
-        addConfiguration({
-          templateId: template.id,
-          name: file.name.split(".json")[0] || file.name,
-          content: file.content,
-        });
-      }
-    }
-  }, [filesContent]);
 
   const { data: template, isLoading: isLoadingTemplate } =
     api.template.get.useQuery(
@@ -81,17 +74,45 @@ const TemplatePage: NextPage = () => {
     onSuccess: () => refetch(),
   });
 
+  const { mutate: cloneConfiguration } = api.configuration.clone.useMutation({
+    onSuccess: () => refetch(),
+  });
+
   const sortedConfigurations = useMemo(() => {
-    return configurations
-      ?.filter(
-        (configurations) =>
-          configurations.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      )
-      .sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
-  }, [configurations, search]);
+    return configurations?.sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+  }, [configurations]);
+
+  const filteredConfigurations = useMemo(() => {
+    return sortedConfigurations?.filter(
+      (configuration) =>
+        configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+    );
+  }, [sortedConfigurations, search]);
+
+  function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
+    if (filesContent.length > 0) {
+      const file = filesContent[0];
+      if (template && file) {
+        addConfiguration({
+          templateId: template.id,
+          name: name,
+          content: file.content,
+        });
+      }
+    }
+  }
+
+  function handleClone(id: string, name: string) {
+    if (template) {
+      cloneConfiguration({
+        id: id,
+        name: name,
+      });
+    }
+  }
 
   const handleAdd = () => {
     openFileSelector();
@@ -127,7 +148,7 @@ const TemplatePage: NextPage = () => {
       </HStack>
       <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
         <HStack width={"full"}>
-          <Button onClick={handleAdd} variant={"custom"}>
+          <Button onClick={onOpen} isLoading={isOpen} variant={"custom"}>
             Add configuration
           </Button>
           <Input
@@ -139,16 +160,27 @@ const TemplatePage: NextPage = () => {
         <Box width={"full"}>
           <Card>
             <Stack divider={<StackDivider />} spacing={0}>
-              {sortedConfigurations?.map((configuration, idx) => (
+              {filteredConfigurations?.map((configuration, idx) => (
                 <ConfigurationListItem
                   key={idx}
                   configuration={configuration}
+                  handleDelete={() => handleDelete(configuration.id)}
                 />
               ))}
             </Stack>
           </Card>
         </Box>
       </VStack>
+      <AddConfigurationDialog
+        isOpen={isOpen}
+        onClose={onClose}
+        openFileSelector={handleAdd}
+        clearFileSelection={clear}
+        fileContent={filesContent}
+        uploadFile={uploadFile}
+        configurations={sortedConfigurations || []}
+        cloneConfiguration={handleClone}
+      />
     </>
   );
 };
@@ -157,9 +189,14 @@ export default TemplatePage;
 
 const ConfigurationListItem = ({
   configuration,
+  handleDelete,
 }: {
   configuration: Configuration;
+  handleDelete: () => void;
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const cancelRef = useRef<FocusableElement | null>(null);
   return (
     <>
       <HStack spacing={8} p={4} width={"full"}>
@@ -208,11 +245,22 @@ const ConfigurationListItem = ({
               }}
             >
               <MenuItem>Edit</MenuItem>
-              <MenuItem onClick={() => void {}}>Delete</MenuItem>
+              <MenuItem onClick={onOpen}>Delete</MenuItem>
             </MenuList>
           </Menu>
         </HStack>
       </HStack>
+      <ConfirmationDialog
+        leastDestructiveRef={cancelRef}
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirmation={() => {
+          handleDelete();
+          onClose();
+        }}
+        title={"Delete configuration?"}
+        body={`Are you sure you want to delete configuration ${configuration.name}? You can't undo this action afterwards.`}
+      />
     </>
   );
 };

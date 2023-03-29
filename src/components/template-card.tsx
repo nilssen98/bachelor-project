@@ -15,17 +15,25 @@ import { CiEdit } from "react-icons/ci";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import ReactTimeAgo from "react-time-ago";
 import GradientAvatar from "./gradient-avatar";
+import { useDisclosure } from "@chakra-ui/react-use-disclosure";
+import { FocusableElement } from "@chakra-ui/utils";
+import ConfirmationDialog from "./confirmation-dialog";
+import { useRef } from "react";
 
 interface Props {
   name: string;
   files: number;
   lastModified?: number | Date;
-  onDelete?: () => void;
+  onDelete: () => void;
   onClick?: () => void;
   onEdit?: () => void;
 }
 
 export default function TemplateCard(props: Props) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const cancelRef = useRef<FocusableElement | null>(null);
+
   return (
     <>
       <Card
@@ -50,7 +58,7 @@ export default function TemplateCard(props: Props) {
                 </Text>
               </Tooltip>
               <Text textColor={"whiteAlpha.600"}>
-                {props.files} configurations
+                {`${props.files} configuration${props.files !== 1 ? "s" : ""}`}
               </Text>
             </VStack>
             <Menu>
@@ -68,7 +76,7 @@ export default function TemplateCard(props: Props) {
                 }}
               >
                 <MenuItem>Edit</MenuItem>
-                <MenuItem onClick={props.onDelete}>Delete</MenuItem>
+                <MenuItem onClick={onOpen}>Delete</MenuItem>
               </MenuList>
             </Menu>
           </HStack>
@@ -84,6 +92,19 @@ export default function TemplateCard(props: Props) {
           </HStack>
         </VStack>
       </Card>
+      <ConfirmationDialog
+        leastDestructiveRef={cancelRef}
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirmation={() => {
+          props.onDelete();
+          onClose();
+        }}
+        title={"Delete template?"}
+        body={`Are you sure you want to delete template ${props.name}?
+         All configurations belonging to this template will also be deleted!
+         You can't undo this action afterwards.`}
+      />
     </>
   );
 }
