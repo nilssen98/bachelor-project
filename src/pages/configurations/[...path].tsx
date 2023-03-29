@@ -40,8 +40,7 @@ const ConfigurationPage: NextPage = () => {
   }, [router]);
 
   useEffect(() => {
-    if (!path) return;
-    if (initialPath.length === 0) {
+    if (initialPath.length === 0 && path) {
       setInitialPath(path);
     }
   }, [path]);

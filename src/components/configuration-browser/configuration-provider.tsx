@@ -106,7 +106,7 @@ const useConfigRouter = ({
   const push = (slug: string) => {
     const newPath = [...path];
     const currentContent = content[content.length - 2] as Prisma.JsonObject;
-    if (currentContent?.[slug]) {
+    if (Object.keys(currentContent).includes(slug)) {
       newPath.pop();
       newPath.push(slug);
     } else {

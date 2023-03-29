@@ -14,7 +14,7 @@ export default function ConfigurationContent() {
   const router = useConfigurationRouter();
   const [offsetX, setOffsetX] = useState(0);
 
-  const [sections, setSections] = useState<number>(2);
+  const [sections] = useState<number>(2);
 
   useEffect(() => {
     if (content.length <= sections) {
