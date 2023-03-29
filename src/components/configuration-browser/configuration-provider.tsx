@@ -38,22 +38,24 @@ function ConfigurationProvider(props: ProviderProps) {
   const router = useConfigRouter({ content, initialPath: props.path });
 
   useEffect(() => {
-    // Check if the path is valid
-    setIsValidPath(
-      true
-      // router.path.every((slug, idx) => {
-      //   return content?.[idx]?.[slug] !== undefined;
-      // })
-    );
-
-    // Update the content when the path changes
-    setContent([
+    const newContent = [
       configuration,
       ...router.path.map((_, idx) =>
         getConfigurationFromPath(router.path.slice(0, idx + 1))
       ),
-    ]);
-  }, [router.path, configuration]);
+    ];
+
+    // Check if the path is valid
+    const isValid = router.path.every((slug, idx) => {
+      console.log(Object.keys(newContent[idx] || {}));
+      return Object.keys(newContent[idx] || {}).includes(slug);
+    });
+
+    setIsValidPath(isValid);
+
+    // Update the content when the path changes
+    setContent(newContent);
+  }, [router.path]);
 
   useEffect(() => {
     if (props.onPathChange) {
@@ -88,7 +90,6 @@ const useConfigRouter = ({
   initialPath?: string[];
   content: Prisma.JsonValue[];
 }) => {
-  // const { content } = useContext(ConfigurationContext);
   const [path, setPath] = useState<string[]>([]);
 
   useEffect(() => {
@@ -105,8 +106,9 @@ const useConfigRouter = ({
 
   const push = (slug: string) => {
     const newPath = [...path];
-    const currentContent = content[content.length - 2] as Prisma.JsonObject;
-    if (Object.keys(currentContent).includes(slug)) {
+    const currentContent =
+      (content[content.length - 2] as Prisma.JsonObject) || undefined;
+    if (currentContent && Object.keys(currentContent).includes(slug)) {
       newPath.pop();
       newPath.push(slug);
     } else {
