@@ -14,7 +14,7 @@ export default function ConfigurationContent() {
   const router = useConfigurationRouter();
   const [offsetX, setOffsetX] = useState(0);
 
-  const [sections, setSections] = useState<number>(2);
+  const [sections] = useState<number>(2);
 
   useEffect(() => {
     if (content.length <= sections) {
@@ -50,7 +50,7 @@ export default function ConfigurationContent() {
             borderColor={"whiteAlpha.400"}
             overflowY={"auto"}
           >
-            {Object.entries(item).map(([key, val], idx2) => (
+            {Object.entries(item || {}).map(([key, val], idx2) => (
               <ConfigurationField
                 onClick={() => router.push(key)}
                 key={idx2}

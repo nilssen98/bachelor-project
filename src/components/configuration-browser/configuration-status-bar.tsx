@@ -6,35 +6,48 @@ import {
   HStack,
   Icon,
   Text,
-  useTheme,
 } from "@chakra-ui/react";
 import { MdErrorOutline } from "react-icons/md";
+import type { ValidationError } from "../../utils/validator/types";
+import {
+  useConfiguration,
+  useConfigurationRouter,
+} from "./configuration-provider";
 
-interface Props {
-  errors?: string[];
-}
+export default function ConfigurationStatusBar() {
+  const { errors } = useConfiguration();
+  const router = useConfigurationRouter();
 
-export default function ConfigurationStatusBar(props: Props) {
+  const handleClick = (error: ValidationError) => {
+    router.set(error.path.split("/").filter((p) => p !== ""));
+  };
+
   return (
     <>
       <Accordion allowToggle>
         <AccordionItem border={0}>
-          {props.errors &&
-            props.errors.map((error, idx) => (
+          {errors &&
+            errors.map((error, idx) => (
               <AccordionPanel
-                px={4}
-                py={2}
+                p={0}
+                onClick={() => handleClick}
                 sx={{ borderBottom: "1px solid", borderColor: "gray.700" }}
                 key={idx}
               >
-                {idx} - {error}
+                <AccordionButton
+                  onClick={() => handleClick(error)}
+                  sx={{ "&:hover": { background: "gray.900" } }}
+                >
+                  {idx}: {error.path === "" ? "root" : error.path} -{" "}
+                  {error.message}
+                </AccordionButton>
               </AccordionPanel>
             ))}
           <AccordionButton>
-            {props.errors && props.errors.length > 0 ? (
+            {errors && errors.length > 0 ? (
               <HStack>
                 <Icon as={MdErrorOutline} color={"red.500"} />
-                <Text>{props.errors.length} Errors found</Text>
+                <Text>{errors.length} Errors found</Text>
               </HStack>
             ) : (
               <Text color={"gray.500"}>No errors found</Text>

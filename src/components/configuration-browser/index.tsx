@@ -1,3 +1,4 @@
+import type { StackProps } from "@chakra-ui/react";
 import {
   Box,
   Text,
@@ -18,7 +19,7 @@ const defaultErrors = [
   "/metadata/ missing required property 'keywords'",
 ];
 
-export default function ConfigurationBrowser() {
+export default function ConfigurationBrowser(props: StackProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const { isValidPath } = useConfiguration();
 
@@ -43,17 +44,17 @@ export default function ConfigurationBrowser() {
             height={"100%"}
             divider={<StackDivider />}
             spacing={0}
+            {...props}
           >
             <ConfigurationToolbar
               onSave={handleSave}
               searchValue={searchValue}
               onSearchValueChanged={(newValue) => setSearchValue(newValue)}
-              errors={defaultErrors}
               onClickErrors={handleClickErrors}
             />
             <ConfigurationNavigation />
             <ConfigurationContent />
-            <ConfigurationStatusBar errors={defaultErrors} />
+            <ConfigurationStatusBar />
           </Stack>
         </CardBody>
       </Card>

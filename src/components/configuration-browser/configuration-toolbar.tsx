@@ -9,16 +9,17 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { MdErrorOutline, MdSave, MdSearch } from "react-icons/md";
+import { useConfiguration } from "./configuration-provider";
 
 interface Props {
   onSave?: () => void;
   onClickErrors?: () => void;
-  errors?: string[];
   searchValue: string;
   onSearchValueChanged: (newValue: string) => void;
 }
 
 export default function ConfigurationToolbar(props: Props) {
+  const { errors } = useConfiguration();
   return (
     <>
       <Stack direction={"row"} divider={<StackDivider />}>
@@ -32,7 +33,7 @@ export default function ConfigurationToolbar(props: Props) {
         </Button>
         <Button
           leftIcon={
-            props.errors && props.errors.length > 0 ? (
+            errors && errors.length > 0 ? (
               <Icon as={MdErrorOutline} color={"red.500"} />
             ) : undefined
           }
@@ -40,8 +41,8 @@ export default function ConfigurationToolbar(props: Props) {
           onClick={props.onClickErrors}
           variant={"text"}
         >
-          {props.errors && props.errors.length > 0 ? (
-            <Text fontWeight={400}>{props.errors.length} Errors</Text>
+          {errors && errors.length > 0 ? (
+            <Text fontWeight={400}>{errors.length} Errors</Text>
           ) : (
             <Text color={"gray.500"}>No errors</Text>
           )}
