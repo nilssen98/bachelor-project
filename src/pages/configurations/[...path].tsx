@@ -40,14 +40,13 @@ const ConfigurationPage: NextPage = () => {
   }, [router]);
 
   useEffect(() => {
-    if (initialPath.length === 0 && path) {
-      console.log("Setting initial path", path);
+    if (!path) return;
+    if (initialPath.length === 0) {
       setInitialPath(path);
     }
   }, [path]);
 
   const handlePathChange = (newPath: string[]) => {
-    console.log("Changing the path to:", newPath);
     if (path?.toString() !== newPath.toString()) {
       void router.push(`/configurations/${id}/${newPath.join("/")}`);
     }
@@ -77,7 +76,7 @@ const ConfigurationPage: NextPage = () => {
         errors={configuration.errors}
         schema={template?.content as Prisma.JsonObject}
         onPathChange={(path) => void handlePathChange(path)}
-        initialPath={path}
+        path={path}
       >
         <ConfigurationBrowser />
       </ConfigurationProvider>
