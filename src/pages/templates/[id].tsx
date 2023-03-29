@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/back-button";
 import { useFilePicker } from "use-file-picker";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
 import ReactTimeAgo from "react-time-ago";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -30,6 +30,9 @@ import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
 import { MdSettings } from "react-icons/md";
+import { useDisclosure } from "@chakra-ui/react-use-disclosure";
+import { FocusableElement } from "@chakra-ui/utils";
+import ConfirmationDialog from "../../components/confirmation-dialog";
 import AddConfigurationDialog from "../../components/add-configuration-dialog";
 
 const TemplatePage: NextPage = () => {
@@ -162,6 +165,7 @@ const TemplatePage: NextPage = () => {
                 <ConfigurationListItem
                   key={idx}
                   configuration={configuration}
+                  handleDelete={() => handleDelete(configuration.id)}
                 />
               ))}
             </Stack>
@@ -186,9 +190,14 @@ export default TemplatePage;
 
 const ConfigurationListItem = ({
   configuration,
+  handleDelete,
 }: {
   configuration: Configuration;
+  handleDelete: () => void;
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const cancelRef = useRef<FocusableElement | null>(null);
   return (
     <>
       <HStack spacing={8} p={4} width={"full"}>
@@ -237,11 +246,22 @@ const ConfigurationListItem = ({
               }}
             >
               <MenuItem>Edit</MenuItem>
-              <MenuItem onClick={() => void {}}>Delete</MenuItem>
+              <MenuItem onClick={onOpen}>Delete</MenuItem>
             </MenuList>
           </Menu>
         </HStack>
       </HStack>
+      <ConfirmationDialog
+        leastDestructiveRef={cancelRef}
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirmation={() => {
+          handleDelete();
+          onClose();
+        }}
+        title={"Delete configuration?"}
+        body={`Are you sure you want to delete configuration ${configuration.name}? You can't undo this action afterwards.`}
+      />
     </>
   );
 };
