@@ -212,12 +212,6 @@ export default function AddConfigurationDialog(props: Props) {
 
   function getFooterButton() {
     switch (step) {
-      case Step.ChooseAction:
-        return (
-          <Button colorScheme={"blue"} onClick={handleClose}>
-            Close
-          </Button>
-        );
       case Step.UploadFile:
       case Step.CloneExisting:
         return (
@@ -234,7 +228,7 @@ export default function AddConfigurationDialog(props: Props) {
         );
       default:
         return (
-          <Button colorScheme={"blue"} onClick={props.onClose}>
+          <Button colorScheme={"blue"} onClick={handleClose}>
             Close
           </Button>
         );
