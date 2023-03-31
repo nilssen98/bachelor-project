@@ -147,12 +147,12 @@ export default function AddConfigurationDialog(props: Props) {
         return (
           <>
             <VStack alignItems={"flex-start"} spacing={2}>
-              <Text>Clone an already existing configuration</Text>
               <RenameDialog
                 type={"configuration"}
                 name={configurationName}
                 setName={setConfigurationName}
               />
+              <Text>Choose a configuration to clone</Text>
               <Select<ConfigurationOption>
                 useBasicStyles
                 isMulti={false}
@@ -223,7 +223,10 @@ export default function AddConfigurationDialog(props: Props) {
         return (
           <Button
             colorScheme={"blue"}
-            isDisabled={isTemplateNameBlank()}
+            isDisabled={
+              isTemplateNameBlank() ||
+              !(isFileSelected() || selectedConfiguration !== null)
+            }
             onClick={getFooterAction()}
           >
             Submit
