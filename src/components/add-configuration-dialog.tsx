@@ -154,12 +154,6 @@ export default function AddConfigurationDialog(props: Props) {
         return (
           <>
             <VStack alignItems={"flex-start"} spacing={2}>
-              <RenameDialog
-                type={"configuration"}
-                name={configurationName}
-                setName={setConfigurationName}
-              />
-              <Spacer />
               <Text>Choose a configuration to clone</Text>
               <Select<ConfigurationOption>
                 useBasicStyles
@@ -178,6 +172,12 @@ export default function AddConfigurationDialog(props: Props) {
                   value: configuration.id,
                   label: configuration.name,
                 }))}
+              />
+              <Spacer py={1} />
+              <RenameDialog
+                type={"configuration"}
+                name={configurationName}
+                setName={setConfigurationName}
               />
             </VStack>
           </>
