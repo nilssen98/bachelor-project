@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button, Spacer } from "@chakra-ui/react";
 import {
   Modal,
   ModalBody,
@@ -9,15 +10,9 @@ import {
   ModalOverlay,
 } from "@chakra-ui/modal";
 import type { ModalProps } from "@chakra-ui/modal";
-import { Button, Input, Text, VStack } from "@chakra-ui/react";
 import type { FileContent } from "use-file-picker";
 import DialogFileChooser from "./dialog-file-chooser";
 import RenameDialog from "./rename-dialog";
-
-enum Steps {
-  UploadFile = 0,
-  SetName = 1,
-}
 
 type Props = {
   openFileSelector: () => void;
@@ -27,63 +22,29 @@ type Props = {
 } & Omit<ModalProps, "children">;
 
 export default function AddTemplateDialog(props: Props) {
-  const [step, setStep] = useState<Steps>(Steps.UploadFile);
   const [templateName, setTemplateName] = useState<string>("");
 
   useEffect(() => {
-    if (step === Steps.SetName) {
-      setTemplateName(props.fileContent[0]?.name.split(".")[0] || "");
-    }
-  }, [step, props.fileContent]);
-
-  function getTitle() {
-    switch (step) {
-      case Steps.UploadFile:
-        return "Upload Template";
-      case Steps.SetName:
-        return "Set Template Name";
-    }
-  }
-
-  function getBodyText() {
-    switch (step) {
-      case Steps.SetName:
-        return "Choose a name for the template";
-    }
-  }
+    setTemplateName(props.fileContent[0]?.name.split(".")[0] || "");
+  }, [props.fileContent]);
 
   function getBody() {
-    switch (step) {
-      case Steps.UploadFile:
-        return (
-          <>
-            <DialogFileChooser
-              type={"schema"}
-              openFileSelector={props.openFileSelector}
-              clearFileSelection={props.clearFileSelection}
-              fileContent={props.fileContent}
-            />
-          </>
-        );
-      case Steps.SetName:
-        return (
-          <>
-            <RenameDialog
-              type={"template"}
-              name={templateName}
-              setName={setTemplateName}
-            />
-          </>
-        );
-    }
-  }
-
-  function goBack() {
-    setStep(step - 1);
-  }
-
-  function goNext() {
-    setStep(step + 1);
+    return (
+      <>
+        <DialogFileChooser
+          type={"schema"}
+          openFileSelector={props.openFileSelector}
+          clearFileSelection={props.clearFileSelection}
+          fileContent={props.fileContent}
+        />
+        <Spacer py={4} />
+        <RenameDialog
+          type={"template"}
+          name={templateName}
+          setName={setTemplateName}
+        />
+      </>
+    );
   }
 
   function isFileSelected() {
@@ -95,45 +56,39 @@ export default function AddTemplateDialog(props: Props) {
   }
 
   function handleClose() {
-    setStep(Steps.UploadFile);
     props.clearFileSelection();
     props.onClose();
   }
 
   function handleUpload() {
     props.uploadFile(templateName);
-    setStep(Steps.UploadFile);
     props.clearFileSelection();
     props.onClose();
   }
 
   return (
     <>
-      <Modal isCentered {...props} onClose={handleClose}>
+      <Modal isCentered {...props} onCloseComplete={handleClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{getTitle()}</ModalHeader>
-          <ModalCloseButton onClick={handleClose} />
+          <ModalHeader>Upload Template</ModalHeader>
+          <ModalCloseButton />
           <ModalBody>{getBody()}</ModalBody>
           <ModalFooter>
             <Button
               colorScheme={"blue"}
               variant={"ghost"}
               mr={3}
-              onClick={step === Steps.UploadFile ? handleClose : goBack}
+              onClick={handleClose}
             >
-              {step === Steps.UploadFile ? "Cancel" : "Back"}
+              Close
             </Button>
             <Button
               colorScheme={"blue"}
-              isDisabled={
-                step === Steps.UploadFile
-                  ? !isFileSelected()
-                  : isTemplateNameBlank()
-              }
-              onClick={step === Steps.UploadFile ? goNext : handleUpload}
+              isDisabled={isTemplateNameBlank() || !isFileSelected()}
+              onClick={handleUpload}
             >
-              {step === Steps.UploadFile ? "Next" : "Confirm"}
+              Submit
             </Button>
           </ModalFooter>
         </ModalContent>
