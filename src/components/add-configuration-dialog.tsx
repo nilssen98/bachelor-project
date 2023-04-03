@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, HStack, IconButton, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  IconButton,
+  Spacer,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import {
   Modal,
   ModalBody,
@@ -28,14 +35,11 @@ export type ConfigurationOption = Configuration & {
   label: string;
 };
 
-enum Steps {
+enum Step {
   ChooseAction = 0,
   CreateNew = 1,
   CloneExisting = 2,
   UploadFile = 3,
-  NewName = 4,
-  CloneName = 5,
-  UploadName = 6,
 }
 
 type Props = {
@@ -48,7 +52,7 @@ type Props = {
 } & Omit<ModalProps, "children">;
 
 export default function AddConfigurationDialog(props: Props) {
-  const [step, setStep] = useState<Steps>(Steps.ChooseAction);
+  const [step, setStep] = useState<Step>(Step.ChooseAction);
   const [configurationName, setConfigurationName] = useState<string>("");
   const [selectedConfiguration, setSelectedConfiguration] =
     useState<ConfigurationOption | null>(null);
@@ -63,39 +67,36 @@ export default function AddConfigurationDialog(props: Props) {
 
   function getTitle() {
     switch (step) {
-      case Steps.ChooseAction:
+      case Step.ChooseAction:
         return "Add Configuration";
-      case Steps.CreateNew:
+      case Step.CreateNew:
         return "Create New Configuration";
-      case Steps.CloneExisting:
+      case Step.CloneExisting:
         return "Clone Configuration";
-      case Steps.UploadFile:
+      case Step.UploadFile:
         return "Upload Configuration";
-      case Steps.CloneName:
-      case Steps.UploadName:
-        return "Configuration Name";
     }
   }
 
-  function getCardButton(step: Steps) {
+  function getCardButton(step: Step) {
     function getIcon() {
       switch (step) {
-        case Steps.CreateNew:
+        case Step.CreateNew:
           return AiOutlineFileAdd;
-        case Steps.CloneExisting:
+        case Step.CloneExisting:
           return AiOutlineCopy;
-        case Steps.UploadFile:
+        case Step.UploadFile:
           return BsFiletypeJson;
       }
     }
 
     function getText() {
       switch (step) {
-        case Steps.CreateNew:
+        case Step.CreateNew:
           return "Create a new configuration from scratch";
-        case Steps.CloneExisting:
+        case Step.CloneExisting:
           return "Create a copy of an already existing configuration";
-        case Steps.UploadFile:
+        case Step.UploadFile:
           return "Upload a configuration from a JSON file";
       }
     }
@@ -127,34 +128,33 @@ export default function AddConfigurationDialog(props: Props) {
 
   function getBody() {
     switch (step) {
-      case Steps.ChooseAction:
+      case Step.ChooseAction:
         return (
           <>
             <HStack>
-              {Object.values(Steps).reduce((acc: JSX.Element[], key) => {
+              {Object.values(Step).reduce((acc: JSX.Element[], key) => {
                 if (
-                  typeof Steps[key as keyof typeof Steps] === "number" &&
-                  Steps[key as keyof typeof Steps] !== Steps.ChooseAction &&
-                  Steps[key as keyof typeof Steps] < Steps.NewName
+                  typeof Step[key as keyof typeof Step] === "number" &&
+                  Step[key as keyof typeof Step] !== Step.ChooseAction
                 ) {
-                  acc.push(getCardButton(Steps[key as keyof typeof Steps]));
+                  acc.push(getCardButton(Step[key as keyof typeof Step]));
                 }
                 return acc;
               }, [])}
             </HStack>
           </>
         );
-      case Steps.CreateNew:
+      case Step.CreateNew:
         return (
           <>
             <Text>Create new</Text>
           </>
         );
-      case Steps.CloneExisting:
+      case Step.CloneExisting:
         return (
           <>
             <VStack alignItems={"flex-start"} spacing={2}>
-              <Text>Clone an already existing configuration</Text>
+              <Text>Choose a configuration to clone</Text>
               <Select<ConfigurationOption>
                 useBasicStyles
                 isMulti={false}
@@ -173,10 +173,16 @@ export default function AddConfigurationDialog(props: Props) {
                   label: configuration.name,
                 }))}
               />
+              <Spacer py={1} />
+              <RenameDialog
+                type={"configuration"}
+                name={configurationName}
+                setName={setConfigurationName}
+              />
             </VStack>
           </>
         );
-      case Steps.UploadFile:
+      case Step.UploadFile:
         return (
           <>
             <DialogFileChooser
@@ -185,12 +191,7 @@ export default function AddConfigurationDialog(props: Props) {
               clearFileSelection={props.clearFileSelection}
               fileContent={props.fileContent}
             />
-          </>
-        );
-      case Steps.UploadName:
-      case Steps.CloneName:
-        return (
-          <>
+            <Spacer py={4} />
             <RenameDialog
               type={"configuration"}
               name={configurationName}
@@ -203,20 +204,12 @@ export default function AddConfigurationDialog(props: Props) {
 
   function getFooterAction() {
     switch (step) {
-      case Steps.CloneExisting:
-        return () => {
-          setStep(Steps.CloneName);
-        };
-      case Steps.UploadFile:
-        return () => {
-          setStep(Steps.UploadName);
-        };
-      case Steps.UploadName:
+      case Step.UploadFile:
         return () => {
           props.uploadFile(configurationName);
           handleClose();
         };
-      case Steps.CloneName:
+      case Step.CloneExisting:
         return () => {
           handleClone();
           handleClose();
@@ -228,33 +221,15 @@ export default function AddConfigurationDialog(props: Props) {
 
   function getFooterButton() {
     switch (step) {
-      case Steps.ChooseAction:
-        return (
-          <Button colorScheme={"blue"} onClick={handleClose}>
-            Close
-          </Button>
-        );
-      case Steps.UploadFile:
-      case Steps.CloneExisting:
+      case Step.UploadFile:
+      case Step.CloneExisting:
         return (
           <Button
             colorScheme={"blue"}
             isDisabled={
-              step === Steps.UploadFile
-                ? !isFileSelected()
-                : selectedConfiguration === null
+              isTemplateNameBlank() ||
+              !(isFileSelected() || selectedConfiguration !== null)
             }
-            onClick={getFooterAction()}
-          >
-            Next
-          </Button>
-        );
-      case Steps.UploadName:
-      case Steps.CloneName:
-        return (
-          <Button
-            colorScheme={"blue"}
-            isDisabled={isTemplateNameBlank()}
             onClick={getFooterAction()}
           >
             Submit
@@ -262,7 +237,7 @@ export default function AddConfigurationDialog(props: Props) {
         );
       default:
         return (
-          <Button colorScheme={"blue"} onClick={props.onClose}>
+          <Button colorScheme={"blue"} onClick={handleClose}>
             Close
           </Button>
         );
@@ -271,28 +246,22 @@ export default function AddConfigurationDialog(props: Props) {
 
   function handleBack() {
     switch (step) {
-      case Steps.CreateNew:
-        setStep(Steps.ChooseAction);
+      case Step.CreateNew:
+        setStep(Step.ChooseAction);
         break;
-      case Steps.CloneName:
-        setStep(Steps.CloneExisting);
-        break;
-      case Steps.CloneExisting:
-        setStep(Steps.ChooseAction);
+      case Step.CloneExisting:
+        setStep(Step.ChooseAction);
         setSelectedConfiguration(null);
         break;
-      case Steps.UploadFile:
+      case Step.UploadFile:
         props.clearFileSelection();
-        setStep(Steps.ChooseAction);
-        break;
-      case Steps.UploadName:
-        setStep(Steps.UploadFile);
+        setStep(Step.ChooseAction);
         break;
     }
   }
 
   function handleClose() {
-    setStep(Steps.ChooseAction);
+    setStep(Step.ChooseAction);
     setSelectedConfiguration(null);
     props.clearFileSelection();
     props.onClose();
@@ -318,17 +287,17 @@ export default function AddConfigurationDialog(props: Props) {
       <Modal
         isCentered
         {...props}
-        size={step === Steps.ChooseAction ? "xl" : "md"}
+        size={step === Step.ChooseAction ? "xl" : "md"}
         onCloseComplete={handleClose}
       >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{getTitle()}</ModalHeader>
-          <ModalCloseButton onClick={handleClose} />
+          <ModalCloseButton />
           <ModalBody>{getBody()}</ModalBody>
           <ModalFooter>
             <HStack spacing={2}>
-              {step !== Steps.ChooseAction && (
+              {step !== Step.ChooseAction && (
                 <Button variant={"ghost"} onClick={handleBack}>
                   Back
                 </Button>
