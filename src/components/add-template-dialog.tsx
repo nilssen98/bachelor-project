@@ -25,7 +25,7 @@ export default function AddTemplateDialog(props: Props) {
   const [templateName, setTemplateName] = useState<string>("");
 
   useEffect(() => {
-    setTemplateName(props.fileContent[0]?.name.split(".")[0] || "");
+    setTemplateName(props.fileContent[0]?.name.split(".json")[0] || "");
   }, [props.fileContent]);
 
   function getBody() {
