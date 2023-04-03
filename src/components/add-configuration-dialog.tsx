@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, HStack, IconButton, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  IconButton,
+  Spacer,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import {
   Modal,
   ModalBody,
@@ -152,6 +159,7 @@ export default function AddConfigurationDialog(props: Props) {
                 name={configurationName}
                 setName={setConfigurationName}
               />
+              <Spacer />
               <Text>Choose a configuration to clone</Text>
               <Select<ConfigurationOption>
                 useBasicStyles
@@ -183,6 +191,7 @@ export default function AddConfigurationDialog(props: Props) {
               clearFileSelection={props.clearFileSelection}
               fileContent={props.fileContent}
             />
+            <Spacer py={4} />
             <RenameDialog
               type={"configuration"}
               name={configurationName}
