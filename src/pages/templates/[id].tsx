@@ -1,4 +1,4 @@
-import { type NextPage } from "next";
+import type { NextPage } from "next";
 import {
   Button,
   HStack,
@@ -17,6 +17,8 @@ import {
   MenuItem,
   MenuList,
   useDisclosure,
+  MenuOptionGroup,
+  MenuItemOption,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
@@ -29,7 +31,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
-import { MdSettings } from "react-icons/md";
+import { MdFilterList, MdSettings } from "react-icons/md";
 import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/confirmation-dialog";
 import AddConfigurationDialog from "../../components/add-configuration-dialog";
@@ -156,6 +158,30 @@ const TemplatePage: NextPage = () => {
             placeholder={"Search"}
             onChange={(e) => setSearch(e.target.value)}
           />
+          <Menu closeOnSelect={false}>
+            <MenuButton
+              as={Button}
+              aria-label={"Options"}
+              leftIcon={<MdFilterList />}
+              variant={"outline"}
+              sx={{
+                flexShrink: 0,
+              }}
+            >
+              <Text>Filter</Text>
+            </MenuButton>
+            <MenuList>
+              <MenuOptionGroup
+                title={"Show"}
+                defaultValue={"all"}
+                type={"radio"}
+              >
+                <MenuItemOption value={"all"}>All</MenuItemOption>
+                <MenuItemOption value={"valid"}>Valid only</MenuItemOption>
+                <MenuItemOption value={"invalid"}>Invalid only</MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
         </HStack>
         <Box width={"full"}>
           <Card>
