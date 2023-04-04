@@ -38,6 +38,7 @@ import AddConfigurationDialog from "../../components/add-configuration-dialog";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
+  const [showValid, setShowValid] = useState<boolean | null>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -88,11 +89,18 @@ const TemplatePage: NextPage = () => {
   }, [configurations]);
 
   const filteredConfigurations = useMemo(() => {
-    return sortedConfigurations?.filter(
-      (configuration) =>
-        configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-    );
-  }, [sortedConfigurations, search]);
+    return sortedConfigurations
+      ?.filter((configuration) => {
+        if (showValid === null) {
+          return true;
+        }
+        return configuration.valid === showValid;
+      })
+      .filter(
+        (configuration) =>
+          configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+      );
+  }, [sortedConfigurations, showValid, search]);
 
   function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
     if (filesContent.length > 0) {
@@ -176,9 +184,30 @@ const TemplatePage: NextPage = () => {
                 defaultValue={"all"}
                 type={"radio"}
               >
-                <MenuItemOption value={"all"}>All</MenuItemOption>
-                <MenuItemOption value={"valid"}>Valid only</MenuItemOption>
-                <MenuItemOption value={"invalid"}>Invalid only</MenuItemOption>
+                <MenuItemOption
+                  value={"all"}
+                  onClick={() => {
+                    setShowValid(null);
+                  }}
+                >
+                  All
+                </MenuItemOption>
+                <MenuItemOption
+                  value={"valid"}
+                  onClick={() => {
+                    setShowValid(true);
+                  }}
+                >
+                  Valid only
+                </MenuItemOption>
+                <MenuItemOption
+                  value={"invalid"}
+                  onClick={() => {
+                    setShowValid(false);
+                  }}
+                >
+                  Invalid only
+                </MenuItemOption>
               </MenuOptionGroup>
             </MenuList>
           </Menu>
