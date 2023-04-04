@@ -90,12 +90,10 @@ const TemplatePage: NextPage = () => {
 
   const filteredConfigurations = useMemo(() => {
     return sortedConfigurations
-      ?.filter((configuration) => {
-        if (showValid === null) {
-          return true;
-        }
-        return configuration.valid === showValid;
-      })
+      ?.filter(
+        (configuration) =>
+          showValid === null || configuration.valid === showValid
+      )
       .filter(
         (configuration) =>
           configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
@@ -166,7 +164,7 @@ const TemplatePage: NextPage = () => {
             placeholder={"Search"}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Menu closeOnSelect={false}>
+          <Menu>
             <MenuButton
               as={Button}
               aria-label={"Options"}
@@ -176,7 +174,7 @@ const TemplatePage: NextPage = () => {
                 flexShrink: 0,
               }}
             >
-              <Text>Filter</Text>
+              Filter
             </MenuButton>
             <MenuList>
               <MenuOptionGroup
@@ -284,7 +282,7 @@ const ConfigurationListItem = ({
               created <ReactTimeAgo date={configuration.updatedAt} />
             </Text>
           )}
-          <Menu>
+          <Menu isLazy>
             <MenuButton
               color={"whiteAlpha.600"}
               background={"none"}
