@@ -1,4 +1,4 @@
-import { type NextPage } from "next";
+import type { NextPage } from "next";
 import {
   Button,
   HStack,
@@ -17,6 +17,8 @@ import {
   MenuItem,
   MenuList,
   useDisclosure,
+  MenuOptionGroup,
+  MenuItemOption,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
@@ -29,13 +31,14 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
-import { MdSettings } from "react-icons/md";
+import { MdFilterList, MdSettings } from "react-icons/md";
 import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/confirmation-dialog";
 import AddConfigurationDialog from "../../components/add-configuration-dialog";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
+  const [showValid, setShowValid] = useState<boolean | null>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -86,11 +89,16 @@ const TemplatePage: NextPage = () => {
   }, [configurations]);
 
   const filteredConfigurations = useMemo(() => {
-    return sortedConfigurations?.filter(
-      (configuration) =>
-        configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-    );
-  }, [sortedConfigurations, search]);
+    return sortedConfigurations
+      ?.filter(
+        (configuration) =>
+          showValid === null || configuration.valid === showValid
+      )
+      .filter(
+        (configuration) =>
+          configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+      );
+  }, [sortedConfigurations, showValid, search]);
 
   function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
     if (filesContent.length > 0) {
@@ -156,6 +164,64 @@ const TemplatePage: NextPage = () => {
             placeholder={"Search"}
             onChange={(e) => setSearch(e.target.value)}
           />
+          <Menu>
+            <MenuButton
+              as={Button}
+              aria-label={"Options"}
+              leftIcon={<MdFilterList />}
+              variant={"outline"}
+              sx={{
+                flexShrink: 0,
+                position: "relative",
+              }}
+            >
+              <Text>Filter</Text>
+              <Box
+                top={-0.5}
+                right={-0.5}
+                bg={"red.500"}
+                borderRadius={"50%"}
+                height={1}
+                width={1}
+                sx={{
+                  display: showValid !== null ? "block" : "none",
+                  position: "absolute",
+                }}
+              />
+            </MenuButton>
+            <MenuList>
+              <MenuOptionGroup
+                title={"Show"}
+                defaultValue={"all"}
+                type={"radio"}
+              >
+                <MenuItemOption
+                  value={"all"}
+                  onClick={() => {
+                    setShowValid(null);
+                  }}
+                >
+                  All
+                </MenuItemOption>
+                <MenuItemOption
+                  value={"valid"}
+                  onClick={() => {
+                    setShowValid(true);
+                  }}
+                >
+                  Valid only
+                </MenuItemOption>
+                <MenuItemOption
+                  value={"invalid"}
+                  onClick={() => {
+                    setShowValid(false);
+                  }}
+                >
+                  Invalid only
+                </MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
         </HStack>
         <Box width={"full"}>
           <Card>
@@ -229,7 +295,7 @@ const ConfigurationListItem = ({
               created <ReactTimeAgo date={configuration.updatedAt} />
             </Text>
           )}
-          <Menu>
+          <Menu isLazy>
             <MenuButton
               color={"whiteAlpha.600"}
               background={"none"}
