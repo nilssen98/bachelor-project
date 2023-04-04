@@ -172,9 +172,22 @@ const TemplatePage: NextPage = () => {
               variant={"outline"}
               sx={{
                 flexShrink: 0,
+                position: "relative",
               }}
             >
-              Filter
+              <Text>Filter</Text>
+              <Box
+                top={-0.5}
+                right={-0.5}
+                bg={"red.500"}
+                borderRadius={"50%"}
+                height={1}
+                width={1}
+                sx={{
+                  display: showValid !== null ? "block" : "none",
+                  position: "absolute",
+                }}
+              />
             </MenuButton>
             <MenuList>
               <MenuOptionGroup
