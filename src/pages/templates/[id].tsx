@@ -263,6 +263,48 @@ const ConfigurationListItem = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const cancelRef = useRef<FocusableElement | null>(null);
+
+  const { data, refetch: fetch } = api.configuration.download.useQuery({
+    id: configuration.id,
+  }, {
+    enabled: false,
+    refetchOnWindowFocus: false,
+  });
+
+  function downloadConfiguration(fetchedData?: typeof data) {
+    try {
+      if (!fetchedData) {
+        console.log("No data to download");
+        return;
+      }
+
+      // Convert the Buffer to a Uint8Array
+      const uint8Array = Uint8Array.from(atob(fetchedData.base64), c => c.charCodeAt(0));
+
+      // Create a Blob from the Uint8Array
+      const blob = new Blob([uint8Array], { type: "application/json" });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fetchedData.fileName;
+      link.click();
+
+      // Cleanup
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading configuration:", error);
+    }
+  }
+
+  function handleDownload() {
+    fetch().then(({ data: fetchedData }) => {
+      downloadConfiguration(fetchedData);
+    }).catch((error) => {
+      console.error("Error downloading configuration:", error);
+    });
+  }
+
   return (
     <>
       <HStack spacing={8} p={4} width={"full"}>
@@ -312,6 +354,12 @@ const ConfigurationListItem = ({
             >
               <MenuItem>Edit</MenuItem>
               <MenuItem onClick={onOpen}>Delete</MenuItem>
+              <MenuItem
+                as={"a"}
+                onClick={handleDownload}
+              >
+                Download
+              </MenuItem>
             </MenuList>
           </Menu>
         </HStack>
