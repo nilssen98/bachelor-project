@@ -1,4 +1,3 @@
-import { Input } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { validate } from "../../../utils/validator";
@@ -130,5 +129,36 @@ export const configurationRouter = createTRPCRouter({
           },
         },
       });
+    }),
+  download: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      // Find the configuration by id and userId
+      const config = await ctx.prisma.configuration.findFirstOrThrow({
+        where: {
+          id: input.id,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      // Check if the content is valid JSON, not necessary but just to be sure
+      if (typeof config.content === "object" && config.content !== null) {
+        // Generate a JSON string from the content object
+        const jsonString = JSON.stringify(config.content, null, 2);
+
+        // Create a Buffer from the JSON string
+        const buffer = Buffer.from(jsonString, 'utf-8');
+
+        // Convert the buffer to a base64 string
+        const base64 = buffer.toString('base64');
+
+        // Return the Blob and configuration name as a downloadable JSON file
+        return {
+          base64,
+          fileName: `${config.name}.json`,
+        };
+      } else {
+        throw new Error("Invalid configuration content!");
+      }
     }),
 });
