@@ -168,9 +168,10 @@ const TemplatePage: NextPage = () => {
           <Menu>
             <MenuButton
               as={Button}
-              aria-label={"Options"}
-              leftIcon={<Icon as={HiAdjustmentsHorizontal} fontSize={"xl"} />}
               variant={"outline"}
+              borderColor={"whiteAlpha.400"}
+              aria-label={"Filter configurations"}
+              leftIcon={<Icon as={HiAdjustmentsHorizontal} fontSize={"xl"} />}
               sx={{
                 flexShrink: 0,
                 position: "relative",
