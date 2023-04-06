@@ -31,7 +31,8 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/gradient-avatar";
-import { MdFilterList, MdSettings } from "react-icons/md";
+import { MdSettings } from "react-icons/md";
+import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/confirmation-dialog";
 import AddConfigurationDialog from "../../components/add-configuration-dialog";
@@ -168,7 +169,7 @@ const TemplatePage: NextPage = () => {
             <MenuButton
               as={Button}
               aria-label={"Options"}
-              leftIcon={<MdFilterList />}
+              leftIcon={<Icon as={HiAdjustmentsHorizontal} fontSize={"xl"} />}
               variant={"outline"}
               sx={{
                 flexShrink: 0,
@@ -179,7 +180,7 @@ const TemplatePage: NextPage = () => {
               <Box
                 top={-0.5}
                 right={-0.5}
-                bg={"red.500"}
+                bg={"whiteAlpha.800"}
                 borderRadius={"50%"}
                 height={1}
                 width={1}
