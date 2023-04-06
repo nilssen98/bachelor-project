@@ -102,7 +102,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Button
                   isDisabled={disableInputs}
                   isLoading={disableInputs}
-                  loadingText={"Signing in . . ."}
+                  loadingText={"Signing in..."}
                   onClick={() => void handleEmailSignIn()}
                 >
                   Sign in
