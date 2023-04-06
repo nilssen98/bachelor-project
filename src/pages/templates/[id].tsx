@@ -354,12 +354,7 @@ const ConfigurationListItem = ({
             >
               <MenuItem>Edit</MenuItem>
               <MenuItem onClick={onOpen}>Delete</MenuItem>
-              <MenuItem
-                as={"a"}
-                onClick={handleDownload}
-              >
-                Download
-              </MenuItem>
+              <MenuItem onClick={handleDownload}>Download</MenuItem>
             </MenuList>
           </Menu>
         </HStack>
