@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import {
   Button,
+  Center,
   HStack,
   Heading,
   Input,
@@ -19,6 +20,8 @@ import {
   useDisclosure,
   MenuOptionGroup,
   MenuItemOption,
+  Spacer,
+  Flex,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
@@ -145,110 +148,123 @@ const TemplatePage: NextPage = () => {
 
   return (
     <>
-      <BackButton href={"/templates"} />
-      <HStack pt={4} spacing={4} pb={12} align={"center"}>
-        <GradientAvatar
-          w={12}
-          h={12}
-          id={template?.name}
-          // icon={<Icon boxSize={7} as={HiDocumentText} />}
-        />
-        <Heading>{template?.name}</Heading>
-      </HStack>
-      <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
-        <HStack width={"full"}>
-          <Button onClick={onOpen} isLoading={isOpen} variant={"custom"}>
-            Add configuration
-          </Button>
-          <Input
-            value={search}
-            placeholder={"Search"}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Menu>
-            <MenuButton
-              as={Button}
-              variant={"outline"}
-              borderColor={"whiteAlpha.400"}
-              aria-label={"Filter configurations"}
-              leftIcon={<Icon as={HiAdjustmentsHorizontal} fontSize={"xl"} />}
-              sx={{
-                flexShrink: 0,
-                position: "relative",
-              }}
-            >
-              <Text>Filter</Text>
-              <Box
-                top={-0.5}
-                right={-0.5}
-                bg={"whiteAlpha.800"}
-                borderRadius={"50%"}
-                height={1}
-                width={1}
-                sx={{
-                  display: showValid !== null ? "block" : "none",
-                  position: "absolute",
-                }}
-              />
-            </MenuButton>
-            <MenuList>
-              <MenuOptionGroup
-                title={"Show"}
-                defaultValue={"all"}
-                type={"radio"}
-              >
-                <MenuItemOption
-                  value={"all"}
-                  onClick={() => {
-                    setShowValid(null);
-                  }}
-                >
-                  All
-                </MenuItemOption>
-                <MenuItemOption
-                  value={"valid"}
-                  onClick={() => {
-                    setShowValid(true);
-                  }}
-                >
-                  Valid only
-                </MenuItemOption>
-                <MenuItemOption
-                  value={"invalid"}
-                  onClick={() => {
-                    setShowValid(false);
-                  }}
-                >
-                  Invalid only
-                </MenuItemOption>
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu>
-        </HStack>
-        <Box width={"full"}>
-          <Card>
-            <Stack divider={<StackDivider />} spacing={0}>
-              {filteredConfigurations?.map((configuration, idx) => (
-                <ConfigurationListItem
-                  key={idx}
-                  configuration={configuration}
-                  handleDelete={() => handleDelete(configuration.id)}
-                />
-              ))}
-            </Stack>
-          </Card>
+      <Flex direction={"column"} minH={"100%"}>
+        <Box>
+          <BackButton href={"/templates"} />
         </Box>
-      </VStack>
-      <AddConfigurationDialog
-        isOpen={isOpen}
-        onClose={onClose}
-        openFileSelector={handleAdd}
-        clearFileSelection={clear}
-        fileContent={filesContent}
-        uploadFile={uploadFile}
-        configurations={sortedConfigurations || []}
-        cloneConfiguration={handleClone}
-      />
+        <HStack pt={4} spacing={4} pb={12} align={"center"}>
+          <GradientAvatar
+            w={12}
+            h={12}
+            id={template?.name}
+            // icon={<Icon boxSize={7} as={HiDocumentText} />}
+          />
+          <Heading>{template?.name}</Heading>
+        </HStack>
+        <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
+          <HStack width={"full"}>
+            <Button onClick={onOpen} isLoading={isOpen} variant={"custom"}>
+              Add configuration
+            </Button>
+            <Input
+              value={search}
+              placeholder={"Search"}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Menu>
+              <MenuButton
+                as={Button}
+                variant={"outline"}
+                borderColor={"whiteAlpha.400"}
+                aria-label={"Filter configurations"}
+                leftIcon={<Icon as={HiAdjustmentsHorizontal} fontSize={"xl"} />}
+                sx={{
+                  flexShrink: 0,
+                  position: "relative",
+                }}
+              >
+                <Text>Filter</Text>
+                <Box
+                  top={-0.5}
+                  right={-0.5}
+                  bg={"whiteAlpha.800"}
+                  borderRadius={"50%"}
+                  height={1}
+                  width={1}
+                  sx={{
+                    display: showValid !== null ? "block" : "none",
+                    position: "absolute",
+                  }}
+                />
+              </MenuButton>
+              <MenuList>
+                <MenuOptionGroup
+                  title={"Show"}
+                  defaultValue={"all"}
+                  type={"radio"}
+                >
+                  <MenuItemOption
+                    value={"all"}
+                    onClick={() => {
+                      setShowValid(null);
+                    }}
+                  >
+                    All
+                  </MenuItemOption>
+                  <MenuItemOption
+                    value={"valid"}
+                    onClick={() => {
+                      setShowValid(true);
+                    }}
+                  >
+                    Valid only
+                  </MenuItemOption>
+                  <MenuItemOption
+                    value={"invalid"}
+                    onClick={() => {
+                      setShowValid(false);
+                    }}
+                  >
+                    Invalid only
+                  </MenuItemOption>
+                </MenuOptionGroup>
+              </MenuList>
+            </Menu>
+          </HStack>
+        </VStack>
+        {filteredConfigurations?.length === 0 ? (
+          <Center flexGrow={2} width={"full"}>
+            <Text>No configurations to display</Text>
+          </Center>
+        ) : (
+          <>
+            <Spacer py={4} flexGrow={0} />
+            <Box width={"full"}>
+              <Card>
+                <Stack divider={<StackDivider />} spacing={0}>
+                  {filteredConfigurations?.map((configuration, idx) => (
+                    <ConfigurationListItem
+                      key={idx}
+                      configuration={configuration}
+                      handleDelete={() => handleDelete(configuration.id)}
+                    />
+                  ))}
+                </Stack>
+              </Card>
+            </Box>
+          </>
+        )}
+        <AddConfigurationDialog
+          isOpen={isOpen}
+          onClose={onClose}
+          openFileSelector={handleAdd}
+          clearFileSelection={clear}
+          fileContent={filesContent}
+          uploadFile={uploadFile}
+          configurations={sortedConfigurations || []}
+          cloneConfiguration={handleClone}
+        />
+      </Flex>
     </>
   );
 };
@@ -266,12 +282,15 @@ const ConfigurationListItem = ({
 
   const cancelRef = useRef<FocusableElement | null>(null);
 
-  const { data, refetch: fetch } = api.configuration.download.useQuery({
-    id: configuration.id,
-  }, {
-    enabled: false,
-    refetchOnWindowFocus: false,
-  });
+  const { data, refetch: fetch } = api.configuration.download.useQuery(
+    {
+      id: configuration.id,
+    },
+    {
+      enabled: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   function downloadConfiguration(fetchedData?: typeof data) {
     try {
@@ -281,7 +300,9 @@ const ConfigurationListItem = ({
       }
 
       // Convert the Buffer to a Uint8Array
-      const uint8Array = Uint8Array.from(atob(fetchedData.base64), c => c.charCodeAt(0));
+      const uint8Array = Uint8Array.from(atob(fetchedData.base64), (c) =>
+        c.charCodeAt(0)
+      );
 
       // Create a Blob from the Uint8Array
       const blob = new Blob([uint8Array], { type: "application/json" });
@@ -300,11 +321,13 @@ const ConfigurationListItem = ({
   }
 
   function handleDownload() {
-    fetch().then(({ data: fetchedData }) => {
-      downloadConfiguration(fetchedData);
-    }).catch((error) => {
-      console.error("Error downloading configuration:", error);
-    });
+    fetch()
+      .then(({ data: fetchedData }) => {
+        downloadConfiguration(fetchedData);
+      })
+      .catch((error) => {
+        console.error("Error downloading configuration:", error);
+      });
   }
 
   return (
