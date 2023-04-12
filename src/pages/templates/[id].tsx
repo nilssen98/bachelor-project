@@ -234,7 +234,11 @@ const TemplatePage: NextPage = () => {
         </VStack>
         {filteredConfigurations?.length === 0 ? (
           <Center flexGrow={2} width={"full"}>
-            <Text>No configurations to display</Text>
+            <Text>
+              {`No configurations to display${
+                showValid !== null ? " with the selected filter" : ""
+              }`}
+            </Text>
           </Center>
         ) : (
           <>
