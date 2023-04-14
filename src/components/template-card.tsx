@@ -19,20 +19,26 @@ import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "./confirmation-dialog";
 import { useRef } from "react";
-import RenameDialog from "./rename-dialog";
+import EditDialog from "./edit-dialog";
+import { func } from "prop-types";
 
 interface Props {
+  id: string;
   name: string;
   files: number;
   lastModified?: number | Date;
   onDelete: () => void;
   onClick?: () => void;
-  onEdit?: (name: string) => void;
+  onEdit: (name: string) => void;
 }
 
 export default function TemplateCard(props: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: renameIsOpen, onOpen: renameOnOpen, onClose: renameOnClose } = useDisclosure();
+  const {
+    isOpen: renameIsOpen,
+    onOpen: renameOnOpen,
+    onClose: renameOnClose,
+  } = useDisclosure();
 
   const cancelRef = useRef<FocusableElement | null>(null);
 
@@ -107,7 +113,12 @@ export default function TemplateCard(props: Props) {
          All configurations belonging to this template will also be deleted!
          You can't undo this action afterwards.`}
       />
-      <RenameDialog name={props.name} onSave={() => null} isOpen={renameIsOpen} onClose={renameOnClose}/>
+      <EditDialog
+        name={props.name}
+        onSave={props.onEdit}
+        isOpen={renameIsOpen}
+        onClose={renameOnClose}
+      />
     </>
   );
 }

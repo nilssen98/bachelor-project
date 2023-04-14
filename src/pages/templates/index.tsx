@@ -38,7 +38,7 @@ const TemplatesPage: NextPage = () => {
     onSuccess: () => refetch(),
   });
 
-  const {mutate: updateTemplate } = api.template.update.useMutation({
+  const { mutate: updateTemplate } = api.template.update.useMutation({
     onSuccess: () => refetch(),
   });
 
@@ -78,7 +78,7 @@ const TemplatesPage: NextPage = () => {
     deleteTemplate({ id: templateId });
   };
 
-  const handleEdit = (templateId: string, name?: string, content?: string) => {
+  const handleEdit = (templateId: string, name: string, content?: string) => {
     updateTemplate({
       id: templateId,
       name: name,
@@ -114,12 +114,13 @@ const TemplatesPage: NextPage = () => {
           {filtered.map((template, idx) => (
             <GridItem w={"100%"} key={idx}>
               <TemplateCard
+                id={template.id}
                 name={template.name}
                 files={template._count.configurations}
                 lastModified={template.updatedAt}
                 onClick={() => void handleCardClick(template.id)}
                 onDelete={() => handleDelete(template.id)}
-                onEdit={() => handleEdit(template.id)}
+                onEdit={(name) => handleEdit(template.id, name)}
               />
             </GridItem>
           ))}
