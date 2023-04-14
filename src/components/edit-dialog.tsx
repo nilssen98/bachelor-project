@@ -29,11 +29,12 @@ export default function EditDialog(props: Props) {
       <Modal isCentered={true} isOpen={props.isOpen} onClose={props.onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Change name</ModalHeader>
+          <ModalHeader>Edit</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <NameInputField
               name={templateName}
+              title={"Name: "}
               setName={setTemplateName}
               type={"template"}
             />
