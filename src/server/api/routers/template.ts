@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import omit from "lodash-es/omit";
 
 export const templateRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
@@ -60,4 +61,31 @@ export const templateRouter = createTRPCRouter({
         },
       });
     }),
+  update: protectedProcedure
+      .input(
+          z.object({
+            id: z.string(),
+            name: z.string().optional(),
+            content: z.string().optional(),
+          })
+      )
+      .mutation(({ ctx, input }) => {
+        let parsedContent: Prisma.JsonValue | undefined = undefined;
+
+        if (input.content) {
+          parsedContent = JSON.parse(input.content) as Prisma.JsonValue;
+        }
+
+        return ctx.prisma.template.updateMany({
+
+          where: {
+            id: input.id,
+            userId: ctx.session.user.id,
+          },
+          data: {
+            ...omit(input, "id", "content"),
+            ...(parsedContent ? { content: parsedContent } : {}),
+          }
+        });
+      }),
 });
