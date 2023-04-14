@@ -27,7 +27,7 @@ import { BsFiletypeJson } from "react-icons/bs";
 import type { FileContent } from "use-file-picker";
 import type { Configuration } from "@prisma/client";
 import DialogFileChooser from "./dialog-file-chooser";
-import RenameDialog from "./rename-dialog";
+import NameInputField from "./NameInputField";
 
 // Custom type to represent a configuration option in the react-select dropdown
 export type ConfigurationOption = Configuration & {
@@ -174,7 +174,7 @@ export default function AddConfigurationDialog(props: Props) {
                 }))}
               />
               <Spacer py={1} />
-              <RenameDialog
+              <NameInputField
                 type={"configuration"}
                 name={configurationName}
                 setName={setConfigurationName}
@@ -192,7 +192,7 @@ export default function AddConfigurationDialog(props: Props) {
               fileContent={props.fileContent}
             />
             <Spacer py={4} />
-            <RenameDialog
+            <NameInputField
               type={"configuration"}
               name={configurationName}
               setName={setConfigurationName}

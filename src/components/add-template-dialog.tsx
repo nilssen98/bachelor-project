@@ -12,7 +12,7 @@ import {
 import type { ModalProps } from "@chakra-ui/modal";
 import type { FileContent } from "use-file-picker";
 import DialogFileChooser from "./dialog-file-chooser";
-import RenameDialog from "./rename-dialog";
+import NameInputField from "./NameInputField";
 
 type Props = {
   openFileSelector: () => void;
@@ -38,7 +38,7 @@ export default function AddTemplateDialog(props: Props) {
           fileContent={props.fileContent}
         />
         <Spacer py={4} />
-        <RenameDialog
+        <NameInputField
           type={"template"}
           name={templateName}
           setName={setTemplateName}
