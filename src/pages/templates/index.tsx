@@ -38,6 +38,10 @@ const TemplatesPage: NextPage = () => {
     onSuccess: () => refetch(),
   });
 
+  const { mutate: updateTemplate } = api.template.update.useMutation({
+    onSuccess: () => refetch(),
+  });
+
   const filtered = useMemo(() => {
     return (
       templates?.filter(
@@ -74,8 +78,12 @@ const TemplatesPage: NextPage = () => {
     deleteTemplate({ id: templateId });
   };
 
-  const handleEdit = () => {
-    return;
+  const handleEdit = (templateId: string, name: string, content?: string) => {
+    updateTemplate({
+      id: templateId,
+      name: name,
+      content: content,
+    });
   };
 
   const handleCardClick = (templateId: string): Promise<boolean> => {
@@ -106,12 +114,13 @@ const TemplatesPage: NextPage = () => {
           {filtered.map((template, idx) => (
             <GridItem w={"100%"} key={idx}>
               <TemplateCard
+                id={template.id}
                 name={template.name}
                 files={template._count.configurations}
                 lastModified={template.updatedAt}
                 onClick={() => void handleCardClick(template.id)}
                 onDelete={() => handleDelete(template.id)}
-                onEdit={handleEdit}
+                onEdit={(name) => handleEdit(template.id, name)}
               />
             </GridItem>
           ))}

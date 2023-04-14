@@ -27,7 +27,7 @@ import { BsFiletypeJson } from "react-icons/bs";
 import type { FileContent } from "use-file-picker";
 import type { Configuration } from "@prisma/client";
 import DialogFileChooser from "./dialog-file-chooser";
-import NameInputField from "./NameInputField";
+import NameInputField from "./name-input-field";
 
 // Custom type to represent a configuration option in the react-select dropdown
 export type ConfigurationOption = Configuration & {
