@@ -19,6 +19,7 @@ import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "./confirmation-dialog";
 import { useRef } from "react";
+import RenameDialog from "./rename-dialog";
 
 interface Props {
   name: string;

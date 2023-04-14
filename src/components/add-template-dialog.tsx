@@ -12,7 +12,7 @@ import {
 import type { ModalProps } from "@chakra-ui/modal";
 import type { FileContent } from "use-file-picker";
 import DialogFileChooser from "./dialog-file-chooser";
-import NameInputField from "./NameInputField";
+import NameInputField from "./name-input-field";
 
 type Props = {
   openFileSelector: () => void;

@@ -8,8 +8,9 @@ import {
     ModalOverlay,
     ModalProps
 } from "@chakra-ui/modal";
-import {useDisclosure} from "@chakra-ui/react-use-disclosure";
-import {Input} from "@chakra-ui/input";
+import NameInputField from "./name-input-field";
+import React from "react";
+import {Button} from "@chakra-ui/react";
 
 
 type Props = {
