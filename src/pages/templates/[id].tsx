@@ -117,6 +117,15 @@ const TemplatePage: NextPage = () => {
     }
   }
 
+  function createBlankConfiguration(name: string) {
+    if (template) {
+      addConfiguration({
+        templateId: template.id,
+        name: name,
+      });
+    }
+  }
+
   function handleClone(id: string, name: string) {
     if (template) {
       cloneConfiguration({
@@ -265,6 +274,7 @@ const TemplatePage: NextPage = () => {
           clearFileSelection={clear}
           fileContent={filesContent}
           uploadFile={uploadFile}
+          createNew={createBlankConfiguration}
           configurations={sortedConfigurations || []}
           cloneConfiguration={handleClone}
         />

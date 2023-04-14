@@ -47,6 +47,7 @@ type Props = {
   clearFileSelection: () => void;
   fileContent: FileContent[];
   uploadFile: (name: string) => void;
+  createNew: (name: string) => void;
   configurations: Configuration[];
   cloneConfiguration: (id: string, name: string) => void;
 } & Omit<ModalProps, "children">;
@@ -147,7 +148,11 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.CreateNew:
         return (
           <>
-            <Text>Create new</Text>
+            <NameInputField
+              type={"configuration"}
+              name={configurationName}
+              setName={setConfigurationName}
+            />
           </>
         );
       case Step.CloneExisting:
@@ -204,6 +209,11 @@ export default function AddConfigurationDialog(props: Props) {
 
   function getFooterAction() {
     switch (step) {
+      case Step.CreateNew:
+        return () => {
+          props.createNew(configurationName);
+          handleClose();
+        };
       case Step.UploadFile:
         return () => {
           props.uploadFile(configurationName);
@@ -230,6 +240,16 @@ export default function AddConfigurationDialog(props: Props) {
               isTemplateNameBlank() ||
               !(isFileSelected() || selectedConfiguration !== null)
             }
+            onClick={getFooterAction()}
+          >
+            Submit
+          </Button>
+        );
+      case Step.CreateNew:
+        return (
+          <Button
+            colorScheme={"blue"}
+            isDisabled={isTemplateNameBlank()}
             onClick={getFooterAction()}
           >
             Submit
