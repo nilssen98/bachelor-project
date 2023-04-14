@@ -18,7 +18,7 @@ import { api } from "../../utils/api";
 import ConfirmationDialog from "../../components/confirmation-dialog";
 import { useRef } from "react";
 import { useDisclosure } from "@chakra-ui/react-use-disclosure";
-import { FocusableElement } from "@chakra-ui/utils";
+import type { FocusableElement } from "@chakra-ui/utils";
 
 const GeneralPage: NextPageWithLayout = () => {
   const session = useSession();

@@ -1,8 +1,8 @@
-import { Input } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { validate } from "../../../utils/validator";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import omit from "lodash-es/omit";
 
 export const configurationRouter = createTRPCRouter({
   getAll: protectedProcedure
@@ -94,5 +94,71 @@ export const configurationRouter = createTRPCRouter({
           userId: ctx.session.user.id,
         },
       });
+    }),
+  clone: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Find the existing configuration by id and userId, including the related ConfigurationError records
+      const existingConfig = await ctx.prisma.configuration.findFirstOrThrow({
+        where: {
+          id: input.id,
+          userId: ctx.session.user.id,
+        },
+        include: {
+          errors: true,
+        },
+      });
+
+      // Clone the configuration with the new name and store it
+      return await ctx.prisma.configuration.create({
+        data: {
+          ...omit(existingConfig, ["id", "errors", "createdAt", "updatedAt"]),
+          name: input.name,
+          userId: ctx.session.user.id,
+          content: existingConfig.content as Prisma.InputJsonValue,
+          errors: {
+            create: existingConfig.errors.map((error) => ({
+              path: error.path,
+              message: error.message,
+            })),
+          },
+        },
+      });
+    }),
+  download: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      // Find the configuration by id and userId
+      const config = await ctx.prisma.configuration.findFirstOrThrow({
+        where: {
+          id: input.id,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      // Check if the content is valid JSON, not necessary but just to be sure
+      if (typeof config.content === "object" && config.content !== null) {
+        // Generate a JSON string from the content object
+        const jsonString = JSON.stringify(config.content, null, 2);
+
+        // Create a Buffer from the JSON string
+        const buffer = Buffer.from(jsonString, 'utf-8');
+
+        // Convert the buffer to a base64 string
+        const base64 = buffer.toString('base64');
+
+        // Return the Blob and configuration name as a downloadable JSON file
+        return {
+          base64,
+          fileName: `${config.name}.json`,
+        };
+      } else {
+        throw new Error("Invalid configuration content!");
+      }
     }),
 });

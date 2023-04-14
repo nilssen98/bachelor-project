@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
+import Loading from "../../components/loading";
 import PasswordInput from "../../components/password-input";
 import EmailInput from "../../components/email-input";
 import ProviderIcon from "../../components/provider-icon";
@@ -56,11 +57,6 @@ const SignIn: NextPage<PageProps> = (props) => {
 
   const CALLBACK_URL = "/templates";
 
-  // If the user is already signed in, redirect to home page
-  if (session.status === "authenticated") {
-    void router.push("/");
-  }
-
   async function handleEmailSignIn() {
     setDisableInputs(true);
     await signIn("email", {
@@ -75,6 +71,22 @@ const SignIn: NextPage<PageProps> = (props) => {
       .finally(() => {
         setDisableInputs(false);
       });
+  }
+
+  // If the user is already signed in, redirect to home page
+  if (session.status === "authenticated") {
+    void router.push("/");
+  }
+
+  if (session.status === "authenticated") {
+    return (
+      <Center height={"full"}>
+        <VStack spacing={6}>
+          <Loading />
+          <Text>Already signed in, redirecting...</Text>
+        </VStack>
+      </Center>
+    );
   }
 
   return (
@@ -102,7 +114,7 @@ const SignIn: NextPage<PageProps> = (props) => {
                 <Button
                   isDisabled={disableInputs}
                   isLoading={disableInputs}
-                  loadingText={"Signing in . . ."}
+                  loadingText={"Signing in..."}
                   onClick={() => void handleEmailSignIn()}
                 >
                   Sign in

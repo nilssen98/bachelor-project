@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  Text,
 } from "@chakra-ui/react";
 
 type Props = {
@@ -24,7 +25,9 @@ export default function ConfirmationDialog(props: Props) {
         <AlertDialogContent>
           <AlertDialogHeader>{props.title}</AlertDialogHeader>
           <AlertDialogCloseButton />
-          <AlertDialogBody>{props.body}</AlertDialogBody>
+          <AlertDialogBody>
+            <Text whiteSpace={"pre-line"}>{props.body}</Text>
+          </AlertDialogBody>
           <AlertDialogFooter>
             <Button onClick={props.onClose}>No</Button>
             <Button colorScheme={"red"} ml={3} onClick={props.onConfirmation}>
