@@ -32,7 +32,6 @@ export default function GradientAvatar(props: Props) {
 
   return (
     <Avatar
-      {...avatarProps}
       w={10}
       h={10}
       background={`linear-gradient(135deg, ${colors[0]!} 10%, ${colors[1]!} 90%)`}
@@ -41,6 +40,7 @@ export default function GradientAvatar(props: Props) {
         cursor: `${props.clickable ? "pointer" : "default"}`,
         ...avatarProps.sx,
       }}
+      {...avatarProps}
     />
   );
 }
