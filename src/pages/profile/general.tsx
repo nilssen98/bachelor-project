@@ -61,7 +61,7 @@ const GeneralPage: NextPageWithLayout = () => {
             </Button>
           </HStack>
         </Card>
-        <Card>
+        <Card width={"full"}>
           <Stack spacing={0} divider={<StackDivider />}>
             <Heading size={"md"} p={4}>
               Delete account
