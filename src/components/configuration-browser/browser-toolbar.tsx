@@ -10,8 +10,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { omit } from "lodash-es";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { MdErrorOutline, MdSave, MdSearch } from "react-icons/md";
 import { useBrowserContent } from "./hooks/useBrowserContent";
+import { useBrowserController } from "./hooks/useBrowserController";
 
 type Props = {
   onSave?: () => void;
@@ -22,6 +24,8 @@ type Props = {
 
 export default function BrowserToolbar(props: Props) {
   const { errors } = useBrowserContent();
+  const { toggleTreeView, showTreeView } = useBrowserController();
+
   const stackProps = omit(props, [
     "onSave",
     "onClickErrors",
@@ -34,13 +38,16 @@ export default function BrowserToolbar(props: Props) {
         w={"full"}
         direction={"row"}
         divider={<StackDivider />}
+        spacing={0}
         {...stackProps}
       >
         <Button
-          mx={2}
           leftIcon={<Icon as={MdSave} />}
-          variant={"text"}
           onClick={props.onSave}
+          fontWeight={400}
+          variant={"ghost"}
+          borderRadius={0}
+          px={6}
         >
           Save
         </Button>
@@ -50,15 +57,26 @@ export default function BrowserToolbar(props: Props) {
               <Icon as={MdErrorOutline} color={"red.500"} />
             ) : undefined
           }
-          mx={2}
           onClick={props.onClickErrors}
-          variant={"text"}
+          variant={"ghost"}
+          borderRadius={0}
+          px={6}
         >
           {errors && errors.length > 0 ? (
             <Text fontWeight={400}>{errors.length} Errors</Text>
           ) : (
             <Text color={"gray.500"}>No errors</Text>
           )}
+        </Button>
+        <Button
+          leftIcon={<Icon as={showTreeView ? IoMdEye : IoMdEyeOff} />}
+          onClick={toggleTreeView}
+          fontWeight={400}
+          variant={"ghost"}
+          borderRadius={0}
+          px={6}
+        >
+          Tree view
         </Button>
         <InputGroup>
           <InputLeftElement
