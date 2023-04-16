@@ -108,11 +108,10 @@ const ConfigurationPage: NextPage = () => {
         </Navbar>
         {configuration && configuration.Template && (
           <ConfigurationProvider
-            configurationContent={configuration.content}
-            configuration={configuration}
-            errors={configuration.errors}
+            configuration={configuration || {}}
+            configurations={filteredConfigurations || []}
             template={configuration.Template}
-            configurations={filteredConfigurations}
+            errors={configuration.errors}
             onPathChange={(path) => void handlePathChange(path)}
             path={path}
           >
