@@ -25,9 +25,9 @@ export const useBrowserController = () => {
     );
   }
 
-  if (!context.useBrowserRouter) {
+  if (!context.useBrowserController) {
     throw new Error("useBrowserRouter router is not defined");
   }
 
-  return context.useBrowserRouter;
+  return context.useBrowserController;
 };
