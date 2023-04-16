@@ -1,27 +1,18 @@
 import type { StackProps } from "@chakra-ui/react";
-import {
-  Box,
-  Text,
-  Card,
-  CardBody,
-  Stack,
-  StackDivider,
-} from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
+import { Text, Stack, StackDivider } from "@chakra-ui/react";
 import { useState } from "react";
-import ConfigurationContent from "./configuration-content";
-import ConfigurationNavigation from "./configuration-navigation";
-import { useConfiguration } from "./configuration-provider";
-import ConfigurationStatusBar from "./configuration-status-bar";
-import ConfigurationToolbar from "./configuration-toolbar";
-
-const defaultErrors = [
-  "/metadata/ missing required property 'version'",
-  "/metadata/ missing required property 'keywords'",
-];
+import BrowserContent from "./browser-content";
+import BrowserNavigation from "./browser-navigation";
+import BrowserSideNavigation from "./browser-side-navigation";
+import BrowserStatusBar from "./browser-status-bar";
+import BrowserToolbar from "./browser-toolbar";
+import { useBrowserContent } from "./hooks/useBrowserContent";
 
 export default function ConfigurationBrowser(props: StackProps) {
   const [searchValue, setSearchValue] = useState<string>("");
-  const { isValidPath } = useConfiguration();
+  const { isValidPath, configurations } = useBrowserContent();
 
   const handleSave = () => {
     return;
@@ -37,27 +28,29 @@ export default function ConfigurationBrowser(props: StackProps) {
 
   return (
     <>
-      <Card>
-        <CardBody p={0} overflow={"hidden"}>
-          <Stack
-            minH={"xl"}
-            height={"100%"}
-            divider={<StackDivider />}
-            spacing={0}
-            {...props}
-          >
-            <ConfigurationToolbar
+      <Stack flex={1} divider={<StackDivider />} spacing={0} {...props}>
+        <HStack spacing={0} divider={<StackDivider />} flex={1}>
+          <Stack h={"full"} flex={0.2}>
+            {configurations && configurations.length > 0 && (
+              <BrowserSideNavigation bg={"whiteAlpha.200"} />
+            )}
+          </Stack>
+          <VStack spacing={0} divider={<StackDivider />} h={"full"} flex={1}>
+            <BrowserToolbar
+              bg={"whiteAlpha.50"}
               onSave={handleSave}
               searchValue={searchValue}
               onSearchValueChanged={(newValue) => setSearchValue(newValue)}
               onClickErrors={handleClickErrors}
             />
-            <ConfigurationNavigation />
-            <ConfigurationContent />
-            <ConfigurationStatusBar />
-          </Stack>
-        </CardBody>
-      </Card>
+            <BrowserNavigation bg={"whiteAlpha.50"} />
+            <Stack overflow={"hidden"} bg={"whiteAlpha.50"} flex={1} w={"full"}>
+              <BrowserContent />
+            </Stack>
+          </VStack>
+        </HStack>
+        <BrowserStatusBar bg={"whiteAlpha.200"} />
+      </Stack>
     </>
   );
 }
