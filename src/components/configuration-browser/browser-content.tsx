@@ -3,12 +3,16 @@ import { Badge, HStack, Icon, Stack, Text, VStack } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
 import { includes } from "lodash-es";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { MdArrowRight } from "react-icons/md";
+import {
+  MdArrowRight,
+  MdOutlineError,
+  MdOutlineErrorOutline,
+} from "react-icons/md";
 import { useBrowserContent } from "./hooks/useBrowserContent";
 import { useBrowserRouter } from "./hooks/useBrowserRouter";
 
 export default function BrowserContent(props: StackProps) {
-  const { content, errors } = useBrowserContent();
+  const { content, errors, template } = useBrowserContent();
   const router = useBrowserRouter();
 
   const [offsetX, setOffsetX] = useState(0);
@@ -68,10 +72,19 @@ export default function BrowserContent(props: StackProps) {
     [errors, router.path]
   );
 
-  // const getFieldSchemaType = (
-  //   contextIdx: number,
-  //   item: Prisma.JsonObject
-  // ) => {};
+  const getFieldSchemaType = (contentIdx: number, item: Prisma.JsonObject) => {
+    // console.log("content", content);
+    console.log("schema", template.content);
+    console.log("path", router.path);
+
+    // const schemaTypes = content.slice(contentIdx).map((item, idx) => {
+    //   if (idx === 0) {
+    //     return template.content.properties[item];
+    //   }
+    // });
+
+    return "";
+  };
 
   const hasRightBorder = (idx: number) => {
     return filteredContent.length === 1 || filteredContent.length - 1 !== idx;
@@ -98,14 +111,26 @@ export default function BrowserContent(props: StackProps) {
             position={"absolute"}
             borderRight={hasRightBorder(idx) ? "1px solid" : 0}
             borderColor={"whiteAlpha.300"}
-            overflowY={"auto"}
             spacing={0}
           >
             <HStack>
               {getContentErrors(idx, item)?.map((error, errIdx) => (
-                <Stack key={errIdx} px={4} w={"full"} py={2}>
-                  <Text>{error}</Text>
-                </Stack>
+                <HStack
+                  py={2}
+                  px={4}
+                  spacing={2}
+                  justify={"center"}
+                  key={errIdx}
+                >
+                  <Icon as={MdOutlineErrorOutline} color={"red.500"} />
+                  <Text
+                    color={"red.500"}
+                    fontSize={"sm"}
+                    fontFamily={"Consolas, monaco, monospace"}
+                  >
+                    {error}
+                  </Text>
+                </HStack>
               ))}
             </HStack>
             <VStack spacing={0} align={"start"}>
@@ -114,6 +139,10 @@ export default function BrowserContent(props: StackProps) {
                   onClick={() => router.push(key)}
                   key={idx2}
                   name={key}
+                  schemaType={getFieldSchemaType(
+                    idx,
+                    item as Prisma.JsonObject
+                  )}
                   errors={getFieldErrors(idx, key)}
                   active={router.path[idx] === key}
                   value={val as Prisma.JsonObject}
@@ -132,6 +161,7 @@ interface ConfigurationFieldProps {
   value?: Prisma.JsonValue;
   active?: boolean;
   errors?: string[];
+  schemaType?: string;
   onClick?: () => void;
 }
 
@@ -169,6 +199,13 @@ function ConfigurationField(props: ConfigurationFieldProps) {
     return undefined;
   }, [props.value]);
 
+  // console.log(props.schemaType);
+
+  const hasError = useMemo(
+    () => props.errors && props.errors.length > 0,
+    [props.errors]
+  );
+
   return (
     <>
       <VStack
@@ -188,6 +225,7 @@ function ConfigurationField(props: ConfigurationFieldProps) {
         <HStack width={"full"} spacing={0} direction={"row"}>
           <Text color={"#98D7F8"}>{`"${name}"`}</Text>
           <Text pr={2}>{": "}</Text>
+          <Text>{}</Text>
           {!value && <Text color={valueColor}>null</Text>}
           {!includes(["array", "object"], valueType) && (
             <Text color={valueColor}>{JSON.stringify(value)}</Text>
@@ -196,7 +234,7 @@ function ConfigurationField(props: ConfigurationFieldProps) {
             <HStack spacing={1}>
               <Text>[</Text>
               <Badge fontSize={"small"} textTransform={"none"}>
-                {valueCount} props
+                {valueCount} items
               </Badge>
               <Text>]</Text>
             </HStack>
@@ -205,7 +243,7 @@ function ConfigurationField(props: ConfigurationFieldProps) {
             <HStack spacing={1}>
               <Text>{"{"}</Text>
               <Badge fontSize={"small"} textTransform={"none"}>
-                {valueCount} prop{valueCount === 1 ? "" : "s"}
+                {valueCount} item{valueCount === 1 ? "" : "s"}
               </Badge>
               <Text>{"}"}</Text>
             </HStack>
@@ -214,14 +252,19 @@ function ConfigurationField(props: ConfigurationFieldProps) {
             {isClickable && <Icon as={MdArrowRight} fontSize={"xl"} />}
           </Stack>
         </HStack>
+        {errors && errors.length > 0 && !isClickable && (
+          <VStack spacing={0} w={"full"} alignItems={"flex-start"}>
+            {errors.map((error, idx) => (
+              <HStack spacing={2} justify={"center"} key={idx}>
+                <Icon as={MdOutlineErrorOutline} color={"red.500"} />
+                <Text fontSize={"sm"} color={"red.500"}>
+                  {error}
+                </Text>
+              </HStack>
+            ))}
+          </VStack>
+        )}
       </VStack>
-      {errors && errors.length > 0 && !isClickable && (
-        <VStack px={4} alignItems={"flex-start"}>
-          {errors.map((error, idx) => (
-            <Text key={idx}>{error}</Text>
-          ))}
-        </VStack>
-      )}
     </>
   );
 }

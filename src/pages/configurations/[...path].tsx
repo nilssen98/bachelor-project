@@ -28,6 +28,7 @@ const ConfigurationPage: NextPage = () => {
       { id },
       {
         enabled: id !== undefined,
+        refetchOnWindowFocus: false,
       }
     );
 
@@ -36,6 +37,7 @@ const ConfigurationPage: NextPage = () => {
       { templateId: configuration?.Template?.id },
       {
         enabled: configuration?.Template?.id !== undefined,
+        refetchOnWindowFocus: false,
       }
     );
 
@@ -79,7 +81,7 @@ const ConfigurationPage: NextPage = () => {
   return (
     <>
       <Stack spacing={0} minH={`calc(100vh - ${navbarHeight})`} flex={1}>
-        <Navbar bg={"whiteAlpha.50"} maxH={navbarHeight} h={"full"}>
+        <Navbar bg={"whiteAlpha.200"} maxH={navbarHeight} h={"full"}>
           <HStack spacing={6} w={"full"} px={4}>
             <Text
               color={"whiteAlpha.600"}
