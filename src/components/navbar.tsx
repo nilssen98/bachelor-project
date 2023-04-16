@@ -1,21 +1,24 @@
+import type { StackProps } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { Button, Divider, HStack, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Logo from "./logo";
 import GradientAvatar from "./gradient-avatar";
 
-interface Props {
-  height: number;
-}
+type Props = StackProps;
 
 export default function Navbar(props: Props) {
   const { data: session, status } = useSession();
 
   return (
     <>
-      <VStack as={"nav"} spacing={0} h={`${props.height}px`}>
+      <VStack as={"nav"} spacing={0} {...props}>
         <HStack justify={"space-between"} flex={1} px={4} w={"full"}>
-          <Logo clickable fontSize={"xl"} logoHeight={36} spacing={2} />
+          <Stack>
+            <Logo clickable fontSize={"xl"} logoHeight={36} spacing={2} />
+          </Stack>
+          <Stack flex={1}>{props.children}</Stack>
           {status === "authenticated" ? (
             <Link passHref href={"/profile/general"}>
               <GradientAvatar
@@ -33,7 +36,7 @@ export default function Navbar(props: Props) {
             </Link>
           )}
         </HStack>
-        <Divider />
+        <Divider bg={"whiteAlpha.100"} />
       </VStack>
     </>
   );

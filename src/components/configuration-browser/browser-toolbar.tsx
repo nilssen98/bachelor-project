@@ -1,3 +1,4 @@
+import type { StackProps } from "@chakra-ui/react";
 import {
   Button,
   Icon,
@@ -8,21 +9,33 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
+import { omit } from "lodash-es";
 import { MdErrorOutline, MdSave, MdSearch } from "react-icons/md";
-import { useConfiguration } from "./configuration-provider";
+import { useBrowserContent } from "./hooks/useBrowserContent";
 
-interface Props {
+type Props = {
   onSave?: () => void;
   onClickErrors?: () => void;
   searchValue: string;
   onSearchValueChanged: (newValue: string) => void;
-}
+} & StackProps;
 
-export default function ConfigurationToolbar(props: Props) {
-  const { errors } = useConfiguration();
+export default function BrowserToolbar(props: Props) {
+  const { errors } = useBrowserContent();
+  const stackProps = omit(props, [
+    "onSave",
+    "onClickErrors",
+    "searchValue",
+    "onSearchValueChanged",
+  ]);
   return (
     <>
-      <Stack direction={"row"} divider={<StackDivider />}>
+      <Stack
+        w={"full"}
+        direction={"row"}
+        divider={<StackDivider />}
+        {...stackProps}
+      >
         <Button
           mx={2}
           leftIcon={<Icon as={MdSave} />}

@@ -1,3 +1,4 @@
+import type { StackProps } from "@chakra-ui/react";
 import {
   Box,
   Breadcrumb,
@@ -11,10 +12,10 @@ import {
 } from "@chakra-ui/react";
 import { range } from "lodash-es";
 import { MdHome } from "react-icons/md";
-import { useConfigurationRouter } from "./configuration-provider";
+import { useBrowserRouter } from "./hooks/useBrowserRouter";
 
-export default function ConfigurationNavigation() {
-  const router = useConfigurationRouter();
+export default function BrowserNavigation(props: StackProps) {
+  const router = useBrowserRouter();
 
   const handleClick = (idx: number) => {
     const newPath = [...router.path];
@@ -24,7 +25,14 @@ export default function ConfigurationNavigation() {
 
   return (
     <>
-      <Box p={4} overflowX={"auto"}>
+      <Stack
+        align={"start"}
+        w={"full"}
+        px={4}
+        py={2}
+        overflowX={"auto"}
+        {...props}
+      >
         <Breadcrumb>
           <BreadcrumbItem onClick={() => router.set([])}>
             <BreadcrumbLink alignItems={"center"}>
@@ -43,7 +51,7 @@ export default function ConfigurationNavigation() {
             </BreadcrumbItem>
           ))}
         </Breadcrumb>
-      </Box>
+      </Stack>
     </>
   );
 }

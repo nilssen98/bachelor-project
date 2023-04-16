@@ -1,3 +1,4 @@
+import type { AccordionProps } from "@chakra-ui/react";
 import {
   Accordion,
   AccordionButton,
@@ -9,14 +10,12 @@ import {
 } from "@chakra-ui/react";
 import { MdErrorOutline } from "react-icons/md";
 import type { ValidationError } from "../../utils/validator/types";
-import {
-  useConfiguration,
-  useConfigurationRouter,
-} from "./configuration-provider";
+import { useBrowserContent } from "./hooks/useBrowserContent";
+import { useBrowserRouter } from "./hooks/useBrowserRouter";
 
-export default function ConfigurationStatusBar() {
-  const { errors } = useConfiguration();
-  const router = useConfigurationRouter();
+export default function BrowserStatusBar(props: AccordionProps) {
+  const { errors } = useBrowserContent();
+  const router = useBrowserRouter();
 
   const handleClick = (error: ValidationError) => {
     router.set(error.path.split("/").filter((p) => p !== ""));
@@ -24,7 +23,7 @@ export default function ConfigurationStatusBar() {
 
   return (
     <>
-      <Accordion allowToggle>
+      <Accordion w={"full"} allowToggle {...props}>
         <AccordionItem border={0}>
           {errors &&
             errors.map((error, idx) => (

@@ -2,14 +2,13 @@ import type { FlexProps } from "@chakra-ui/react";
 import { Box, Flex } from "@chakra-ui/react";
 import { omit } from "lodash-es";
 import type { ReactElement, ReactNode } from "react";
-import BackgroundCollection from "./background-collection";
-import Navbar from "./navbar";
+import { navbarHeight } from "../../theme";
+import BackgroundCollection from "../background-collection";
+import Navbar from "../navbar";
 
 type Props = FlexProps;
 
 export default function Layout(props: Props) {
-  const navbarHeight = 52;
-
   return (
     <>
       {/* <BackgroundCollection
@@ -20,7 +19,7 @@ export default function Layout(props: Props) {
       /> */}
       <Navbar height={navbarHeight} />
       <Flex
-        minH={`calc(100vh - ${navbarHeight}px)`}
+        minH={`calc(100vh - ${navbarHeight})`}
         justifyContent={"center"}
         width={"100%"}
         py={12}
@@ -33,7 +32,7 @@ export default function Layout(props: Props) {
         }}
         {...omit(props, ["sx"])}
       >
-        <Box maxW={"5xl"} w={"full"}>
+        <Box maxW={"6xl"} w={"full"}>
           {props.children}
         </Box>
       </Flex>
