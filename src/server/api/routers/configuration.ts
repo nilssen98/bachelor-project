@@ -25,6 +25,7 @@ export const configurationRouter = createTRPCRouter({
         },
         include: {
           errors: true,
+          Template: true,
         },
       });
     }),
@@ -147,10 +148,10 @@ export const configurationRouter = createTRPCRouter({
         const jsonString = JSON.stringify(config.content, null, 2);
 
         // Create a Buffer from the JSON string
-        const buffer = Buffer.from(jsonString, 'utf-8');
+        const buffer = Buffer.from(jsonString, "utf-8");
 
         // Convert the buffer to a base64 string
-        const base64 = buffer.toString('base64');
+        const base64 = buffer.toString("base64");
 
         // Return the Blob and configuration name as a downloadable JSON file
         return {
