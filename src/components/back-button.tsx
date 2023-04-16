@@ -1,33 +1,33 @@
-import type { ButtonProps } from "@chakra-ui/react";
+import type { ButtonProps, IconProps, TypographyProps } from "@chakra-ui/react";
 import { Button, Icon, Text } from "@chakra-ui/react";
 import { omit } from "lodash-es";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 
 type Props = {
-  href?: string;
+  href: string;
+  disableText?: boolean;
+  iconSize?: string;
 } & ButtonProps;
+
+BackButton.defaultProps = {
+  iconSize: "1.4rem",
+};
 
 export default function BackButton(props: Props) {
   const router = useRouter();
 
-  const handleClick = async () => {
-    if (props.href) {
-      await router.push(props.href);
-    } else {
-      router.back();
-    }
-  };
-
   return (
-    <Button
-      px={0}
-      leftIcon={<Icon as={MdKeyboardArrowLeft} />}
-      variant={"text"}
-      onClick={() => void handleClick()}
-      {...omit(props, "href")}
-    >
-      <Text alignSelf="center">Back</Text>
-    </Button>
+    <Link href={props.href} passHref>
+      <Button
+        px={0}
+        leftIcon={<Icon as={MdKeyboardArrowLeft} boxSize={props.iconSize} />}
+        variant={"text"}
+        {...omit(props, "href", "disableText")}
+      >
+        {!props.disableText && <Text alignSelf="center">Back</Text>}
+      </Button>
+    </Link>
   );
 }
