@@ -147,10 +147,10 @@ export const configurationRouter = createTRPCRouter({
         const jsonString = JSON.stringify(config.content, null, 2);
 
         // Create a Buffer from the JSON string
-        const buffer = Buffer.from(jsonString, 'utf-8');
+        const buffer = Buffer.from(jsonString, "utf-8");
 
         // Convert the buffer to a base64 string
-        const base64 = buffer.toString('base64');
+        const base64 = buffer.toString("base64");
 
         // Return the Blob and configuration name as a downloadable JSON file
         return {
@@ -162,30 +162,29 @@ export const configurationRouter = createTRPCRouter({
       }
     }),
   update: protectedProcedure
-      .input(
-          z.object({
-            id: z.string(),
-            name: z.string().optional(),
-            content: z.string().optional(),
-          })
-      )
-      .mutation(({ ctx, input }) => {
-        let parsedContent: Prisma.JsonValue | undefined = undefined;
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string().optional(),
+        content: z.string().optional(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      let parsedContent: Prisma.JsonValue | undefined = undefined;
 
-        if (input.content) {
-          parsedContent = JSON.parse(input.content) as Prisma.JsonValue;
-        }
+      if (input.content) {
+        parsedContent = JSON.parse(input.content) as Prisma.JsonValue;
+      }
 
-        return ctx.prisma.template.updateMany({
-
-          where: {
-            id: input.id,
-            userId: ctx.session.user.id,
-          },
-          data: {
-            ...omit(input, "id", "content"),
-            ...(parsedContent ? { content: parsedContent } : {}),
-          }
-        });
-      }),
+      return ctx.prisma.configuration.updateMany({
+        where: {
+          id: input.id,
+          userId: ctx.session.user.id,
+        },
+        data: {
+          ...omit(input, "id", "content"),
+          ...(parsedContent ? { content: parsedContent } : {}),
+        },
+      });
+    }),
 });
