@@ -16,12 +16,13 @@ import { Button } from "@chakra-ui/react";
 type Props = {
   name: string;
   onSave: (name: string) => void;
+  type?: "template" | "configuration";
 } & Omit<ModalProps, "children">;
 export default function EditDialog(props: Props) {
-  const [templateName, setTemplateName] = useState<string>(props.name);
+  const [fileName, setFileName] = useState<string>(props.name);
 
   useEffect(() => {
-    setTemplateName(props.name);
+    setFileName(props.name);
   }, []);
 
   return (
@@ -33,10 +34,10 @@ export default function EditDialog(props: Props) {
           <ModalCloseButton />
           <ModalBody>
             <NameInputField
-              name={templateName}
+              name={fileName}
               title={"Name: "}
-              setName={setTemplateName}
-              type={"template"}
+              setName={setFileName}
+              type={props.type || "template"}
             />
           </ModalBody>
           <ModalFooter>
@@ -45,7 +46,7 @@ export default function EditDialog(props: Props) {
             </Button>
             <Button
               onClick={() => {
-                props.onSave(templateName);
+                props.onSave(fileName);
                 props.onClose();
               }}
               variant={"solid"}

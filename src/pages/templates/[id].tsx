@@ -39,6 +39,7 @@ import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/confirmation-dialog";
 import AddConfigurationDialog from "../../components/add-configuration-dialog";
+import EditDialog from "../../components/edit-dialog";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
@@ -82,6 +83,10 @@ const TemplatePage: NextPage = () => {
   });
 
   const { mutate: cloneConfiguration } = api.configuration.clone.useMutation({
+    onSuccess: () => refetch(),
+  });
+
+  const { mutate: updateConfiguration } = api.configuration.update.useMutation({
     onSuccess: () => refetch(),
   });
 
@@ -147,8 +152,16 @@ const TemplatePage: NextPage = () => {
     deleteConfiguration({ id: configurationId });
   };
 
-  const handleEdit = () => {
-    return;
+  const handleEdit = (
+    configurationId: string,
+    name: string,
+    content?: string
+  ) => {
+    updateConfiguration({
+      id: configurationId,
+      name: name,
+      content: content,
+    });
   };
 
   if (isLoadingConfigurations || isLoadingTemplate) {
@@ -260,6 +273,7 @@ const TemplatePage: NextPage = () => {
                       key={idx}
                       configuration={configuration}
                       handleDelete={() => handleDelete(configuration.id)}
+                      onEdit={(name) => handleEdit(configuration.id, name)}
                     />
                   ))}
                 </Stack>
@@ -288,11 +302,18 @@ export default TemplatePage;
 const ConfigurationListItem = ({
   configuration,
   handleDelete,
+  onEdit,
 }: {
   configuration: Configuration;
   handleDelete: () => void;
+  onEdit: (name: string) => void;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: renameIsOpen,
+    onOpen: renameOnOpen,
+    onClose: renameOnClose,
+  } = useDisclosure();
 
   const cancelRef = useRef<FocusableElement | null>(null);
 
@@ -391,7 +412,7 @@ const ConfigurationListItem = ({
                 e.stopPropagation();
               }}
             >
-              <MenuItem>Edit</MenuItem>
+              <MenuItem onClick={renameOnOpen}>Edit</MenuItem>
               <MenuItem onClick={onOpen}>Delete</MenuItem>
               <MenuItem onClick={handleDownload}>Download</MenuItem>
             </MenuList>
@@ -409,6 +430,12 @@ const ConfigurationListItem = ({
         title={"Delete configuration?"}
         body={`Are you sure you want to delete configuration ${configuration.name}? You can't undo this action afterwards.`}
       />
+      <EditDialog
+        name={configuration.name}
+        onSave={onEdit}
+        isOpen={renameIsOpen}
+        onClose={renameOnClose}
+      ></EditDialog>
     </>
   );
 };
