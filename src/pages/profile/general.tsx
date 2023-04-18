@@ -36,7 +36,7 @@ const GeneralPage: NextPageWithLayout = () => {
       <Text fontSize={"3xl"} my={4}>
         General
       </Text>
-      <VStack spacing={4} p={2}>
+      <VStack spacing={4}>
         <Card width={"full"}>
           <HStack p={4}>
             <GradientAvatar
