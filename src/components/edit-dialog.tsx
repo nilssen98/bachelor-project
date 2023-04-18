@@ -41,7 +41,7 @@ export default function EditDialog(props: Props) {
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={props.onClose}>
+            <Button mr={3} onClick={props.onClose}>
               Close
             </Button>
             <Button
@@ -49,6 +49,7 @@ export default function EditDialog(props: Props) {
                 props.onSave(fileName);
                 props.onClose();
               }}
+              colorScheme="blue"
               variant={"solid"}
             >
               Save
