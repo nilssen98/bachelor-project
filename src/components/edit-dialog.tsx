@@ -39,7 +39,7 @@ export default function EditDialog(props: Props) {
           <ModalBody>
             <NameInputField
               name={fileName}
-              title={"Name: "}
+              title={`Choose a new name for the ${props.type || "template"} `}
               setName={setFileName}
               type={props.type || "template"}
             />
