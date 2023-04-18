@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import {
   Card,
   HStack,
@@ -16,11 +17,9 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import ReactTimeAgo from "react-time-ago";
 import GradientAvatar from "./gradient-avatar";
 import { useDisclosure } from "@chakra-ui/react-use-disclosure";
-import { FocusableElement } from "@chakra-ui/utils";
+import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "./confirmation-dialog";
-import { useRef } from "react";
 import EditDialog from "./edit-dialog";
-import { func } from "prop-types";
 
 interface Props {
   id: string;
@@ -56,7 +55,7 @@ export default function TemplateCard(props: Props) {
         <VStack spacing={0}>
           <HStack w={"full"}>
             <GradientAvatar
-              id={props.name}
+              id={props.id}
               // icon={<Icon boxSize={7} as={HiDocumentText} />}
             />
             <VStack spacing={0} flex={1} align={"start"}>
