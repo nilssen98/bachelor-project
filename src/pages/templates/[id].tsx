@@ -435,6 +435,7 @@ const ConfigurationListItem = ({
         onSave={onEdit}
         isOpen={renameIsOpen}
         onClose={renameOnClose}
+        type={"configuration"}
       ></EditDialog>
     </>
   );

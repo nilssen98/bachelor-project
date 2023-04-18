@@ -45,7 +45,12 @@ export default function EditDialog(props: Props) {
             />
           </ModalBody>
           <ModalFooter>
-            <Button mr={3} onClick={props.onClose}>
+            <Button
+              colorScheme={"blue"}
+              variant={"ghost"}
+              mr={3}
+              onClick={props.onClose}
+            >
               Close
             </Button>
             <Button
