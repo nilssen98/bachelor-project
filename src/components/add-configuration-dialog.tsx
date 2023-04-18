@@ -122,7 +122,7 @@ export default function AddConfigurationDialog(props: Props) {
           aria-label={"Create new configuration"}
           _hover={{ bg: "transparent" }}
         />
-        <Text>{getText()}</Text>
+        <Text noOfLines={3}>{getText()}</Text>
       </Button>
     );
   }
