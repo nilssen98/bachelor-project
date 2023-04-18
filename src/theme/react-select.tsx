@@ -29,7 +29,7 @@ export function FormattedConfigurationOption(
       p={2}
       flex={1}
       bg={isSelected ? "blue.800" : "gray.700"}
-      _hover={{ background: "gray.600" }}
+      _hover={{ background: "gray.600", cursor: "pointer" }}
       {...innerProps}
     >
       <Dot isValid={data.valid} />
