@@ -25,6 +25,10 @@ export default function EditDialog(props: Props) {
     setFileName(props.name);
   }, []);
 
+  function isNameBlank() {
+    return fileName.trim().length === 0;
+  }
+
   return (
     <>
       <Modal isCentered={true} isOpen={props.isOpen} onClose={props.onClose}>
@@ -49,6 +53,7 @@ export default function EditDialog(props: Props) {
                 props.onSave(fileName);
                 props.onClose();
               }}
+              isDisabled={isNameBlank()}
               colorScheme="blue"
               variant={"solid"}
             >
