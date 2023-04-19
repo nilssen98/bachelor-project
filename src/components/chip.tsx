@@ -30,7 +30,7 @@ export default function Chip(props: Props) {
         >
           <Icon
             as={props.validated ? FcCheckmark : IoMdClose}
-            color={props.validated ? "none" : "red.500"}
+            color={props.validated ? "none" : "red.600"}
           />
           <Tooltip label={props.name}>
             <Text paddingBottom={0.5} width={"80px"} noOfLines={1}>
