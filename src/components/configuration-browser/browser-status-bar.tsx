@@ -45,7 +45,7 @@ export default function BrowserStatusBar(props: AccordionProps) {
           <AccordionButton>
             {errors && errors.length > 0 ? (
               <HStack>
-                <Icon as={MdErrorOutline} color={"red.500"} />
+                <Icon as={MdErrorOutline} color={"red.600"} />
                 <Text>{errors.length} Errors found</Text>
               </HStack>
             ) : (
