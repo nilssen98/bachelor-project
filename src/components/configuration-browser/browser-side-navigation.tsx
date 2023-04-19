@@ -30,7 +30,7 @@ export default function BrowserSideNavigation(props: StackProps) {
                 width={"full"}
                 noOfLines={1}
                 fontSize={"sm"}
-                color={config.valid ? "whiteAlpha.800" : "red.500"}
+                color={config.valid ? "whiteAlpha.800" : "red.600"}
               >
                 {config.name}
               </Text>
@@ -39,7 +39,7 @@ export default function BrowserSideNavigation(props: StackProps) {
                   width={1.5}
                   height={1.5}
                   borderRadius={"full"}
-                  bgColor={"red.500"}
+                  bgColor={"red.600"}
                 />
               )}
             </HStack>
