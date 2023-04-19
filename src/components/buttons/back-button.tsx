@@ -1,4 +1,4 @@
-import type { ButtonProps, IconProps, TypographyProps } from "@chakra-ui/react";
+import type { ButtonProps } from "@chakra-ui/react";
 import { Button, Icon, Text } from "@chakra-ui/react";
 import { omit } from "lodash-es";
 import Link from "next/link";

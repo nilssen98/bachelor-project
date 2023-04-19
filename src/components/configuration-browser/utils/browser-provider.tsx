@@ -1,12 +1,10 @@
 import type {
   Configuration,
   ConfigurationError,
-  Prisma,
   Template,
 } from "@prisma/client";
 import type { ReactNode } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { ContextProps } from "./browser-context";
 import { BrowserContext } from "./browser-context";
 import { _useBrowserRouter } from "../hooks/useBrowserRouter";

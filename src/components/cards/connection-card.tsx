@@ -4,11 +4,11 @@ import {
   HStack,
   Icon,
   IconButton,
-  Text,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  Text,
   Tooltip,
 } from "@chakra-ui/react";
 import { BiDotsVerticalRounded } from "react-icons/bi";

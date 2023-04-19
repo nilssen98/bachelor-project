@@ -1,9 +1,8 @@
-import { Button, Text, VStack } from "@chakra-ui/react";
-import Lottie from "react-lottie";
+import { Link, Text, VStack } from "@chakra-ui/react";
 import type { Options } from "react-lottie";
+import Lottie from "react-lottie";
 import animationData from "public/assets/animations/404_animation_lottie.json";
 import NextLink from "next/link";
-import { Link } from "@chakra-ui/react";
 
 export default function Custom404() {
   const defaultOptions: Options = {

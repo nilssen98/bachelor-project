@@ -1,18 +1,22 @@
 import type { StackProps } from "@chakra-ui/react";
-import { Tooltip } from "@chakra-ui/react";
-import { IconButton } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
-import { Badge, HStack, Icon, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+  Badge,
+  Button,
+  HStack,
+  Icon,
+  IconButton,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
-import { includes, range } from "lodash-es";
+import { includes } from "lodash-es";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { IoConstructOutline } from "react-icons/io5";
 import {
   MdAdd,
   MdArrowRight,
   MdDelete,
   MdEdit,
-  MdOutlineError,
   MdOutlineErrorOutline,
 } from "react-icons/md";
 import BrowserErrorTooltip from "./browser-error-tooltip";

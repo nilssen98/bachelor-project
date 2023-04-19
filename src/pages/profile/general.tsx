@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { useRef } from "react";
 import {
   Button,
   Card,
@@ -16,7 +17,6 @@ import ProfileSidebarLayout from "../../components/layouts/profile-sidebar-layou
 import GradientAvatar from "../../components/avatars/gradient-avatar";
 import { api } from "../../utils/api";
 import ConfirmationDialog from "../../components/dialogs/confirmation-dialog";
-import { useRef } from "react";
 import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import type { FocusableElement } from "@chakra-ui/utils";
 

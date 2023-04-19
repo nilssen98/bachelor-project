@@ -1,5 +1,5 @@
 import type { Prisma } from "@prisma/client";
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BrowserContext } from "../utils/browser-context";
 
 // This function contains the logic for the useBrowserRouter hook

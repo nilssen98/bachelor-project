@@ -1,6 +1,6 @@
+import type { IconProps } from "@chakra-ui/react";
 import { Icon } from "@chakra-ui/react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
-import type { IconProps } from "@chakra-ui/react";
 import { IoMailOpenOutline } from "react-icons/io5";
 import { omit } from "lodash-es";
 

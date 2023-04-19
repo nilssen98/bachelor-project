@@ -1,6 +1,5 @@
 import type { StackProps } from "@chakra-ui/react";
 import {
-  Box,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,

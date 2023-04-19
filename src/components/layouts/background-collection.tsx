@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { range } from "lodash-es";
 import logo from "../../../public/logo.svg";

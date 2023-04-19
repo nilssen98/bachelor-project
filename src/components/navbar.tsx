@@ -1,6 +1,5 @@
 import type { StackProps } from "@chakra-ui/react";
-import { Stack } from "@chakra-ui/react";
-import { Button, Divider, HStack, VStack } from "@chakra-ui/react";
+import { Button, Divider, HStack, Stack, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Logo from "./logo";

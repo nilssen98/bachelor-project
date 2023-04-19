@@ -1,7 +1,5 @@
 import type { StackProps } from "@chakra-ui/react";
-import { HStack } from "@chakra-ui/react";
-import { VStack } from "@chakra-ui/react";
-import { Text, Stack, StackDivider } from "@chakra-ui/react";
+import { HStack, Stack, StackDivider, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import BrowserContent from "./browser-content";
 import BrowserNavigation from "./browser-navigation";

@@ -1,9 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Box, Flex } from "@chakra-ui/react";
 import { omit } from "lodash-es";
-import type { ReactElement, ReactNode } from "react";
 import { navbarHeight } from "../../theme";
-import BackgroundCollection from "./background-collection";
 import Navbar from "../navbar";
 
 type Props = FlexProps;

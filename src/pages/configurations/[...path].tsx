@@ -1,11 +1,8 @@
 import { Center, Heading, HStack, Stack, Text } from "@chakra-ui/react";
-import type { Prisma } from "@prisma/client";
-import { template } from "lodash-es";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import BackButton from "../../components/buttons/back-button";
 import ConfigurationBrowser from "../../components/configuration-browser";
 import { ConfigurationProvider } from "../../components/configuration-browser/utils/browser-provider";
 import GradientAvatar from "../../components/avatars/gradient-avatar";

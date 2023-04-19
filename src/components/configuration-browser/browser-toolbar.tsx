@@ -1,17 +1,8 @@
 import type { StackProps } from "@chakra-ui/react";
-import {
-  Button,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Stack,
-  StackDivider,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Icon, Stack, StackDivider, Text } from "@chakra-ui/react";
 import { omit } from "lodash-es";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { MdErrorOutline, MdSave, MdSearch } from "react-icons/md";
+import { MdErrorOutline } from "react-icons/md";
 import { useBrowserContent } from "./hooks/useBrowserContent";
 import { useBrowserController } from "./hooks/useBrowserController";
 

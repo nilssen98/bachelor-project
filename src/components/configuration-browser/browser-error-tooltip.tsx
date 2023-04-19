@@ -1,8 +1,12 @@
 import type { TooltipProps } from "@chakra-ui/react";
-import { Icon } from "@chakra-ui/react";
-import { HStack } from "@chakra-ui/react";
-import { StackDivider } from "@chakra-ui/react";
-import { Tooltip, VStack, Text } from "@chakra-ui/react";
+import {
+  HStack,
+  Icon,
+  StackDivider,
+  Text,
+  Tooltip,
+  VStack,
+} from "@chakra-ui/react";
 import { omit } from "lodash-es";
 import { MdErrorOutline } from "react-icons/md";
 

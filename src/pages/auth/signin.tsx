@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
 import {
   Button,
-  Text,
   Card,
   CardBody,
   Center,
-  Stack,
-  VStack,
   Divider,
   HStack,
+  Stack,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import type { ClientSafeProvider } from "next-auth/react";
-import { useSession } from "next-auth/react";
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
 import Loading from "../../components/loading";
-import PasswordInput from "../../components/inputs/password-input";
 import EmailInput from "../../components/inputs/email-input";
 import ProviderIcon from "../../components/provider-icon";
 

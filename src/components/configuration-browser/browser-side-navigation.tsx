@@ -1,5 +1,5 @@
 import type { StackProps } from "@chakra-ui/react";
-import { VStack, Stack, HStack, Box, Text } from "@chakra-ui/react";
+import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useBrowserContent } from "./hooks/useBrowserContent";
 
