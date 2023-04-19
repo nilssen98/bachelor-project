@@ -15,7 +15,7 @@ import { useBrowserController } from "./hooks/useBrowserController";
 export default function ConfigurationBrowser(props: StackProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const { isValidPath, configurations } = useBrowserContent();
-  const { showTreeView } = useBrowserController();
+  const { showTreeView, showSchema } = useBrowserController();
 
   const handleSave = () => {
     return;
@@ -46,7 +46,9 @@ export default function ConfigurationBrowser(props: StackProps) {
               onSearchValueChanged={(newValue) => setSearchValue(newValue)}
               onClickErrors={handleClickErrors}
             />
-            {!showTreeView && <BrowserNavigation bg={"whiteAlpha.50"} />}
+            {!(showTreeView || showSchema) && (
+              <BrowserNavigation bg={"whiteAlpha.50"} />
+            )}
             <Stack
               spacing={0}
               bg={"whiteAlpha.50"}
@@ -57,7 +59,9 @@ export default function ConfigurationBrowser(props: StackProps) {
               overflowX={"hidden"}
             >
               <BrowserContent />
-              {showTreeView && <BrowserTreeView position={"absolute"} />}
+              {(showTreeView || showSchema) && (
+                <BrowserTreeView position={"absolute"} />
+              )}
             </Stack>
           </VStack>
         </HStack>

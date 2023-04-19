@@ -1,6 +1,7 @@
 import type {
   Configuration,
   ConfigurationError,
+  Prisma,
   Template,
 } from "@prisma/client";
 import type { ReactNode } from "react";

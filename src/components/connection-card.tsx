@@ -66,7 +66,7 @@ export default function ConnectionCard(props: Props) {
               </Tooltip>
               <MenuList>
                 <MenuItem
-                  color={"red.500"}
+                  color={"red.600"}
                   icon={<MdLinkOff />}
                   onClick={() => props.onDisconnect(props.provider)}
                 >

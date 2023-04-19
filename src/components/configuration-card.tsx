@@ -79,7 +79,7 @@ export default function ConfigurationCard(props: Props) {
           <HStack>
             <Icon
               as={props.validated ? FcCheckmark : IoMdClose}
-              color={"red.500"}
+              color={"red.600"}
               boxSize={5}
             />
             <Text textColor={"gray.400"} align={"left"}>

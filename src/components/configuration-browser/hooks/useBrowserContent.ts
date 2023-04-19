@@ -47,12 +47,21 @@ export const _useBrowserContent = ({
     setContent(newContent);
   }, [path]);
 
+  const updateConfigurationContent = (
+    path: string[],
+    updatedContent: Prisma.JsonValue
+  ) => {
+    return;
+  };
+
   return {
     errors,
     content,
     isValidPath,
     configuration,
     configurations,
+    getConfigurationFromPath,
+    updateConfigurationContent,
     template,
   };
 };
