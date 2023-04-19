@@ -21,13 +21,13 @@ import { Select } from "chakra-react-select";
 import {
   chakraSelectStyles,
   FormattedConfigurationOption,
-} from "../theme/react-select";
+} from "../../theme/react-select";
 import { AiOutlineCopy, AiOutlineFileAdd } from "react-icons/ai";
 import { BsFiletypeJson } from "react-icons/bs";
 import type { FileContent } from "use-file-picker";
 import type { Configuration } from "@prisma/client";
-import DialogFileChooser from "./dialog-file-chooser";
-import NameInputField from "./name-input-field";
+import FileChooserDialog from "./file-chooser-dialog";
+import NameInputDialog from "./name-input-dialog";
 
 // Custom type to represent a configuration option in the react-select dropdown
 export type ConfigurationOption = Configuration & {
@@ -148,7 +148,7 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.CreateNew:
         return (
           <>
-            <NameInputField
+            <NameInputDialog
               type={"configuration"}
               name={configurationName}
               setName={setConfigurationName}
@@ -179,7 +179,7 @@ export default function AddConfigurationDialog(props: Props) {
                 }))}
               />
               <Spacer py={1} />
-              <NameInputField
+              <NameInputDialog
                 type={"configuration"}
                 name={configurationName}
                 setName={setConfigurationName}
@@ -190,14 +190,14 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.UploadFile:
         return (
           <>
-            <DialogFileChooser
+            <FileChooserDialog
               type={"configuration"}
               openFileSelector={props.openFileSelector}
               clearFileSelection={props.clearFileSelection}
               fileContent={props.fileContent}
             />
             <Spacer py={4} />
-            <NameInputField
+            <NameInputDialog
               type={"configuration"}
               name={configurationName}
               setName={setConfigurationName}

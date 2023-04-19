@@ -3,7 +3,7 @@ import { Avatar } from "@chakra-ui/react";
 import { omit } from "lodash-es";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
-import { generateColor, generateSecondaryColor } from "../utils/colorUtils";
+import { generateColor, generateSecondaryColor } from "../../utils/colorUtils";
 
 type Props = {
   /**

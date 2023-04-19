@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import omit from "lodash-es/omit";
 import type { AvatarProps } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { generateColor } from "../utils/colorUtils";
+import { generateColor } from "../../utils/colorUtils";
 
 type Props = {
   /**

@@ -1,4 +1,3 @@
-import { relativizeURL } from "next/dist/shared/lib/router/utils/relativize-url";
 import {
   Modal,
   ModalBody,
@@ -7,9 +6,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  ModalProps,
 } from "@chakra-ui/modal";
-import NameInputField from "./name-input-field";
+import type { ModalProps } from "@chakra-ui/modal";
+import NameInputDialog from "./name-input-dialog";
 import React, { useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 
@@ -37,7 +36,7 @@ export default function EditDialog(props: Props) {
           <ModalHeader>Edit</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <NameInputField
+            <NameInputDialog
               name={fileName}
               title={`Choose a new name for the ${props.type || "template"} `}
               setName={setFileName}

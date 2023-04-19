@@ -8,7 +8,7 @@ type Props = {
   setName: (name: string) => void;
 };
 
-export default function NameInputField(props: Props) {
+export default function NameInputDialog(props: Props) {
   return (
     <>
       <VStack width={"full"} alignItems={"flex-start"} spacing={2}>

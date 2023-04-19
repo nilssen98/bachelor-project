@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { MdLinkOff } from "react-icons/md";
-import ProviderIcon from "./provider-icon";
+import ProviderIcon from "../provider-icon";
 
 interface Props {
   provider: string;

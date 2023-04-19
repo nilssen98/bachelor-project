@@ -15,11 +15,11 @@ import {
 import { CiEdit } from "react-icons/ci";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import ReactTimeAgo from "react-time-ago";
-import GradientAvatar from "./gradient-avatar";
+import GradientAvatar from "../avatars/gradient-avatar";
 import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import type { FocusableElement } from "@chakra-ui/utils";
-import ConfirmationDialog from "./confirmation-dialog";
-import EditDialog from "./edit-dialog";
+import ConfirmationDialog from "../dialogs/confirmation-dialog";
+import EditDialog from "../dialogs/edit-dialog";
 
 interface Props {
   id: string;

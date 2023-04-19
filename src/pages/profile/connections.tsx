@@ -25,13 +25,13 @@ import { getProviders } from "next-auth/react";
 import type { ClientSafeProvider } from "next-auth/react";
 import { api } from "../../utils/api";
 import type { NextPageWithLayout } from "../_app";
-import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
+import ProfileSidebarLayout from "../../components/layouts/profile-sidebar-layout";
 import Loading from "../../components/loading";
 import { signIn } from "next-auth/react";
 import { MdSend } from "react-icons/md";
-import ConnectionCard from "../../components/connection-card";
+import ConnectionCard from "../../components/cards/connection-card";
 import ProviderIcon from "../../components/provider-icon";
-import EmailInput from "../../components/email-input";
+import EmailInput from "../../components/inputs/email-input";
 
 export async function getServerSideProps() {
   const providers = await getProviders();

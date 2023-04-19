@@ -12,10 +12,10 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { MdDelete, MdLogout } from "react-icons/md";
 import type { NextPageWithLayout } from "../_app";
-import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
-import GradientAvatar from "../../components/gradient-avatar";
+import ProfileSidebarLayout from "../../components/layouts/profile-sidebar-layout";
+import GradientAvatar from "../../components/avatars/gradient-avatar";
 import { api } from "../../utils/api";
-import ConfirmationDialog from "../../components/confirmation-dialog";
+import ConfirmationDialog from "../../components/dialogs/confirmation-dialog";
 import { useRef } from "react";
 import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import type { FocusableElement } from "@chakra-ui/utils";

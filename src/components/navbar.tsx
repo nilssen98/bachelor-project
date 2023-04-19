@@ -4,7 +4,7 @@ import { Button, Divider, HStack, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Logo from "./logo";
-import GradientAvatar from "./gradient-avatar";
+import GradientAvatar from "./avatars/gradient-avatar";
 
 type Props = StackProps;
 

@@ -5,7 +5,7 @@ import type {
   GroupBase,
   OptionProps,
 } from "chakra-react-select";
-import type { ConfigurationOption } from "../components/add-configuration-dialog";
+import type { ConfigurationOption } from "../components/dialogs/add-configuration-dialog";
 
 function Dot(props: { isValid: boolean }) {
   return (

@@ -17,8 +17,8 @@ import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Logo from "../../components/logo";
 import Loading from "../../components/loading";
-import PasswordInput from "../../components/password-input";
-import EmailInput from "../../components/email-input";
+import PasswordInput from "../../components/inputs/password-input";
+import EmailInput from "../../components/inputs/email-input";
 import ProviderIcon from "../../components/provider-icon";
 
 export async function getServerSideProps() {

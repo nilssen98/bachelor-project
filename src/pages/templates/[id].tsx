@@ -25,7 +25,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
-import BackButton from "../../components/back-button";
+import BackButton from "../../components/buttons/back-button";
 import { useFilePicker } from "use-file-picker";
 import { useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
@@ -33,13 +33,13 @@ import ReactTimeAgo from "react-time-ago";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Loading from "../../components/loading";
 import Link from "next/link";
-import GradientAvatar from "../../components/gradient-avatar";
+import GradientAvatar from "../../components/avatars/gradient-avatar";
 import { MdSettings } from "react-icons/md";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import type { FocusableElement } from "@chakra-ui/utils";
-import ConfirmationDialog from "../../components/confirmation-dialog";
-import AddConfigurationDialog from "../../components/add-configuration-dialog";
-import EditDialog from "../../components/edit-dialog";
+import ConfirmationDialog from "../../components/dialogs/confirmation-dialog";
+import AddConfigurationDialog from "../../components/dialogs/add-configuration-dialog";
+import EditDialog from "../../components/dialogs/edit-dialog";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
