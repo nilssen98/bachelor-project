@@ -1,6 +1,7 @@
 import type {
   Configuration,
   ConfigurationError,
+  Prisma,
   Template,
 } from "@prisma/client";
 import type { ReactNode } from "react";
@@ -18,6 +19,7 @@ interface ProviderProps {
   configurations: Configuration[];
   errors: ConfigurationError[];
   template: Template;
+  onEdit: (newContent: Prisma.JsonValue) => void;
   onPathChange?: (path: string[]) => void;
   path?: string[];
 }
@@ -42,6 +44,7 @@ function ConfigurationProvider(props: ProviderProps) {
     configuration: props.configuration,
     configurations: props.configurations,
     template: props.template,
+    onEdit: props.onEdit,
     path: sharedState.path,
   });
 
