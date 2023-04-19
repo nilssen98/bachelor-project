@@ -3,16 +3,20 @@ import { BrowserContext } from "../utils/browser-context";
 
 export const _useBrowserController = () => {
   const [showTreeView, setShowTreeView] = useState<boolean>(false);
+  const [showSchema, setShowSchema] = useState<boolean>(false);
   const [showErrors, setShowErrors] = useState<boolean>(false);
 
   const toggleTreeView = () => setShowTreeView(!showTreeView);
   const toggleErrors = () => setShowErrors(!showErrors);
+  const toggleSchema = () => setShowSchema(!showSchema);
 
   return {
     showTreeView,
     toggleTreeView,
     showErrors,
     toggleErrors,
+    showSchema,
+    toggleSchema,
   };
 };
 
