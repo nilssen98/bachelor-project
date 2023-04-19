@@ -375,7 +375,6 @@ function ConfigurationField(props: ConfigurationFieldProps) {
               errors={errors || []}
               onClose={() => setEditing(false)}
               onCancel={() => setEditing(false)}
-              onUpdate={props.onUpdate}
               field={name}
               type={editType}
               value={value?.toString() || ""}

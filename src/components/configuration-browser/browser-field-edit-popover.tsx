@@ -29,7 +29,7 @@ type Props = {
   type: "string" | "number" | "boolean" | "null";
   errors?: string[];
   onCancel: () => void;
-  onUpdate: (
+  onUpdate?: (
     field: string,
     value: string,
     type: "string" | "number" | "boolean" | "null"
@@ -52,7 +52,7 @@ export default function BrowserFieldEditPopover(props: Props) {
   }, [props.field, props.isOpen, props.type, props.value]);
 
   const handleUpdate = () => {
-    if (canUpdate) {
+    if (canUpdate && props.onUpdate) {
       props.onUpdate(field, value, type);
     }
   };
