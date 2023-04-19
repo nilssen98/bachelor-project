@@ -126,12 +126,12 @@ export default function BrowserContent(props: StackProps) {
     else {
       const updatedField = { [field]: updatedValue };
 
-      const newContent: Prisma.JsonObject = {
-        ...content,
-        ...updatedField,
-      };
+      // const newContent: Prisma.JsonObject = {
+      //   ...content,
+      //   ...updatedField,
+      // };
 
-      updatedContent = newContent;
+      // updatedContent = newContent;
     }
 
     let newConfig: Prisma.JsonValue = configuration.content;
