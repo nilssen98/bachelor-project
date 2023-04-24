@@ -91,23 +91,34 @@ const TemplatePage: NextPage = () => {
   });
 
   const sortedConfigurations = useMemo(() => {
-    return configurations?.sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
+    return configurations
+      ? configurations.sort(
+          (a, b) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        )
+      : [];
   }, [configurations]);
 
   const filteredConfigurations = useMemo(() => {
     return sortedConfigurations
-      ?.filter(
-        (configuration) =>
-          showValid === null || configuration.valid === showValid
-      )
-      .filter(
-        (configuration) =>
-          configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      );
+      ? sortedConfigurations
+          .filter(
+            (configuration) =>
+              showValid === null || configuration.valid === showValid
+          )
+          .filter(
+            (configuration) =>
+              configuration.name.toLowerCase().indexOf(search.toLowerCase()) !==
+              -1
+          )
+      : [];
   }, [sortedConfigurations, showValid, search]);
+
+  const excludedString = useMemo(() => {
+    const excluded =
+      sortedConfigurations.length - filteredConfigurations.length;
+    return excluded <= 5 ? String(excluded) : "5+";
+  }, [sortedConfigurations, filteredConfigurations]);
 
   function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
     if (filesContent.length > 0) {
@@ -185,7 +196,12 @@ const TemplatePage: NextPage = () => {
         </HStack>
         <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
           <HStack width={"full"}>
-            <Button onClick={onOpen} isLoading={isOpen} variant={"custom"}>
+            <Button
+              minW={180}
+              onClick={onOpen}
+              isLoading={isOpen}
+              variant={"custom"}
+            >
               Add configuration
             </Button>
             <Input
@@ -197,20 +213,24 @@ const TemplatePage: NextPage = () => {
               <MenuButton
                 as={Button}
                 variant={"outline"}
+                minW={150}
                 borderColor={"whiteAlpha.400"}
                 aria-label={"Filter configurations"}
+                isDisabled={sortedConfigurations.length === 0}
                 leftIcon={<Icon as={HiAdjustmentsHorizontal} fontSize={"xl"} />}
                 sx={{
                   flexShrink: 0,
                   position: "relative",
                 }}
               >
-                <Text>Filter</Text>
+                <Text>
+                  {showValid === null ? "Filter" : `Excluded ${excludedString}`}
+                </Text>
                 <Box
                   top={-0.5}
                   right={-0.5}
                   bg={"whiteAlpha.800"}
-                  borderRadius={"50%"}
+                  borderRadius={"full"}
                   height={1}
                   width={1}
                   sx={{
