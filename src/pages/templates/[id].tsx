@@ -12,6 +12,7 @@ import {
   Input,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuItemOption,
   MenuList,
@@ -34,7 +35,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import Loading from "../../components/loading";
 import Link from "next/link";
 import GradientAvatar from "../../components/avatars/gradient-avatar";
-import { MdSettings } from "react-icons/md";
+import { MdDelete, MdDownload, MdEdit, MdSettings } from "react-icons/md";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/dialogs/confirmation-dialog";
@@ -290,6 +291,7 @@ const TemplatePage: NextPage = () => {
                 <Stack divider={<StackDivider />} spacing={0}>
                   {filteredConfigurations?.map((configuration, idx) => (
                     <ConfigurationListItem
+                      sx={{ "&:hover": { bgColor: "gray.300" } }}
                       key={idx}
                       configuration={configuration}
                       handleDelete={() => handleDelete(configuration.id)}
@@ -398,17 +400,15 @@ const ConfigurationListItem = ({
         </Stack>
         <Stack flex={1} align={"start"} color={"whiteAlpha.600"}>
           <Text>
-            {configuration.valid ? (
-              <HStack>
-                <Box h={2} w={2} borderRadius={"full"} bg={"green"} />
-                <Text>valid</Text>
-              </HStack>
-            ) : (
-              <HStack>
-                <Box h={2} w={2} borderRadius={"full"} bg={"red"} />
-                <Text>invalid</Text>
-              </HStack>
-            )}
+            <HStack>
+              <Box
+                h={2}
+                w={2}
+                borderRadius={"full"}
+                bg={configuration.valid ? "green" : "red"}
+              />
+              <Text>{configuration.valid ? "valid" : "invalid"}</Text>
+            </HStack>
           </Text>
         </Stack>
         <HStack flex={1} justify={"end"}>
@@ -432,9 +432,25 @@ const ConfigurationListItem = ({
                 e.stopPropagation();
               }}
             >
-              <MenuItem onClick={renameOnOpen}>Edit</MenuItem>
-              <MenuItem onClick={onOpen}>Delete</MenuItem>
-              <MenuItem onClick={handleDownload}>Download</MenuItem>
+              <MenuItem onClick={renameOnOpen}>
+                <HStack spacing={4}>
+                  <Icon boxSize={5} as={MdEdit} />
+                  <Text>Edit</Text>
+                </HStack>
+              </MenuItem>
+              <MenuItem onClick={handleDownload}>
+                <HStack spacing={4}>
+                  <Icon fontSize={20} as={MdDownload} />
+                  <Text>Download</Text>
+                </HStack>
+              </MenuItem>
+              <MenuDivider />
+              <MenuItem onClick={onOpen}>
+                <HStack spacing={4}>
+                  <Icon boxSize={5} as={MdDelete} color={"red.600"} />
+                  <Text color={"red.600"}>Delete</Text>
+                </HStack>
+              </MenuItem>
             </MenuList>
           </Menu>
         </HStack>
@@ -456,7 +472,7 @@ const ConfigurationListItem = ({
         isOpen={renameIsOpen}
         onClose={renameOnClose}
         type={"configuration"}
-      ></EditDialog>
+      />
     </>
   );
 };
