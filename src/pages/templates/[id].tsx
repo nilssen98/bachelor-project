@@ -291,7 +291,6 @@ const TemplatePage: NextPage = () => {
                 <Stack divider={<StackDivider />} spacing={0}>
                   {filteredConfigurations?.map((configuration, idx) => (
                     <ConfigurationListItem
-                      sx={{ "&:hover": { bgColor: "gray.300" } }}
                       key={idx}
                       configuration={configuration}
                       handleDelete={() => handleDelete(configuration.id)}
