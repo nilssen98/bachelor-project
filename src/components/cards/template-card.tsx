@@ -11,6 +11,7 @@ import {
   MenuList,
   MenuItem,
   Tooltip,
+  MenuDivider,
 } from "@chakra-ui/react";
 import { CiEdit } from "react-icons/ci";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -20,6 +21,7 @@ import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../dialogs/confirmation-dialog";
 import EditDialog from "../dialogs/edit-dialog";
+import { MdDelete, MdDownload, MdEdit } from "react-icons/md";
 
 interface Props {
   id: string;
@@ -82,8 +84,19 @@ export default function TemplateCard(props: Props) {
                   e.stopPropagation();
                 }}
               >
-                <MenuItem onClick={renameOnOpen}>Edit</MenuItem>
-                <MenuItem onClick={onOpen}>Delete</MenuItem>
+                <MenuItem onClick={renameOnOpen}>
+                  <HStack spacing={4}>
+                    <Icon boxSize={5} as={MdEdit} />
+                    <Text>Edit</Text>
+                  </HStack>
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem onClick={onOpen}>
+                  <HStack spacing={4}>
+                    <Icon boxSize={5} as={MdDelete} color={"red.600"} />
+                    <Text color={"red.600"}>Delete</Text>
+                  </HStack>
+                </MenuItem>
               </MenuList>
             </Menu>
           </HStack>
