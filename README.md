@@ -1,75 +1,112 @@
-# Create T3 App
+# Configify
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is a repo for the bachelor's degree project in Computer Science at the Norwegian University of Science and Technology (NTNU).
+The project is a full-stack application for creating, managing, and validating JSON configuration files.
 
-## What's next? How do I make an app with this?
+### Built With
+* [Next.js](https://nextjs.org/) - A React-based framework for building server-rendered or statically-exported React applications.
+* [NextAuth](https://next-auth.js.org/) - A complete open-source authentication solution for Next.js applications.
+* [TypeScript](https://www.typescriptlang.org) - A superset of JavaScript that adds static typing.
+* [Prisma](https://www.prisma.io/) - An open-source next-generation ORM for Node.js and TypeScript.
+* [tRPC](https://trpc.io/) - An end-to-end type-safe RPC library for building APIs with TypeScript and Node.js.
+* [Chakra UI](https://chakra-ui.com/) - A simple, modular and accessible component library for building React applications.
+* [AJV](https://ajv.js.org/) - A JSON Schema validator for JavaScript.
+* [Yarn](https://yarnpkg.com/) - A fast, reliable, and secure dependency management tool.
+* [Vercel](https://vercel.com/) - A platform for deploying and scaling frontend web projects.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Getting Started
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+To get a local copy up and running follow these simple steps.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+### Prerequisites
 
-## Learn More
+This is a list of things you need in order to use this application.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+* Node.js
+* Yarn
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+#### Downloading the project
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+**Via HTTPS:**
+```sh
+git clone https://github.com/nilssen98/bachelor-project.git
+```
+**Via SSH:**
+```sh
+git clone git@github.com:nilssen98/bachelor-project.git
+```
+or download it directly as a zip from [here](https://github.com/nilssen98/bachelor-project/archive/refs/heads/master.zip).
 
-## How do I deploy this?
+### Usage methods
 
-### Docker
+#### Deployment [Recommended]
+
+1. Head to [https://bachelor-project-rose.vercel.app/](https://bachelor-project-rose.vercel.app/)
+   to see the website in operation. <br>
+   This is the preferred method.
+
+### Other usage methods
+
+#### Locally
+
+1. Make sure you have installed Node.js and Yarn on the system.
+2. Download and the extract zip-file **or** clone project to the desired location as specified in the ["Downloading the project"](#downloading-the-project) section.
+3. Run the command `yarn install` in the project root.
+4. Copy the env.example file in this directory to .env.development (which will be ignored by Git):
+    ```bash
+    cp env.example .env.development
+    ```
+5. Fill in the secrets for all the providers in the .env.development file.
+6. Run the command `yarn dev` in the project root.
+7. The website should then be available at [http://localhost:3000](http://localhost:3000)
+
+#### Docker
 
 You can deploy this project with Docker.
-    
-```bash
-docker compose up
-``` 
 
-Or just rebuild the app without touching the database:
+1. Make sure you have Docker installed on your system.
+2. Copy and fill in the secrets for all the providers in the .env.production file like mentioned in the ["Locally"](#locally) section.
+3. Run the following command in the project root:
+   ```bash
+   docker compose up
+   ```
+   Or just rebuild the project without touching the database:
+   ```bash
+   docker-compose up --build app
+   ```
+4. The website should then be available at [http://localhost:3000](http://localhost:3000)
 
-```bash
-docker-compose up --build app
-```
-
-Useful options:
+Other useful commands:
 
 `-d` Detached mode: Run containers in the background
 
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## Database
 
-
-## Start developing
-
-### Configure your local environment
-
-Copy the .env.local.example file in this directory to .env.local (which will be ignored by Git):
-
-```bash
-cp env.example .env.development
-```
-
-Add details for one or more providers (e.g. Google, GitHub, Email, etc).
-
-
-### Database
-
-Generate the database schema, run:
+When setting up a new project, you need to run this command once to generate the Prisma Client.
+This generates the Prisma Client APIs that allow you to interact with the database.
 
 ```bash
 yarn prisma generate
 ```
 
-To apply the migrations to the database, run:
+To sync the database schema with the Prisma schema, run the following command:
 
 ```bash
 yarn prisma db push
 ```
+
+This command should be used after creating a new database or after making any changes to the `schema.prisma` file.
+
+Prisma sometimes refuses to correctly read the environment variables, so we included a script that uses `dotenv-cli` to read the environment variables from the correct `.env` file.
+
+One needs to have `dotenv-cli` installed globally to use this script.
+
+```bash
+yarn db:push
+```
+
+
+## Acknowledgements
+
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
