@@ -19,10 +19,6 @@ export default function ConfigurationBrowser(props: StackProps) {
     return;
   };
 
-  const handleClickErrors = () => {
-    return;
-  };
-
   if (!isValidPath) {
     return <Text>Invalid path</Text>;
   }
@@ -42,7 +38,6 @@ export default function ConfigurationBrowser(props: StackProps) {
               onSave={handleSave}
               searchValue={searchValue}
               onSearchValueChanged={(newValue) => setSearchValue(newValue)}
-              onClickErrors={handleClickErrors}
             />
             {!(showTreeView || showSchema) && (
               <BrowserNavigation bg={"whiteAlpha.50"} />
