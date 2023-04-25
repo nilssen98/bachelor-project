@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { MutableRefObject, useRef } from "react";
 import {
   Card,
   HStack,
@@ -22,6 +22,7 @@ import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../dialogs/confirmation-dialog";
 import EditDialog from "../dialogs/edit-dialog";
 import { MdDelete, MdDownload, MdEdit } from "react-icons/md";
+import { FileContent } from "use-file-picker";
 
 interface Props {
   id: string;
@@ -31,17 +32,25 @@ interface Props {
   onDelete: () => void;
   onClick?: () => void;
   onEdit: (name: string) => void;
+  openFileSelector: () => void;
+  clearFileSelection: () => void;
+  fileContent: FileContent[];
 }
 
 export default function TemplateCard(props: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    isOpen: renameIsOpen,
-    onOpen: renameOnOpen,
-    onClose: renameOnClose,
+    isOpen: editIsOpen,
+    onOpen: editOnOpen,
+    onClose: editOnClose,
   } = useDisclosure();
 
   const cancelRef = useRef<FocusableElement | null>(null);
+
+  function handleClose() {
+    props.clearFileSelection();
+    editOnClose();
+  }
 
   return (
     <>
@@ -84,7 +93,7 @@ export default function TemplateCard(props: Props) {
                   e.stopPropagation();
                 }}
               >
-                <MenuItem onClick={renameOnOpen}>
+                <MenuItem onClick={editOnOpen}>
                   <HStack spacing={4}>
                     <Icon boxSize={5} as={MdEdit} />
                     <Text>Edit</Text>
@@ -128,8 +137,12 @@ export default function TemplateCard(props: Props) {
       <EditDialog
         name={props.name}
         onSave={props.onEdit}
-        isOpen={renameIsOpen}
-        onClose={renameOnClose}
+        isOpen={editIsOpen}
+        onClose={handleClose}
+        clearFileSelection={props.clearFileSelection}
+        fileContent={props.fileContent}
+        openFileSelector={props.openFileSelector}
+        type={"schema"}
       />
     </>
   );

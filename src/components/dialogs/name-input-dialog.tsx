@@ -1,7 +1,7 @@
 import { VStack, Text, Input } from "@chakra-ui/react";
 
 type Props = {
-  type: "template" | "configuration";
+  type: "schema" | "configuration" | "template";
   name: string;
 
   title?: string;
