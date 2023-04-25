@@ -193,7 +193,7 @@ export default function BrowserContent(props: StackProps) {
                 </Badge>
               ))}
             </VStack>
-            <VStack pt={2} px={2}>
+            {/*<VStack pt={2} px={2}>
               <Button
                 color={"whiteAlpha.800"}
                 justifyContent={"flex-start"}
@@ -205,8 +205,8 @@ export default function BrowserContent(props: StackProps) {
               >
                 Add field
               </Button>
-            </VStack>
-            <VStack spacing={0} align={"start"}>
+            </VStack>*/}
+            <VStack pt={2} spacing={0} align={"start"}>
               {Object.entries(item || {}).map(([key, val], idx2) => (
                 <ConfigurationField
                   onClick={() => router.push(key)}
@@ -365,7 +365,7 @@ function ConfigurationField(props: ConfigurationFieldProps) {
               <Text>{"}"}</Text>
             </HStack>
           )}
-          <HStack pl={2} flex={1}>
+          {/*<HStack pl={2} flex={1}>
             <IconButton
               hidden={!editing && !isHovered}
               onClick={(e) => e.stopPropagation()}
@@ -395,8 +395,8 @@ function ConfigurationField(props: ConfigurationFieldProps) {
                 aria-label={"Edit"}
               />
             </BrowserFieldEditPopover>
-          </HStack>
-          <HStack align={"center"} justify={"end"}>
+          </HStack>*/}
+          <HStack flex={1} align={"center"} justify={"end"}>
             {isClickable && <Icon as={MdArrowRight} fontSize={"xl"} />}
           </HStack>
         </HStack>
