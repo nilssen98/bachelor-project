@@ -28,7 +28,7 @@ import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/buttons/back-button";
 import { useFilePicker } from "use-file-picker";
-import { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
 import ReactTimeAgo from "react-time-ago";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -41,6 +41,7 @@ import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/dialogs/confirmation-dialog";
 import AddConfigurationDialog from "../../components/dialogs/add-configuration-dialog";
 import EditDialog from "../../components/dialogs/edit-dialog";
+import { IoMdEye } from "react-icons/io";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
@@ -91,6 +92,8 @@ const TemplatePage: NextPage = () => {
     onSuccess: () => refetch(),
   });
 
+  const [filter, setFilter] = useState<"all" | "valid" | "invalid">("all");
+
   const sortedConfigurations = useMemo(() => {
     return configurations
       ? configurations.sort(
@@ -102,24 +105,28 @@ const TemplatePage: NextPage = () => {
 
   const filteredConfigurations = useMemo(() => {
     return sortedConfigurations
-      ? sortedConfigurations
-          .filter(
-            (configuration) =>
-              showValid === null || configuration.valid === showValid
-          )
-          .filter(
-            (configuration) =>
-              configuration.name.toLowerCase().indexOf(search.toLowerCase()) !==
-              -1
-          )
-      : [];
+      ?.filter((configuration) => {
+        if (filter === "all") return true;
+        else if (filter === "valid") return configuration.valid;
+        else return !configuration.valid;
+      })
+      .filter(
+        (configuration) =>
+          configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
+      )
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
   }, [sortedConfigurations, showValid, search]);
 
-  const excludedString = useMemo(() => {
-    const excluded =
-      sortedConfigurations.length - filteredConfigurations.length;
-    return excluded <= 5 ? String(excluded) : "5+";
-  }, [sortedConfigurations, filteredConfigurations]);
+  const validConfigurations = useMemo(() => {
+    return configurations?.filter((configuration) => configuration.valid);
+  }, [configurations]);
+
+  const invalidConfigurations = useMemo(() => {
+    return configurations?.filter((configuration) => !configuration.valid);
+  }, [configurations]);
 
   function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
     if (filesContent.length > 0) {
@@ -156,10 +163,6 @@ const TemplatePage: NextPage = () => {
     openFileSelector();
   };
 
-  const handleCardClick = async (configurationId: string) => {
-    await router.push(`/configurations/${configurationId}`);
-  };
-
   const handleDelete = (configurationId: string) => {
     deleteConfiguration({ id: configurationId });
   };
@@ -174,6 +177,20 @@ const TemplatePage: NextPage = () => {
       name: name,
       content: content,
     });
+  };
+
+  const getFilterName = (filter: "all" | "valid" | "invalid") => {
+    if (filter === "all") {
+      return configurations ? `All (${configurations.length})` : "All";
+    } else if (filter === "valid") {
+      return validConfigurations
+        ? `Valid (${validConfigurations.length})`
+        : "Valid";
+    } else {
+      return invalidConfigurations
+        ? `Invalid (${invalidConfigurations.length})`
+        : "Invalid";
+    }
   };
 
   if (isLoadingConfigurations || isLoadingTemplate) {
@@ -214,26 +231,21 @@ const TemplatePage: NextPage = () => {
               <MenuButton
                 as={Button}
                 variant={"outline"}
-                minW={150}
+                // minW={150}
                 borderColor={"whiteAlpha.400"}
                 aria-label={"Filter configurations"}
+                position={"relative"}
+                p={0}
                 isDisabled={sortedConfigurations.length === 0}
-                leftIcon={<Icon as={HiAdjustmentsHorizontal} fontSize={"xl"} />}
-                sx={{
-                  flexShrink: 0,
-                  position: "relative",
-                }}
               >
-                <Text>
-                  {showValid === null ? "Filter" : `Excluded ${excludedString}`}
-                </Text>
+                <Icon as={HiAdjustmentsHorizontal} boxSize={6} />
                 <Box
-                  top={-0.5}
-                  right={-0.5}
-                  bg={"whiteAlpha.800"}
+                  top={-1}
+                  right={-1}
+                  bg={filter === "valid" ? "green.600" : "red.600"}
                   borderRadius={"full"}
-                  height={1}
-                  width={1}
+                  height={2}
+                  width={2}
                   sx={{
                     display: showValid !== null ? "block" : "none",
                     position: "absolute",
@@ -247,28 +259,37 @@ const TemplatePage: NextPage = () => {
                   type={"radio"}
                 >
                   <MenuItemOption
+                    textTransform={"capitalize"}
+                    color={"whiteAlpha.800"}
                     value={"all"}
                     onClick={() => {
+                      setFilter("all");
                       setShowValid(null);
                     }}
                   >
-                    All
+                    {getFilterName("all")}
                   </MenuItemOption>
                   <MenuItemOption
+                    textTransform={"capitalize"}
+                    color={"whiteAlpha.800"}
                     value={"valid"}
                     onClick={() => {
+                      setFilter("valid");
                       setShowValid(true);
                     }}
                   >
-                    Valid only
+                    {getFilterName("valid")}
                   </MenuItemOption>
                   <MenuItemOption
+                    textTransform={"capitalize"}
+                    color={"whiteAlpha.800"}
                     value={"invalid"}
                     onClick={() => {
+                      setFilter("invalid");
                       setShowValid(false);
                     }}
                   >
-                    Invalid only
+                    {getFilterName("invalid")}
                   </MenuItemOption>
                 </MenuOptionGroup>
               </MenuList>
@@ -398,7 +419,11 @@ const ConfigurationListItem = ({
           void router.push(`/configurations/${configuration.id}`);
         }}
         sx={{
+          transition: "all .2s ease",
           cursor: "pointer",
+          "&:hover": {
+            background: "whiteAlpha.200",
+          },
         }}
       >
         <Stack flex={1} align={"start"}>
