@@ -121,7 +121,6 @@ const TemplatesPage: NextPage = () => {
                 onClick={() => void handleCardClick(template.id)}
                 onDelete={() => handleDelete(template.id)}
                 onEdit={(name) => {
-                  console.log(template.content);
                   handleEdit(
                     template.id,
                     name,

@@ -27,7 +27,7 @@ import {
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/buttons/back-button";
-import { useFilePicker } from "use-file-picker";
+import { FileContent, useFilePicker } from "use-file-picker";
 import { useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
 import ReactTimeAgo from "react-time-ago";
@@ -294,7 +294,16 @@ const TemplatePage: NextPage = () => {
                       key={idx}
                       configuration={configuration}
                       handleDelete={() => handleDelete(configuration.id)}
-                      onEdit={(name) => handleEdit(configuration.id, name)}
+                      onEdit={(name) => {
+                        handleEdit(
+                          configuration.id,
+                          name,
+                          filesContent[0] ? filesContent[0].content : undefined
+                        );
+                      }}
+                      openFileSelector={handleAdd}
+                      fileContent={filesContent}
+                      clearFileSelection={clear}
                     />
                   ))}
                 </Stack>
@@ -324,16 +333,22 @@ const ConfigurationListItem = ({
   configuration,
   handleDelete,
   onEdit,
+  openFileSelector,
+  clearFileSelection,
+  fileContent,
 }: {
   configuration: Configuration;
   handleDelete: () => void;
   onEdit: (name: string) => void;
+  openFileSelector: () => void;
+  clearFileSelection: () => void;
+  fileContent: FileContent[];
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    isOpen: renameIsOpen,
-    onOpen: renameOnOpen,
-    onClose: renameOnClose,
+    isOpen: editIsOpen,
+    onOpen: editOnOpen,
+    onClose: editOnClose,
   } = useDisclosure();
 
   const cancelRef = useRef<FocusableElement | null>(null);
@@ -386,6 +401,11 @@ const ConfigurationListItem = ({
       });
   }
 
+  function handleClose() {
+    clearFileSelection();
+    editOnClose();
+  }
+
   return (
     <>
       <HStack spacing={8} p={4} width={"full"}>
@@ -431,7 +451,7 @@ const ConfigurationListItem = ({
                 e.stopPropagation();
               }}
             >
-              <MenuItem onClick={renameOnOpen}>
+              <MenuItem onClick={editOnOpen}>
                 <HStack spacing={4}>
                   <Icon boxSize={5} as={MdEdit} />
                   <Text>Edit</Text>
@@ -468,8 +488,11 @@ const ConfigurationListItem = ({
       <EditDialog
         name={configuration.name}
         onSave={onEdit}
-        isOpen={renameIsOpen}
-        onClose={renameOnClose}
+        isOpen={editIsOpen}
+        onClose={handleClose}
+        clearFileSelection={clearFileSelection}
+        fileContent={fileContent}
+        openFileSelector={openFileSelector}
         type={"configuration"}
       />
     </>
