@@ -120,7 +120,16 @@ const TemplatesPage: NextPage = () => {
                 lastModified={template.updatedAt}
                 onClick={() => void handleCardClick(template.id)}
                 onDelete={() => handleDelete(template.id)}
-                onEdit={(name) => handleEdit(template.id, name)}
+                onEdit={(name) => {
+                  handleEdit(
+                    template.id,
+                    name,
+                    filesContent[0] ? filesContent[0].content : undefined
+                  );
+                }}
+                openFileSelector={handleAdd}
+                fileContent={filesContent}
+                clearFileSelection={clear}
               />
             </GridItem>
           ))}

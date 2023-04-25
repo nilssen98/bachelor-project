@@ -11,11 +11,16 @@ import type { ModalProps } from "@chakra-ui/modal";
 import NameInputDialog from "./name-input-dialog";
 import React, { useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
+import FileChooserDialog from "./file-chooser-dialog";
+import type { FileContent } from "use-file-picker";
 
 type Props = {
   name: string;
   onSave: (name: string) => void;
-  type?: "template" | "configuration";
+  type: "schema" | "configuration";
+  openFileSelector: () => void;
+  clearFileSelection: () => void;
+  fileContent: FileContent[];
 } & Omit<ModalProps, "children">;
 export default function EditDialog(props: Props) {
   const [fileName, setFileName] = useState<string>(props.name);
@@ -36,11 +41,17 @@ export default function EditDialog(props: Props) {
           <ModalHeader>Edit</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <FileChooserDialog
+              type={props.type}
+              openFileSelector={props.openFileSelector}
+              clearFileSelection={props.clearFileSelection}
+              fileContent={props.fileContent}
+            />
             <NameInputDialog
               name={fileName}
               title={`Choose a new name for the ${props.type || "template"} `}
               setName={setFileName}
-              type={props.type || "template"}
+              type={props.type || "schema"}
             />
           </ModalBody>
           <ModalFooter>

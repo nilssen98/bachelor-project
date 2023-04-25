@@ -27,6 +27,7 @@ import {
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/buttons/back-button";
+import type { FileContent } from "use-file-picker";
 import { useFilePicker } from "use-file-picker";
 import React, { useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
@@ -315,7 +316,16 @@ const TemplatePage: NextPage = () => {
                       key={idx}
                       configuration={configuration}
                       handleDelete={() => handleDelete(configuration.id)}
-                      onEdit={(name) => handleEdit(configuration.id, name)}
+                      onEdit={(name) => {
+                        handleEdit(
+                          configuration.id,
+                          name,
+                          filesContent[0] ? filesContent[0].content : undefined
+                        );
+                      }}
+                      openFileSelector={handleAdd}
+                      fileContent={filesContent}
+                      clearFileSelection={clear}
                     />
                   ))}
                 </Stack>
@@ -345,16 +355,22 @@ const ConfigurationListItem = ({
   configuration,
   handleDelete,
   onEdit,
+  openFileSelector,
+  clearFileSelection,
+  fileContent,
 }: {
   configuration: Configuration;
   handleDelete: () => void;
   onEdit: (name: string) => void;
+  openFileSelector: () => void;
+  clearFileSelection: () => void;
+  fileContent: FileContent[];
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    isOpen: renameIsOpen,
-    onOpen: renameOnOpen,
-    onClose: renameOnClose,
+    isOpen: editIsOpen,
+    onOpen: editOnOpen,
+    onClose: editOnClose,
   } = useDisclosure();
 
   const router = useRouter();
@@ -407,6 +423,11 @@ const ConfigurationListItem = ({
       .catch((error) => {
         console.error("Error downloading configuration:", error);
       });
+  }
+
+  function handleClose() {
+    clearFileSelection();
+    editOnClose();
   }
 
   return (
@@ -468,7 +489,7 @@ const ConfigurationListItem = ({
                 e.stopPropagation();
               }}
             >
-              <MenuItem onClick={renameOnOpen}>
+              <MenuItem onClick={editOnOpen}>
                 <HStack spacing={4}>
                   <Icon boxSize={5} as={MdEdit} />
                   <Text>Edit</Text>
@@ -505,8 +526,11 @@ const ConfigurationListItem = ({
       <EditDialog
         name={configuration.name}
         onSave={onEdit}
-        isOpen={renameIsOpen}
-        onClose={renameOnClose}
+        isOpen={editIsOpen}
+        onClose={handleClose}
+        clearFileSelection={clearFileSelection}
+        fileContent={fileContent}
+        openFileSelector={openFileSelector}
         type={"configuration"}
       />
     </>
