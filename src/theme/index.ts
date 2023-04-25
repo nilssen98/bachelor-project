@@ -23,6 +23,13 @@ const overrides = {
     Card,
     Button,
     Input,
+    Popover: {
+      baseStyle: {
+        content: {
+          background: "black",
+        },
+      },
+    },
     Divider: {
       baseStyle: {
         borderColor: "whiteAlpha.400",

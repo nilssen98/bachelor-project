@@ -158,7 +158,7 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
                           >
                             Email connection
                           </PopoverHeader>
-                          <PopoverArrow />
+                          <PopoverArrow bg={"blackAlpha.800"} />
                           <PopoverCloseButton />
                           <PopoverBody>
                             <VStack alignItems={"flex-start"}>
@@ -180,7 +180,6 @@ const ConnectionPage: NextPageWithLayout<PageProps> = (props: PageProps) => {
                             pb={4}
                           >
                             <Button
-                              colorScheme={"blue"}
                               isLoading={emailSubmitting}
                               loadingText={"Sending . . ."}
                               rightIcon={<Icon as={MdSend} />}
