@@ -1,4 +1,4 @@
-import { MutableRefObject, useRef } from "react";
+import { useRef } from "react";
 import {
   Card,
   HStack,
@@ -21,7 +21,7 @@ import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../dialogs/confirmation-dialog";
 import EditDialog from "../dialogs/edit-dialog";
-import { MdDelete, MdDownload, MdEdit } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { FileContent } from "use-file-picker";
 
 interface Props {

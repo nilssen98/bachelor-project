@@ -11,7 +11,6 @@ import type { ModalProps } from "@chakra-ui/modal";
 import NameInputDialog from "./name-input-dialog";
 import React, { useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
-import { File } from "next/dist/compiled/@edge-runtime/primitives/fetch";
 import FileChooserDialog from "./file-chooser-dialog";
 import { FileContent } from "use-file-picker";
 
