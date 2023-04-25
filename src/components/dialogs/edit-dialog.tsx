@@ -12,7 +12,7 @@ import NameInputDialog from "./name-input-dialog";
 import React, { useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 import FileChooserDialog from "./file-chooser-dialog";
-import { FileContent } from "use-file-picker";
+import type { FileContent } from "use-file-picker";
 
 type Props = {
   name: string;

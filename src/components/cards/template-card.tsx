@@ -22,7 +22,7 @@ import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../dialogs/confirmation-dialog";
 import EditDialog from "../dialogs/edit-dialog";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { FileContent } from "use-file-picker";
+import type { FileContent } from "use-file-picker";
 
 interface Props {
   id: string;

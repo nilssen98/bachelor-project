@@ -27,7 +27,8 @@ import {
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import BackButton from "../../components/buttons/back-button";
-import { FileContent, useFilePicker } from "use-file-picker";
+import type { FileContent } from "use-file-picker";
+import { useFilePicker } from "use-file-picker";
 import { useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
 import ReactTimeAgo from "react-time-ago";
