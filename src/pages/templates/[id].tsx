@@ -336,6 +336,8 @@ const ConfigurationListItem = ({
     onClose: renameOnClose,
   } = useDisclosure();
 
+  const router = useRouter();
+
   const cancelRef = useRef<FocusableElement | null>(null);
 
   const { data, refetch: fetch } = api.configuration.download.useQuery(
@@ -388,7 +390,17 @@ const ConfigurationListItem = ({
 
   return (
     <>
-      <HStack spacing={8} p={4} width={"full"}>
+      <HStack
+        spacing={8}
+        p={4}
+        width={"full"}
+        onClick={() => {
+          void router.push(`/configurations/${configuration.id}`);
+        }}
+        sx={{
+          cursor: "pointer",
+        }}
+      >
         <Stack flex={1} align={"start"}>
           <Link passHref href={`/configurations/${configuration.id}`}>
             <HStack>
