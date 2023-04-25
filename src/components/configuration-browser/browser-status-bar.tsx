@@ -12,9 +12,11 @@ import { MdErrorOutline } from "react-icons/md";
 import type { ValidationError } from "../../utils/validator/types";
 import { useBrowserContent } from "./hooks/useBrowserContent";
 import { useBrowserRouter } from "./hooks/useBrowserRouter";
+import { useBrowserController } from "./hooks/useBrowserController";
 
 export default function BrowserStatusBar(props: AccordionProps) {
   const { errors } = useBrowserContent();
+  const { showErrors, toggleErrors } = useBrowserController();
   const router = useBrowserRouter();
 
   const handleClick = (error: ValidationError) => {
@@ -23,7 +25,12 @@ export default function BrowserStatusBar(props: AccordionProps) {
 
   return (
     <>
-      <Accordion w={"full"} allowToggle {...props}>
+      <Accordion
+        onClick={() => toggleErrors()}
+        w={"full"}
+        index={showErrors ? errors.length : 0}
+        {...props}
+      >
         <AccordionItem border={0}>
           {errors &&
             errors.map((error, idx) => (

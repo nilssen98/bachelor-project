@@ -8,15 +8,19 @@ import { useBrowserController } from "./hooks/useBrowserController";
 
 type Props = {
   onSave?: () => void;
-  onClickErrors?: () => void;
   searchValue: string;
   onSearchValueChanged: (newValue: string) => void;
 } & StackProps;
 
 export default function BrowserToolbar(props: Props) {
   const { errors } = useBrowserContent();
-  const { toggleTreeView, showTreeView, showSchema, toggleSchema } =
-    useBrowserController();
+  const {
+    toggleTreeView,
+    showTreeView,
+    showSchema,
+    toggleSchema,
+    toggleErrors,
+  } = useBrowserController();
 
   const handleShowTreeView = () => {
     if (showSchema) {
@@ -63,7 +67,7 @@ export default function BrowserToolbar(props: Props) {
               <Icon as={MdErrorOutline} color={"red.600"} />
             ) : undefined
           }
-          onClick={props.onClickErrors}
+          onClick={toggleErrors}
           variant={"ghost"}
           borderRadius={0}
           px={6}
