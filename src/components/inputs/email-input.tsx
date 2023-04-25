@@ -1,5 +1,5 @@
-import { Icon, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import type { InputProps } from "@chakra-ui/react";
+import { Icon, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { MdOutlineEmail } from "react-icons/md";
 import omit from "lodash-es/omit";
 

@@ -1,31 +1,32 @@
 import type { NextPage } from "next";
 import {
-  Button,
-  Center,
-  HStack,
-  Heading,
-  Input,
-  Text,
-  VStack,
-  Stack,
-  StackDivider,
-  Card,
   Box,
+  Button,
+  Card,
+  Center,
+  Flex,
+  Heading,
+  HStack,
   Icon,
   IconButton,
+  Input,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
-  MenuList,
-  useDisclosure,
-  MenuOptionGroup,
   MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
   Spacer,
-  Flex,
+  Stack,
+  StackDivider,
+  Text,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
-import BackButton from "../../components/back-button";
+import BackButton from "../../components/buttons/back-button";
 import { useFilePicker } from "use-file-picker";
 import { useMemo, useRef, useState } from "react";
 import type { Configuration } from "@prisma/client";
@@ -33,13 +34,13 @@ import ReactTimeAgo from "react-time-ago";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Loading from "../../components/loading";
 import Link from "next/link";
-import GradientAvatar from "../../components/gradient-avatar";
-import { MdSettings } from "react-icons/md";
+import GradientAvatar from "../../components/avatars/gradient-avatar";
+import { MdDelete, MdDownload, MdEdit, MdSettings } from "react-icons/md";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import type { FocusableElement } from "@chakra-ui/utils";
-import ConfirmationDialog from "../../components/confirmation-dialog";
-import AddConfigurationDialog from "../../components/add-configuration-dialog";
-import EditDialog from "../../components/edit-dialog";
+import ConfirmationDialog from "../../components/dialogs/confirmation-dialog";
+import AddConfigurationDialog from "../../components/dialogs/add-configuration-dialog";
+import EditDialog from "../../components/dialogs/edit-dialog";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");
@@ -91,23 +92,34 @@ const TemplatePage: NextPage = () => {
   });
 
   const sortedConfigurations = useMemo(() => {
-    return configurations?.sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
+    return configurations
+      ? configurations.sort(
+          (a, b) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        )
+      : [];
   }, [configurations]);
 
   const filteredConfigurations = useMemo(() => {
     return sortedConfigurations
-      ?.filter(
-        (configuration) =>
-          showValid === null || configuration.valid === showValid
-      )
-      .filter(
-        (configuration) =>
-          configuration.name.toLowerCase().indexOf(search.toLowerCase()) !== -1
-      );
+      ? sortedConfigurations
+          .filter(
+            (configuration) =>
+              showValid === null || configuration.valid === showValid
+          )
+          .filter(
+            (configuration) =>
+              configuration.name.toLowerCase().indexOf(search.toLowerCase()) !==
+              -1
+          )
+      : [];
   }, [sortedConfigurations, showValid, search]);
+
+  const excludedString = useMemo(() => {
+    const excluded =
+      sortedConfigurations.length - filteredConfigurations.length;
+    return excluded <= 5 ? String(excluded) : "5+";
+  }, [sortedConfigurations, filteredConfigurations]);
 
   function uploadFile(name = filesContent[0]?.name.split(".json")[0] || "") {
     if (filesContent.length > 0) {
@@ -119,6 +131,15 @@ const TemplatePage: NextPage = () => {
           content: file.content,
         });
       }
+    }
+  }
+
+  function createBlankConfiguration(name: string) {
+    if (template) {
+      addConfiguration({
+        templateId: template.id,
+        name: name,
+      });
     }
   }
 
@@ -176,7 +197,12 @@ const TemplatePage: NextPage = () => {
         </HStack>
         <VStack alignItems={"flex-start"} spacing={4} width={"full"}>
           <HStack width={"full"}>
-            <Button onClick={onOpen} isLoading={isOpen} variant={"custom"}>
+            <Button
+              minW={180}
+              onClick={onOpen}
+              isLoading={isOpen}
+              variant={"custom"}
+            >
               Add configuration
             </Button>
             <Input
@@ -188,20 +214,24 @@ const TemplatePage: NextPage = () => {
               <MenuButton
                 as={Button}
                 variant={"outline"}
+                minW={150}
                 borderColor={"whiteAlpha.400"}
                 aria-label={"Filter configurations"}
+                isDisabled={sortedConfigurations.length === 0}
                 leftIcon={<Icon as={HiAdjustmentsHorizontal} fontSize={"xl"} />}
                 sx={{
                   flexShrink: 0,
                   position: "relative",
                 }}
               >
-                <Text>Filter</Text>
+                <Text>
+                  {showValid === null ? "Filter" : `Excluded ${excludedString}`}
+                </Text>
                 <Box
                   top={-0.5}
                   right={-0.5}
                   bg={"whiteAlpha.800"}
-                  borderRadius={"50%"}
+                  borderRadius={"full"}
                   height={1}
                   width={1}
                   sx={{
@@ -279,6 +309,7 @@ const TemplatePage: NextPage = () => {
           clearFileSelection={clear}
           fileContent={filesContent}
           uploadFile={uploadFile}
+          createNew={createBlankConfiguration}
           configurations={sortedConfigurations || []}
           cloneConfiguration={handleClone}
         />
@@ -368,17 +399,15 @@ const ConfigurationListItem = ({
         </Stack>
         <Stack flex={1} align={"start"} color={"whiteAlpha.600"}>
           <Text>
-            {configuration.valid ? (
-              <HStack>
-                <Box h={2} w={2} borderRadius={"full"} bg={"green"} />
-                <Text>valid</Text>
-              </HStack>
-            ) : (
-              <HStack>
-                <Box h={2} w={2} borderRadius={"full"} bg={"red"} />
-                <Text>invalid</Text>
-              </HStack>
-            )}
+            <HStack>
+              <Box
+                h={2}
+                w={2}
+                borderRadius={"full"}
+                bg={configuration.valid ? "green" : "red"}
+              />
+              <Text>{configuration.valid ? "valid" : "invalid"}</Text>
+            </HStack>
           </Text>
         </Stack>
         <HStack flex={1} justify={"end"}>
@@ -402,9 +431,25 @@ const ConfigurationListItem = ({
                 e.stopPropagation();
               }}
             >
-              <MenuItem onClick={renameOnOpen}>Edit</MenuItem>
-              <MenuItem onClick={onOpen}>Delete</MenuItem>
-              <MenuItem onClick={handleDownload}>Download</MenuItem>
+              <MenuItem onClick={renameOnOpen}>
+                <HStack spacing={4}>
+                  <Icon boxSize={5} as={MdEdit} />
+                  <Text>Edit</Text>
+                </HStack>
+              </MenuItem>
+              <MenuItem onClick={handleDownload}>
+                <HStack spacing={4}>
+                  <Icon fontSize={20} as={MdDownload} />
+                  <Text>Download</Text>
+                </HStack>
+              </MenuItem>
+              <MenuDivider />
+              <MenuItem onClick={onOpen}>
+                <HStack spacing={4}>
+                  <Icon boxSize={5} as={MdDelete} color={"red.600"} />
+                  <Text color={"red.600"}>Delete</Text>
+                </HStack>
+              </MenuItem>
             </MenuList>
           </Menu>
         </HStack>
@@ -425,7 +470,8 @@ const ConfigurationListItem = ({
         onSave={onEdit}
         isOpen={renameIsOpen}
         onClose={renameOnClose}
-      ></EditDialog>
+        type={"configuration"}
+      />
     </>
   );
 };

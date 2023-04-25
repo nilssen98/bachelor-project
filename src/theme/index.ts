@@ -3,6 +3,8 @@ import { Button } from "./button";
 import { Card } from "./card";
 import { Input } from "./input";
 
+export const navbarHeight = "64px";
+
 const config: ThemeConfig = {
   initialColorMode: "dark",
   useSystemColorMode: true,

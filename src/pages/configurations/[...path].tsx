@@ -1,16 +1,15 @@
-import { Heading, HStack, Icon, Stack, Text, VStack } from "@chakra-ui/react";
-import type { Prisma } from "@prisma/client";
+import { Center, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import type { ReactElement } from "react";
 import { useEffect, useMemo, useState } from "react";
 import ConfigurationBrowser from "../../components/configuration-browser";
-import { ConfigurationProvider } from "../../components/configuration-browser/configuration-provider";
+import { ConfigurationProvider } from "../../components/configuration-browser/utils/browser-provider";
+import GradientAvatar from "../../components/avatars/gradient-avatar";
 import Loading from "../../components/loading";
+import Navbar from "../../components/navbar";
+import { navbarHeight } from "../../theme";
 import { api } from "../../utils/api";
-import ConfigurationSwitcher from "../../components/configuration-switcher";
-import BackButton from "../../components/back-button";
-import type { NextPageWithLayout } from "../_app";
 
 const ConfigurationPage: NextPage = () => {
   const router = useRouter();
@@ -26,16 +25,27 @@ const ConfigurationPage: NextPage = () => {
       { id },
       {
         enabled: id !== undefined,
+        refetchOnWindowFocus: false,
       }
     );
 
-  const { data: template, isLoading: isLoadingTemplate } =
-    api.template.get.useQuery(
-      { id: configuration?.templateId || "" },
+  const { data: configurations, isLoading: isLoadingConfigurations } =
+    api.configuration.getAll.useQuery(
+      { templateId: configuration?.Template?.id },
       {
-        enabled: configuration?.templateId !== undefined,
+        enabled: configuration?.Template?.id !== undefined,
+        refetchOnWindowFocus: false,
       }
     );
+
+  const filteredConfigurations = useMemo(() => {
+    return configurations
+      ?.filter((c) => c.templateId === configuration?.Template?.id)
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+  }, [configuration, configurations]);
 
   const path = useMemo(() => {
     return (router.query.path as string[] | undefined)?.slice(1);
@@ -53,8 +63,12 @@ const ConfigurationPage: NextPage = () => {
     }
   };
 
-  if (isLoadingConfiguration || isLoadingTemplate) {
-    return <Loading />;
+  if (isLoadingConfiguration || isLoadingConfigurations) {
+    return (
+      <Center w={"full"}>
+        <Loading />
+      </Center>
+    );
   }
 
   if (!configuration) {
@@ -63,24 +77,47 @@ const ConfigurationPage: NextPage = () => {
 
   return (
     <>
-      <VStack pb={6} spacing={4} align={"start"}>
-        <BackButton href={`/templates/${configuration.templateId || ""}`} />
-        {/* <Icon mt={1} as={MdSettings} boxSize={12} /> */}
-        <Heading>{configuration?.name}</Heading>
-      </VStack>
-      <ConfigurationSwitcher
-        configId={configuration.id}
-        templateId={configuration.templateId || ""}
-      />
-      <ConfigurationProvider
-        configuration={configuration.content as Prisma.JsonObject}
-        errors={configuration.errors}
-        schema={template?.content as Prisma.JsonObject}
-        onPathChange={(path) => void handlePathChange(path)}
-        path={path}
-      >
-        <ConfigurationBrowser />
-      </ConfigurationProvider>
+      <Stack spacing={0} minH={`calc(100vh - ${navbarHeight})`} flex={1}>
+        <Navbar bg={"whiteAlpha.200"} maxH={navbarHeight} h={"full"}>
+          <HStack spacing={6} w={"full"} px={4}>
+            <Text
+              color={"whiteAlpha.600"}
+              fontWeight={"thin"}
+              fontSize={"xx-large"}
+            >
+              /
+            </Text>
+            <Link
+              href={`/templates/${configuration.Template?.id || ""}`}
+              passHref
+            >
+              <HStack w={"100%"} cursor={"pointer"}>
+                <GradientAvatar
+                  clickable
+                  w={7}
+                  h={7}
+                  id={configuration.Template?.name}
+                />
+                <Heading size={"md"} fontWeight={"semi-bold"}>
+                  {configuration.Template?.name}
+                </Heading>
+              </HStack>
+            </Link>
+          </HStack>
+        </Navbar>
+        {configuration && configuration.Template && (
+          <ConfigurationProvider
+            configuration={configuration || {}}
+            configurations={filteredConfigurations || []}
+            template={configuration.Template}
+            errors={configuration.errors}
+            onPathChange={(path) => void handlePathChange(path)}
+            path={path}
+          >
+            <ConfigurationBrowser />
+          </ConfigurationProvider>
+        )}
+      </Stack>
     </>
   );
 };

@@ -2,14 +2,14 @@ import {
   Card,
   HStack,
   Icon,
-  VStack,
-  Text,
+  IconButton,
   Menu,
   MenuButton,
-  IconButton,
-  MenuList,
   MenuItem,
+  MenuList,
+  Text,
   Tooltip,
+  VStack,
 } from "@chakra-ui/react";
 import { CiEdit } from "react-icons/ci";
 import { IoMdClose, IoMdSettings } from "react-icons/io";
@@ -79,7 +79,7 @@ export default function ConfigurationCard(props: Props) {
           <HStack>
             <Icon
               as={props.validated ? FcCheckmark : IoMdClose}
-              color={"red.500"}
+              color={"red.600"}
               boxSize={5}
             />
             <Text textColor={"gray.400"} align={"left"}>

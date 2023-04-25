@@ -1,6 +1,6 @@
-import { Icon } from "@chakra-ui/react";
-import { FaGoogle } from "react-icons/fa";
 import type { IconProps } from "@chakra-ui/react";
+import { Icon } from "@chakra-ui/react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { IoMailOpenOutline } from "react-icons/io5";
 import { omit } from "lodash-es";
 
@@ -13,6 +13,8 @@ export default function ProviderIcon(props: Props) {
     switch (provider.toLowerCase()) {
       case "google":
         return FaGoogle;
+      case "github":
+        return FaGithub;
       case "email":
         return IoMailOpenOutline;
       default:

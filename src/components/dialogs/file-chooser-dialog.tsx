@@ -17,7 +17,7 @@ type Props = {
   fileContent: FileContent[];
 };
 
-export default function DialogFileChooser(props: Props) {
+export default function FileChooserDialog(props: Props) {
   function isFileSelected() {
     return props.fileContent.length > 0;
   }

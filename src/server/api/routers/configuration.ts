@@ -25,6 +25,7 @@ export const configurationRouter = createTRPCRouter({
         },
         include: {
           errors: true,
+          Template: true,
         },
       });
     }),

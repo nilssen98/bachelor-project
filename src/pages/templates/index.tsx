@@ -13,9 +13,9 @@ import { useRouter } from "next/router";
 import { useMemo, useRef, useState } from "react";
 import { useFilePicker } from "use-file-picker";
 import Loading from "../../components/loading";
-import TemplateCard from "../../components/template-card";
+import TemplateCard from "../../components/cards/template-card";
 import { api } from "../../utils/api";
-import AddTemplateDialog from "../../components/add-template-dialog";
+import AddTemplateDialog from "../../components/dialogs/add-template-dialog";
 
 const TemplatesPage: NextPage = () => {
   const [search, setSearch] = useState<string>("");

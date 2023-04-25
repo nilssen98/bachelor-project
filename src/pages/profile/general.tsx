@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { useRef } from "react";
 import {
   Button,
   Card,
@@ -12,11 +13,10 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { MdDelete, MdLogout } from "react-icons/md";
 import type { NextPageWithLayout } from "../_app";
-import ProfileSidebarLayout from "../../components/profile-sidebar-layout";
-import GradientAvatar from "../../components/gradient-avatar";
+import ProfileSidebarLayout from "../../components/layouts/profile-sidebar-layout";
+import GradientAvatar from "../../components/avatars/gradient-avatar";
 import { api } from "../../utils/api";
-import ConfirmationDialog from "../../components/confirmation-dialog";
-import { useRef } from "react";
+import ConfirmationDialog from "../../components/dialogs/confirmation-dialog";
 import { useDisclosure } from "@chakra-ui/react-use-disclosure";
 import type { FocusableElement } from "@chakra-ui/utils";
 
@@ -36,7 +36,7 @@ const GeneralPage: NextPageWithLayout = () => {
       <Text fontSize={"3xl"} my={4}>
         General
       </Text>
-      <VStack spacing={4} p={2}>
+      <VStack spacing={4}>
         <Card width={"full"}>
           <HStack p={4}>
             <GradientAvatar
@@ -61,7 +61,7 @@ const GeneralPage: NextPageWithLayout = () => {
             </Button>
           </HStack>
         </Card>
-        <Card>
+        <Card width={"full"}>
           <Stack spacing={0} divider={<StackDivider />}>
             <Heading size={"md"} p={4}>
               Delete account

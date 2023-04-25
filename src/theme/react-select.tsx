@@ -5,7 +5,7 @@ import type {
   GroupBase,
   OptionProps,
 } from "chakra-react-select";
-import type { ConfigurationOption } from "../components/add-configuration-dialog";
+import type { ConfigurationOption } from "../components/dialogs/add-configuration-dialog";
 
 function Dot(props: { isValid: boolean }) {
   return (
@@ -29,7 +29,7 @@ export function FormattedConfigurationOption(
       p={2}
       flex={1}
       bg={isSelected ? "blue.800" : "gray.700"}
-      _hover={{ background: "gray.600" }}
+      _hover={{ background: "gray.600", cursor: "pointer" }}
       {...innerProps}
     >
       <Dot isValid={data.valid} />

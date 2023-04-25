@@ -21,13 +21,13 @@ import { Select } from "chakra-react-select";
 import {
   chakraSelectStyles,
   FormattedConfigurationOption,
-} from "../theme/react-select";
+} from "../../theme/react-select";
 import { AiOutlineCopy, AiOutlineFileAdd } from "react-icons/ai";
 import { BsFiletypeJson } from "react-icons/bs";
 import type { FileContent } from "use-file-picker";
 import type { Configuration } from "@prisma/client";
-import DialogFileChooser from "./dialog-file-chooser";
-import NameInputField from "./name-input-field";
+import FileChooserDialog from "./file-chooser-dialog";
+import NameInputDialog from "./name-input-dialog";
 
 // Custom type to represent a configuration option in the react-select dropdown
 export type ConfigurationOption = Configuration & {
@@ -47,6 +47,7 @@ type Props = {
   clearFileSelection: () => void;
   fileContent: FileContent[];
   uploadFile: (name: string) => void;
+  createNew: (name: string) => void;
   configurations: Configuration[];
   cloneConfiguration: (id: string, name: string) => void;
 } & Omit<ModalProps, "children">;
@@ -121,7 +122,7 @@ export default function AddConfigurationDialog(props: Props) {
           aria-label={"Create new configuration"}
           _hover={{ bg: "transparent" }}
         />
-        <Text>{getText()}</Text>
+        <Text noOfLines={3}>{getText()}</Text>
       </Button>
     );
   }
@@ -147,7 +148,11 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.CreateNew:
         return (
           <>
-            <Text>Create new</Text>
+            <NameInputDialog
+              type={"configuration"}
+              name={configurationName}
+              setName={setConfigurationName}
+            />
           </>
         );
       case Step.CloneExisting:
@@ -174,7 +179,7 @@ export default function AddConfigurationDialog(props: Props) {
                 }))}
               />
               <Spacer py={1} />
-              <NameInputField
+              <NameInputDialog
                 type={"configuration"}
                 name={configurationName}
                 setName={setConfigurationName}
@@ -185,14 +190,14 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.UploadFile:
         return (
           <>
-            <DialogFileChooser
+            <FileChooserDialog
               type={"configuration"}
               openFileSelector={props.openFileSelector}
               clearFileSelection={props.clearFileSelection}
               fileContent={props.fileContent}
             />
             <Spacer py={4} />
-            <NameInputField
+            <NameInputDialog
               type={"configuration"}
               name={configurationName}
               setName={setConfigurationName}
@@ -204,6 +209,11 @@ export default function AddConfigurationDialog(props: Props) {
 
   function getFooterAction() {
     switch (step) {
+      case Step.CreateNew:
+        return () => {
+          props.createNew(configurationName);
+          handleClose();
+        };
       case Step.UploadFile:
         return () => {
           props.uploadFile(configurationName);
@@ -230,6 +240,16 @@ export default function AddConfigurationDialog(props: Props) {
               isTemplateNameBlank() ||
               !(isFileSelected() || selectedConfiguration !== null)
             }
+            onClick={getFooterAction()}
+          >
+            Submit
+          </Button>
+        );
+      case Step.CreateNew:
+        return (
+          <Button
+            colorScheme={"blue"}
+            isDisabled={isTemplateNameBlank()}
             onClick={getFooterAction()}
           >
             Submit

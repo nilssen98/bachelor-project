@@ -1,5 +1,5 @@
-import { HStack, Text } from "@chakra-ui/react";
 import type { StackProps, TypographyProps } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import omit from "lodash-es/omit";

@@ -1,4 +1,3 @@
-import { relativizeURL } from "next/dist/shared/lib/router/utils/relativize-url";
 import {
   Modal,
   ModalBody,
@@ -7,9 +6,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  ModalProps,
 } from "@chakra-ui/modal";
-import NameInputField from "./name-input-field";
+import type { ModalProps } from "@chakra-ui/modal";
+import NameInputDialog from "./name-input-dialog";
 import React, { useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 
@@ -25,6 +24,10 @@ export default function EditDialog(props: Props) {
     setFileName(props.name);
   }, []);
 
+  function isNameBlank() {
+    return fileName.trim().length === 0;
+  }
+
   return (
     <>
       <Modal isCentered={true} isOpen={props.isOpen} onClose={props.onClose}>
@@ -33,15 +36,20 @@ export default function EditDialog(props: Props) {
           <ModalHeader>Edit</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <NameInputField
+            <NameInputDialog
               name={fileName}
-              title={"Name: "}
+              title={`Choose a new name for the ${props.type || "template"} `}
               setName={setFileName}
               type={props.type || "template"}
             />
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={props.onClose}>
+            <Button
+              colorScheme={"blue"}
+              variant={"ghost"}
+              mr={3}
+              onClick={props.onClose}
+            >
               Close
             </Button>
             <Button
@@ -49,6 +57,8 @@ export default function EditDialog(props: Props) {
                 props.onSave(fileName);
                 props.onClose();
               }}
+              isDisabled={isNameBlank()}
+              colorScheme="blue"
               variant={"solid"}
             >
               Save

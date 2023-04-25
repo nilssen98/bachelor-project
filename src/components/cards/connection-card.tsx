@@ -4,16 +4,16 @@ import {
   HStack,
   Icon,
   IconButton,
-  Text,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
+  Text,
   Tooltip,
 } from "@chakra-ui/react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { MdLinkOff } from "react-icons/md";
-import ProviderIcon from "./provider-icon";
+import ProviderIcon from "../provider-icon";
 
 interface Props {
   provider: string;
@@ -66,7 +66,7 @@ export default function ConnectionCard(props: Props) {
               </Tooltip>
               <MenuList>
                 <MenuItem
-                  color={"red.500"}
+                  color={"red.600"}
                   icon={<MdLinkOff />}
                   onClick={() => props.onDisconnect(props.provider)}
                 >
