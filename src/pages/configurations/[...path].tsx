@@ -20,14 +20,17 @@ const ConfigurationPage: NextPage = () => {
     return router.query.path?.[0] || "";
   }, [router.query.path]);
 
-  const { data: configuration, isLoading: isLoadingConfiguration } =
-    api.configuration.get.useQuery(
-      { id },
-      {
-        enabled: id !== undefined,
-        refetchOnWindowFocus: false,
-      }
-    );
+  const {
+    data: configuration,
+    isLoading: isLoadingConfiguration,
+    refetch,
+  } = api.configuration.get.useQuery(
+    { id },
+    {
+      enabled: id !== undefined,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const { data: configurations, isLoading: isLoadingConfigurations } =
     api.configuration.getAll.useQuery(
@@ -37,6 +40,10 @@ const ConfigurationPage: NextPage = () => {
         refetchOnWindowFocus: false,
       }
     );
+
+  const { mutate: updateConfiguration } = api.configuration.update.useMutation({
+    onSuccess: () => refetch(),
+  });
 
   const filteredConfigurations = useMemo(() => {
     return configurations
@@ -60,6 +67,15 @@ const ConfigurationPage: NextPage = () => {
   const handlePathChange = (newPath: string[]) => {
     if (path?.toString() !== newPath.toString() && newPath.length !== 0) {
       void router.push(`/configurations/${id}/${newPath.join("/")}`);
+    }
+  };
+
+  const handleUpdateConfiguration = (newContent: object) => {
+    if (configuration) {
+      updateConfiguration({
+        id: configuration.id,
+        content: JSON.stringify(newContent),
+      });
     }
   };
 
@@ -107,6 +123,7 @@ const ConfigurationPage: NextPage = () => {
         </Navbar>
         {configuration && configuration.Template && (
           <ConfigurationProvider
+            onUpdateConfiguration={handleUpdateConfiguration}
             configuration={configuration || {}}
             configurations={filteredConfigurations || []}
             template={configuration.Template}
