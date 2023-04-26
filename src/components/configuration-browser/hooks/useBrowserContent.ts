@@ -12,12 +12,14 @@ export const _useBrowserContent = ({
   configurations,
   template,
   errors,
+  onUpdateConfiguration,
   path,
 }: {
   configuration: Configuration;
   configurations: Configuration[];
   template: Template;
   errors: ConfigurationError[];
+  onUpdateConfiguration: (newContent: object) => void;
   path: string[];
 }) => {
   // This state contains the currently displayed configuration content
@@ -47,11 +49,8 @@ export const _useBrowserContent = ({
     setContent(newContent);
   }, [path]);
 
-  const updateConfigurationContent = (
-    path: string[],
-    updatedContent: Prisma.JsonValue
-  ) => {
-    return;
+  const updateConfigurationContent = (updatedContent: object) => {
+    onUpdateConfiguration(updatedContent);
   };
 
   return {
