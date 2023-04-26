@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import {
   Button,
-  Heading,
   HStack,
   IconButton,
   Spacer,
   Text,
   VStack,
 } from "@chakra-ui/react";
+import type { ModalProps } from "@chakra-ui/modal";
 import {
   Modal,
   ModalBody,
@@ -17,7 +17,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/modal";
-import type { ModalProps } from "@chakra-ui/modal";
 import { Select } from "chakra-react-select";
 import {
   chakraSelectStyles,

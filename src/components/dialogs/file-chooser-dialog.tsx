@@ -1,19 +1,17 @@
 import {
-  Button,
-  HStack,
-  IconButton,
-  Icon,
-  Text,
-  VStack,
-  Heading,
   Avatar,
   Box,
+  Button,
+  HStack,
+  Icon,
+  IconButton,
   Spinner,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import type { FileContent } from "use-file-picker";
-import { BsFiletypeJson } from "react-icons/bs";
-import { MdCheck, MdClear, MdDelete, MdFileUpload } from "react-icons/md";
-import { IoMdDocument } from "react-icons/all";
+import { MdCheck, MdDelete, MdFileUpload } from "react-icons/md";
+import { IoMdDocument } from "react-icons/io";
 
 type Props = {
   type: "schema" | "configuration";

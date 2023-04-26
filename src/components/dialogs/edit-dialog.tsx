@@ -1,3 +1,4 @@
+import type { ModalProps } from "@chakra-ui/modal";
 import {
   Modal,
   ModalBody,
@@ -7,7 +8,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/modal";
-import type { ModalProps } from "@chakra-ui/modal";
 import NameInputDialog from "./name-input-dialog";
 import React, { useEffect, useState } from "react";
 import { Button, VStack } from "@chakra-ui/react";

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Spacer } from "@chakra-ui/react";
+import type { ModalProps } from "@chakra-ui/modal";
 import {
   Modal,
   ModalBody,
@@ -9,7 +10,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/modal";
-import type { ModalProps } from "@chakra-ui/modal";
 import type { FileContent } from "use-file-picker";
 import FileChooserDialog from "./file-chooser-dialog";
 import NameInputDialog from "./name-input-dialog";

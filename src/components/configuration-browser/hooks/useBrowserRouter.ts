@@ -1,6 +1,6 @@
-import type { Prisma } from "@prisma/client";
-import { useContext, useEffect, useState } from "react";
-import { BrowserContext } from "../utils/browser-context";
+import type {Prisma} from "@prisma/client";
+import {useContext, useEffect, useState} from "react";
+import {BrowserContext} from "../utils/browser-context";
 
 // This function contains the logic for the useBrowserRouter hook
 export const _useBrowserRouter = ({

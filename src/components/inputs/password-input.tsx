@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { InputProps } from "@chakra-ui/react";
 import {
   Button,
   Icon,
@@ -7,9 +8,8 @@ import {
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
-import type { InputProps } from "@chakra-ui/react";
 import { BsKeyFill } from "react-icons/bs";
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 type Props = InputProps;
 

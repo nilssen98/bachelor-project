@@ -42,7 +42,6 @@ import type { FocusableElement } from "@chakra-ui/utils";
 import ConfirmationDialog from "../../components/dialogs/confirmation-dialog";
 import AddConfigurationDialog from "../../components/dialogs/add-configuration-dialog";
 import EditDialog from "../../components/dialogs/edit-dialog";
-import { IoMdEye } from "react-icons/io";
 
 const TemplatePage: NextPage = () => {
   const [search, setSearch] = useState<string>("");

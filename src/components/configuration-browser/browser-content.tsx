@@ -1,26 +1,10 @@
 import type { StackProps } from "@chakra-ui/react";
-import {
-  Badge,
-  Button,
-  HStack,
-  Icon,
-  IconButton,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Badge, HStack, Icon, Stack, Text, VStack } from "@chakra-ui/react";
 import type { Prisma } from "@prisma/client";
 import { includes } from "lodash-es";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  MdAdd,
-  MdArrowRight,
-  MdDelete,
-  MdEdit,
-  MdOutlineErrorOutline,
-} from "react-icons/md";
+import { MdArrowRight, MdOutlineErrorOutline } from "react-icons/md";
 import BrowserErrorTooltip from "./browser-error-tooltip";
-import BrowserFieldEditPopover from "./browser-field-edit-popover";
 import { useBrowserContent } from "./hooks/useBrowserContent";
 import { useBrowserRouter } from "./hooks/useBrowserRouter";
 

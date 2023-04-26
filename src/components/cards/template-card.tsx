@@ -3,15 +3,15 @@ import {
   Card,
   HStack,
   Icon,
-  VStack,
-  Text,
+  IconButton,
   Menu,
   MenuButton,
-  IconButton,
-  MenuList,
-  MenuItem,
-  Tooltip,
   MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
+  Tooltip,
+  VStack,
 } from "@chakra-ui/react";
 import { CiEdit } from "react-icons/ci";
 import { BiDotsVerticalRounded } from "react-icons/bi";

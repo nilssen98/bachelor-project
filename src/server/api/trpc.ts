@@ -16,20 +16,20 @@
  * processing a request
  *
  */
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
+import {type CreateNextContextOptions} from "@trpc/server/adapters/next";
+import {type Session} from "next-auth";
 
-import { getServerAuthSession } from "../auth";
-import { prisma } from "../db";
+import {getServerAuthSession} from "../auth";
+import {prisma} from "../db";
 /**
  * 2. INITIALIZATION
  *
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-import { initTRPC, TRPCError } from "@trpc/server";
+import {initTRPC, TRPCError} from "@trpc/server";
 import superjson from "superjson";
-import type { OpenApiMeta } from "trpc-openapi";
+import type {OpenApiMeta} from "trpc-openapi";
 
 type CreateContextOptions = {
   session: Session | null;

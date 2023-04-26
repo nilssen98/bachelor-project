@@ -1,4 +1,4 @@
-import { VStack, Text, Input, Heading } from "@chakra-ui/react";
+import { Input, Text, VStack } from "@chakra-ui/react";
 
 type Props = {
   type: "schema" | "configuration" | "template";
