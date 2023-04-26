@@ -106,6 +106,29 @@ One needs to have `dotenv-cli` installed globally to use this script.
 yarn db:push
 ```
 
+## API Endpoint Tests
+
+We have included Postman tests for the `/api/validate` endpoint. 
+These tests can be found in the [docs/postman](docs/postman) directory.
+
+Here is an example of how to use the `/api/validate` endpoint with Postman:
+
+1. Open Postman and create a new request.
+2. Set the HTTP method to `POST`.
+3. Enter the URL of your endpoint in the request URL field.
+4. Select the `Body` tab.
+5. Select the `raw` option.
+6. Select `JSON` as the format.
+7. Enter the JSON object you want to validate in the text area like shown below.
+   ```json
+   {
+     "configuration": "Your configuration here as a string",
+     "schema": "Your schema here as a string"
+   }
+   ```
+8. Click the `Send` button to send the request.
+
+Keep in mind that this endpoint takes in a JSON object as a string, so you need to escape the quotes in the JSON object.
 
 ## Acknowledgements
 
