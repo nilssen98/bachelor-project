@@ -10,7 +10,7 @@ import {
 import type { ModalProps } from "@chakra-ui/modal";
 import NameInputDialog from "./name-input-dialog";
 import React, { useEffect, useState } from "react";
-import { Button } from "@chakra-ui/react";
+import { Button, VStack } from "@chakra-ui/react";
 import FileChooserDialog from "./file-chooser-dialog";
 import type { FileContent } from "use-file-picker";
 
@@ -41,26 +41,23 @@ export default function EditDialog(props: Props) {
           <ModalHeader>Edit</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FileChooserDialog
-              type={props.type}
-              openFileSelector={props.openFileSelector}
-              clearFileSelection={props.clearFileSelection}
-              fileContent={props.fileContent}
-            />
-            <NameInputDialog
-              name={fileName}
-              title={`Choose a new name for the ${props.type || "template"} `}
-              setName={setFileName}
-              type={props.type || "schema"}
-            />
+            <VStack spacing={8} align={"stretch"}>
+              <FileChooserDialog
+                type={props.type}
+                openFileSelector={props.openFileSelector}
+                clearFileSelection={props.clearFileSelection}
+                fileContent={props.fileContent}
+              />
+              <NameInputDialog
+                name={fileName}
+                title={`Choose a new name for the ${props.type || "template"} `}
+                setName={setFileName}
+                type={props.type || "schema"}
+              />
+            </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button
-              colorScheme={"blue"}
-              variant={"ghost"}
-              mr={3}
-              onClick={props.onClose}
-            >
+            <Button variant={"text"} mr={3} onClick={props.onClose}>
               Close
             </Button>
             <Button
@@ -69,7 +66,6 @@ export default function EditDialog(props: Props) {
                 props.onClose();
               }}
               isDisabled={isNameBlank()}
-              colorScheme="blue"
               variant={"solid"}
             >
               Save

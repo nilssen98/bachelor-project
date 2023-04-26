@@ -1,4 +1,4 @@
-import { VStack, Text, Input } from "@chakra-ui/react";
+import { VStack, Text, Input, Heading } from "@chakra-ui/react";
 
 type Props = {
   type: "schema" | "configuration" | "template";
@@ -11,8 +11,8 @@ type Props = {
 export default function NameInputDialog(props: Props) {
   return (
     <>
-      <VStack width={"full"} alignItems={"flex-start"} spacing={2}>
-        <Text>{props.title || `Choose a name for the ${props.type}`}</Text>
+      <VStack width={"full"} alignItems={"flex-start"} spacing={4}>
+        <Text fontSize={"lg"}>Choose a new name</Text>
         <Input
           value={props.name}
           placeholder={`Name of the ${props.type}`}
