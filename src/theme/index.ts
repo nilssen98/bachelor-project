@@ -52,6 +52,15 @@ const overrides = {
         divider: {},
       },
     },
+    Modal: {
+      baseStyle: {
+        dialog: {
+          background: "black",
+          border: "1px solid",
+          borderColor: "whiteAlpha.400",
+        },
+      },
+    },
   },
 };
 
