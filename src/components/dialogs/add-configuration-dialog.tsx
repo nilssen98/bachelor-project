@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  Heading,
   HStack,
   IconButton,
   Spacer,
@@ -28,6 +29,7 @@ import type { FileContent } from "use-file-picker";
 import type { Configuration } from "@prisma/client";
 import FileChooserDialog from "./file-chooser-dialog";
 import NameInputDialog from "./name-input-dialog";
+import { generateColor } from "../../utils/colorUtils";
 
 // Custom type to represent a configuration option in the react-select dropdown
 export type ConfigurationOption = Configuration & {
@@ -107,22 +109,24 @@ export default function AddConfigurationDialog(props: Props) {
         key={step}
         flex={1}
         p={2}
-        height={180}
-        display={"flex"}
-        flexDirection={"column"}
-        justifyContent={"center"}
-        alignItems={"center"}
+        height={175}
+        maxWidth={175}
         whiteSpace={"break-spaces"}
         onClick={() => setStep(step)}
       >
-        <IconButton
-          flex={2}
-          as={getIcon()}
-          bg={"transparent"}
-          aria-label={"Create new configuration"}
-          _hover={{ bg: "transparent" }}
-        />
-        <Text noOfLines={3}>{getText()}</Text>
+        <VStack spacing={4}>
+          <IconButton
+            flex={2}
+            color={generateColor(getText() || "", 40, 50)}
+            as={getIcon()}
+            bg={"transparent"}
+            aria-label={"Create new configuration"}
+            _hover={{ bg: "transparent" }}
+          />
+          <Text fontSize={"md"} fontWeight={400} noOfLines={3}>
+            {getText()}
+          </Text>
+        </VStack>
       </Button>
     );
   }
@@ -132,7 +136,7 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.ChooseAction:
         return (
           <>
-            <HStack>
+            <HStack justify={"space-evenly"}>
               {Object.values(Step).reduce((acc: JSX.Element[], key) => {
                 if (
                   typeof Step[key as keyof typeof Step] === "number" &&
@@ -158,13 +162,12 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.CloneExisting:
         return (
           <>
-            <VStack alignItems={"flex-start"} spacing={2}>
-              <Text>Choose a configuration to clone</Text>
+            <VStack alignItems={"flex-start"} spacing={4}>
+              <Text fontSize={"lg"}>Choose a configuration to clone</Text>
               <Select<ConfigurationOption>
                 useBasicStyles
                 isMulti={false}
                 isClearable
-                colorScheme={"blue"}
                 placeholder={"Select a configuration to clone"}
                 chakraStyles={chakraSelectStyles}
                 value={selectedConfiguration}
@@ -235,7 +238,6 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.CloneExisting:
         return (
           <Button
-            colorScheme={"blue"}
             isDisabled={
               isTemplateNameBlank() ||
               !(isFileSelected() || selectedConfiguration !== null)
@@ -248,7 +250,6 @@ export default function AddConfigurationDialog(props: Props) {
       case Step.CreateNew:
         return (
           <Button
-            colorScheme={"blue"}
             isDisabled={isTemplateNameBlank()}
             onClick={getFooterAction()}
           >
@@ -256,11 +257,7 @@ export default function AddConfigurationDialog(props: Props) {
           </Button>
         );
       default:
-        return (
-          <Button colorScheme={"blue"} onClick={handleClose}>
-            Close
-          </Button>
-        );
+        return <Button onClick={handleClose}>Close</Button>;
     }
   }
 
