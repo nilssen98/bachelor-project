@@ -1,0 +1,166 @@
+{
+	"info": {
+		"_postman_id": "8765e6bc-4dfb-4391-b16a-df3e9db016fd",
+		"name": "Test validate endpoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19252263",
+		"_collection_link": "https://year2group.postman.co/workspace/Bachelor's-project~8034b3ca-6836-403a-a981-4d83fe5c8501/collection/19252263-8765e6bc-4dfb-4391-b16a-df3e9db016fd?action=share&creator=19252263&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Validate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"configuration\": \"{\\\"name\\\":\\\"John Doe\\\",\\\"age\\\":30}\",\r\n  \"schema\": \"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"age\\\":{\\\"type\\\":\\\"number\\\"}},\\\"required\\\":[\\\"name\\\"]}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}:{{port}}/api/validate",
+					"host": [
+						"{{base_url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate, negative",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"configuration\": \"{\\\"age\\\":30}\",\r\n  \"schema\": \"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"age\\\":{\\\"type\\\":\\\"number\\\"}},\\\"required\\\":[\\\"name\\\"]}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}:{{port}}/api/validate",
+					"host": [
+						"{{base_url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate, negative #2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"configuration\": \"{\\\"name\\\":321,\\\"age\\\":30}\",\r\n  \"schema\": \"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"age\\\":{\\\"type\\\":\\\"number\\\"}},\\\"required\\\":[\\\"name\\\"]}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}:{{port}}/api/validate",
+					"host": [
+						"{{base_url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate, negative #3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}:{{port}}/api/validate",
+					"host": [
+						"{{base_url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
