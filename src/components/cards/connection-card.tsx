@@ -67,10 +67,12 @@ export default function ConnectionCard(props: Props) {
               <MenuList>
                 <MenuItem
                   color={"red.600"}
-                  icon={<MdLinkOff />}
                   onClick={() => props.onDisconnect(props.provider)}
                 >
-                  {`Disconnect ${props.provider}`}
+                  <HStack>
+                    <Icon as={MdLinkOff} boxSize={5} />
+                    <Text>{`Disconnect ${props.provider}`}</Text>
+                  </HStack>
                 </MenuItem>
               </MenuList>
             </Menu>
