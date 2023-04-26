@@ -106,6 +106,12 @@ One needs to have `dotenv-cli` installed globally to use this script.
 yarn db:push
 ```
 
+### Database Schema
+
+The following is our database schema:
+
+<img src="docs/images/DB-schema.svg" alt="An image of the database schema" width="700"/>
+
 ## API Endpoint Tests
 
 We have included Postman tests for the `/api/validate` endpoint. 
