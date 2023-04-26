@@ -2,18 +2,27 @@ import { useContext, useState } from "react";
 import { BrowserContext } from "../utils/browser-context";
 
 export const _useBrowserController = () => {
-  const [showTreeView, setShowTreeView] = useState<boolean>(false);
+  const [showTreeView, setShowTreeView] = useState<boolean>(true);
+  const [showBrowserView, setShowBrowserView] = useState<boolean>(false);
   const [showSchema, setShowSchema] = useState<boolean>(false);
   const [showErrors, setShowErrors] = useState<boolean>(false);
 
   const toggleTreeView = () => {
     setShowSchema(false);
+    setShowBrowserView(false);
     setShowTreeView(true);
   };
 
   const toggleSchema = () => {
     setShowTreeView(false);
+    setShowBrowserView(false);
     setShowSchema(true);
+  };
+
+  const toggleBrowserView = () => {
+    setShowTreeView(false);
+    setShowSchema(false);
+    setShowBrowserView(true);
   };
 
   const toggleErrors = () => setShowErrors(!showErrors);
@@ -25,6 +34,8 @@ export const _useBrowserController = () => {
     toggleErrors,
     showSchema,
     toggleSchema,
+    showBrowserView,
+    toggleBrowserView,
   };
 };
 
