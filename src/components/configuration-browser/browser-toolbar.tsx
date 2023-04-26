@@ -2,7 +2,7 @@ import type { StackProps } from "@chakra-ui/react";
 import { Button, Icon, Stack, StackDivider, Text } from "@chakra-ui/react";
 import { omit } from "lodash-es";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { MdErrorOutline } from "react-icons/md";
+import { MdErrorOutline, MdNavigation } from "react-icons/md";
 import { useBrowserContent } from "./hooks/useBrowserContent";
 import { useBrowserController } from "./hooks/useBrowserController";
 
@@ -20,6 +20,8 @@ export default function BrowserToolbar(props: Props) {
     showSchema,
     toggleSchema,
     toggleErrors,
+    showBrowserView,
+    toggleBrowserView,
   } = useBrowserController();
 
   const stackProps = omit(props, [
@@ -58,6 +60,17 @@ export default function BrowserToolbar(props: Props) {
           px={6}
         >
           Tree view
+        </Button>
+        <Button
+          leftIcon={<Icon as={showBrowserView ? IoMdEye : IoMdEyeOff} />}
+          onClick={toggleBrowserView}
+          fontWeight={400}
+          bg={showBrowserView ? "whiteAlpha.200" : "default"}
+          variant={"ghost"}
+          borderRadius={0}
+          px={6}
+        >
+          Browser view
         </Button>
         <Button
           leftIcon={<Icon as={showSchema ? IoMdEye : IoMdEyeOff} />}
