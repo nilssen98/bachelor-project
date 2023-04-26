@@ -7,22 +7,15 @@ import { useBrowserController } from "./hooks/useBrowserController";
 
 const DynamicReactJson = dynamic(import("react-json-view"), { ssr: false });
 
-type Props = StackProps & {
-  onUpdate?: (newContent: object) => void;
-};
-
-export default function BrowserTreeView(props: Props) {
+export default function BrowserTreeView(props: StackProps) {
   const { configuration, template, updateConfigurationContent } =
     useBrowserContent();
   const { showTreeView, showSchema } = useBrowserController();
 
   const source = useMemo(() => {
-    console.log("updating source...");
     if (showTreeView) {
-      console.log("configuration chosen");
-      return configuration.content;
+      return configuration;
     } else if (showSchema) {
-      console.log("schema chosen");
       return template.content;
     }
     return {};
@@ -33,9 +26,7 @@ export default function BrowserTreeView(props: Props) {
   };
 
   const handleAdd = ({ updated_src }: { updated_src: object }) => {
-    if (props.onUpdate) {
-      updateConfigurationContent(updated_src);
-    }
+    updateConfigurationContent(updated_src);
   };
 
   return (
