@@ -18,6 +18,7 @@ interface ProviderProps {
   errors: ConfigurationError[];
   template: Template;
   onPathChange?: (path: string[]) => void;
+  onUpdateConfiguration: (newContent: object) => void;
   path?: string[];
 }
 
@@ -40,6 +41,7 @@ function ConfigurationProvider(props: ProviderProps) {
     errors: props.errors,
     configuration: props.configuration,
     configurations: props.configurations,
+    onUpdateConfiguration: props.onUpdateConfiguration,
     template: props.template,
     path: sharedState.path,
   });
