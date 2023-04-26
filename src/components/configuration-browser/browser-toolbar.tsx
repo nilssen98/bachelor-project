@@ -22,20 +22,6 @@ export default function BrowserToolbar(props: Props) {
     toggleErrors,
   } = useBrowserController();
 
-  const handleShowTreeView = () => {
-    if (showSchema) {
-      toggleSchema();
-    }
-    toggleTreeView();
-  };
-
-  const handleShowSchema = () => {
-    if (showTreeView) {
-      toggleTreeView();
-    }
-    toggleSchema();
-  };
-
   const stackProps = omit(props, [
     "onSave",
     "onClickErrors",
@@ -61,6 +47,29 @@ export default function BrowserToolbar(props: Props) {
         >
           Save
         </Button> */}
+
+        <Button
+          leftIcon={<Icon as={showTreeView ? IoMdEye : IoMdEyeOff} />}
+          onClick={toggleTreeView}
+          fontWeight={400}
+          bg={showTreeView ? "whiteAlpha.200" : "default"}
+          variant={"ghost"}
+          borderRadius={0}
+          px={6}
+        >
+          Tree view
+        </Button>
+        <Button
+          leftIcon={<Icon as={showSchema ? IoMdEye : IoMdEyeOff} />}
+          onClick={toggleSchema}
+          fontWeight={400}
+          bg={showSchema ? "whiteAlpha.200" : "default"}
+          variant={"ghost"}
+          borderRadius={0}
+          px={6}
+        >
+          Schema
+        </Button>
         <Button
           leftIcon={
             errors && errors.length > 0 ? (
@@ -77,28 +86,6 @@ export default function BrowserToolbar(props: Props) {
           ) : (
             <Text color={"gray.500"}>No errors</Text>
           )}
-        </Button>
-        <Button
-          leftIcon={<Icon as={showTreeView ? IoMdEye : IoMdEyeOff} />}
-          onClick={handleShowTreeView}
-          fontWeight={400}
-          bg={showTreeView ? "whiteAlpha.200" : "default"}
-          variant={"ghost"}
-          borderRadius={0}
-          px={6}
-        >
-          Tree view
-        </Button>
-        <Button
-          leftIcon={<Icon as={showSchema ? IoMdEye : IoMdEyeOff} />}
-          onClick={handleShowSchema}
-          fontWeight={400}
-          bg={showSchema ? "whiteAlpha.200" : "default"}
-          variant={"ghost"}
-          borderRadius={0}
-          px={6}
-        >
-          Schema
         </Button>
         <Text></Text>
         {/* <InputGroup>

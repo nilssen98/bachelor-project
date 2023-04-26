@@ -6,9 +6,17 @@ export const _useBrowserController = () => {
   const [showSchema, setShowSchema] = useState<boolean>(false);
   const [showErrors, setShowErrors] = useState<boolean>(false);
 
-  const toggleTreeView = () => setShowTreeView(!showTreeView);
+  const toggleTreeView = () => {
+    setShowSchema(false);
+    setShowTreeView(true);
+  };
+
+  const toggleSchema = () => {
+    setShowTreeView(false);
+    setShowSchema(true);
+  };
+
   const toggleErrors = () => setShowErrors(!showErrors);
-  const toggleSchema = () => setShowSchema(!showSchema);
 
   return {
     showTreeView,
