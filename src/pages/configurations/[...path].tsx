@@ -23,7 +23,7 @@ const ConfigurationPage: NextPage = () => {
   const {
     data: configuration,
     isLoading: isLoadingConfiguration,
-    refetch,
+    refetch: refetchConfiguration,
   } = api.configuration.get.useQuery(
     { id },
     {
@@ -32,17 +32,23 @@ const ConfigurationPage: NextPage = () => {
     }
   );
 
-  const { data: configurations, isLoading: isLoadingConfigurations } =
-    api.configuration.getAll.useQuery(
-      { templateId: configuration?.Template?.id },
-      {
-        enabled: configuration?.Template?.id !== undefined,
-        refetchOnWindowFocus: false,
-      }
-    );
+  const {
+    data: configurations,
+    isLoading: isLoadingConfigurations,
+    refetch: refetchConfigurations,
+  } = api.configuration.getAll.useQuery(
+    { templateId: configuration?.Template?.id },
+    {
+      enabled: configuration?.Template?.id !== undefined,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const { mutate: updateConfiguration } = api.configuration.update.useMutation({
-    onSuccess: () => refetch(),
+    onSuccess: async () => {
+      await refetchConfiguration();
+      await refetchConfigurations();
+    },
   });
 
   const filteredConfigurations = useMemo(() => {
