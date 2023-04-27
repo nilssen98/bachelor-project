@@ -192,7 +192,11 @@ export const configurationRouter = createTRPCRouter({
 
       // If the configuration is not valid, create configuration errors
       // Delete all current errors for this configurations
-      await ctx.prisma.configurationError.deleteMany({});
+      await ctx.prisma.configurationError.deleteMany({
+        where: {
+          configurationId: input.id,
+        },
+      });
       // Create new errors
       await ctx.prisma.configurationError.createMany({
         data: validator.errors.map((error) => ({
