@@ -75,16 +75,10 @@ export default function AddTemplateDialog(props: Props) {
           <ModalCloseButton />
           <ModalBody>{getBody()}</ModalBody>
           <ModalFooter>
-            <Button
-              colorScheme={"blue"}
-              variant={"ghost"}
-              mr={3}
-              onClick={handleClose}
-            >
+            <Button variant={"ghost"} mr={3} onClick={handleClose}>
               Close
             </Button>
             <Button
-              colorScheme={"blue"}
               isDisabled={isTemplateNameBlank() || !isFileSelected()}
               onClick={handleUpload}
             >
