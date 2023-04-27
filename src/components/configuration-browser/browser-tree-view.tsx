@@ -14,7 +14,7 @@ export default function BrowserTreeView(props: StackProps) {
 
   const source = useMemo(() => {
     if (showTreeView) {
-      return configuration;
+      return configuration.content || {};
     } else if (showSchema) {
       return template.content;
     }
@@ -29,6 +29,10 @@ export default function BrowserTreeView(props: StackProps) {
     updateConfigurationContent(updated_src);
   };
 
+  const handleDelete = ({ updated_src }: { updated_src: object }) => {
+    updateConfigurationContent(updated_src);
+  };
+
   return (
     <Stack width={"full"} height={"full"} {...props}>
       <DynamicReactJson
@@ -38,6 +42,7 @@ export default function BrowserTreeView(props: StackProps) {
         displayObjectSize={false}
         onEdit={showSchema ? false : handleEdit}
         onAdd={showSchema ? false : handleAdd}
+        onDelete={showSchema ? false : handleDelete}
         // name={configuration.name}
         style={{ padding: 16, backgroundColor: "#0A0A0A", height: "100%" }}
         src={source as object}
