@@ -28,14 +28,14 @@ export function FormattedConfigurationOption(
     <HStack
       p={2}
       flex={1}
-      bg={isSelected ? "blue.800" : "gray.700"}
-      _hover={{ background: "gray.600", cursor: "pointer" }}
+      bg={isSelected ? "whiteAlpha.400" : "black"}
+      _hover={{ background: "whiteAlpha.300", cursor: "pointer" }}
       {...innerProps}
     >
       <Dot isValid={data.valid} />
       <Text flex={2}>{label}</Text>
-      <Text textColor={"gray.400"}>
-        <ReactTimeAgo color={"gray"} date={createdAt} />
+      <Text textColor={"whiteAlpha.600"}>
+        <ReactTimeAgo date={createdAt} />
       </Text>
     </HStack>
   );
@@ -49,7 +49,7 @@ export const chakraSelectStyles: Partial<
   }),
   menuList: (provided) => ({
     ...provided,
-    background: "gray.700",
+    background: "black",
   }),
   container: (provided) => ({
     ...provided,
