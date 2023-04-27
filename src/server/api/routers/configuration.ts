@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { z } from "zod";
-import { validate } from "../../../utils/validator";
+import { isValidJson, validate } from "../../../utils/validator";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import omit from "lodash-es/omit";
 
@@ -39,10 +39,9 @@ export const configurationRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      let parsedContent: Prisma.JsonValue | undefined = undefined;
+      let parsedContent: Prisma.JsonValue = {};
 
-      // Parse the content to JSON format if exists
-      if (input.content) {
+      if (input.content && isValidJson(input.content)) {
         parsedContent = JSON.parse(input.content) as Prisma.JsonValue;
       }
 
@@ -63,7 +62,7 @@ export const configurationRouter = createTRPCRouter({
       const configuration = await ctx.prisma.configuration.create({
         data: {
           ...input,
-          ...(parsedContent ? { content: parsedContent } : {}),
+          content: parsedContent as object,
           userId: ctx.session.user.id,
           valid: validator.valid,
         },
@@ -170,11 +169,39 @@ export const configurationRouter = createTRPCRouter({
         content: z.string().optional(),
       })
     )
-    .mutation(({ ctx, input }) => {
-      let parsedContent: Prisma.JsonValue | undefined = undefined;
+    .mutation(async ({ ctx, input }) => {
+      let parsedContent: object = {};
 
-      if (input.content) {
-        parsedContent = JSON.parse(input.content) as Prisma.JsonValue;
+      if (input.content && isValidJson(input.content)) {
+        parsedContent = JSON.parse(input.content) as object;
+      }
+
+      const configuration = await ctx.prisma.configuration.findFirstOrThrow({
+        where: {
+          id: input.id,
+        },
+        include: {
+          Template: true,
+        },
+      });
+
+      const validator = validate({
+        schema: JSON.stringify(configuration.Template?.content) || "",
+        configuration: input.content || "",
+      });
+
+      // If the configuration is not valid, create configuration errors
+      if (!validator.valid && input.content) {
+        // Delete all current errors for this configurations
+        await ctx.prisma.configurationError.deleteMany({});
+        // Create new errors
+        await ctx.prisma.configurationError.createMany({
+          data: validator.errors.map((error) => ({
+            configurationId: input.id,
+            path: error.path,
+            message: error.message || "",
+          })),
+        });
       }
 
       return ctx.prisma.configuration.updateMany({
@@ -184,7 +211,8 @@ export const configurationRouter = createTRPCRouter({
         },
         data: {
           ...omit(input, "id", "content"),
-          ...(parsedContent ? { content: parsedContent } : {}),
+          content: parsedContent,
+          valid: validator.valid,
         },
       });
     }),
