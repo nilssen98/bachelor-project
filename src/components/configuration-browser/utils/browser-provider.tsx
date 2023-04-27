@@ -19,6 +19,7 @@ interface ProviderProps {
   template: Template;
   onPathChange?: (path: string[]) => void;
   onUpdateConfiguration: (newContent: object) => void;
+  isUpdating?: boolean;
   path?: string[];
 }
 
@@ -42,6 +43,7 @@ function ConfigurationProvider(props: ProviderProps) {
     configuration: props.configuration,
     configurations: props.configurations,
     onUpdateConfiguration: props.onUpdateConfiguration,
+    isUpdating: props.isUpdating,
     template: props.template,
     path: sharedState.path,
   });

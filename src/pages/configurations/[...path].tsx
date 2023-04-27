@@ -24,6 +24,7 @@ const ConfigurationPage: NextPage = () => {
     data: configuration,
     isLoading: isLoadingConfiguration,
     refetch: refetchConfiguration,
+    isRefetching: isRefetchingConfiguration,
   } = api.configuration.get.useQuery(
     { id },
     {
@@ -36,6 +37,7 @@ const ConfigurationPage: NextPage = () => {
     data: configurations,
     isLoading: isLoadingConfigurations,
     refetch: refetchConfigurations,
+    isRefetching: isRefetchingConfigurations,
   } = api.configuration.getAll.useQuery(
     { templateId: configuration?.Template?.id },
     {
@@ -44,12 +46,13 @@ const ConfigurationPage: NextPage = () => {
     }
   );
 
-  const { mutate: updateConfiguration } = api.configuration.update.useMutation({
-    onSuccess: async () => {
-      await refetchConfiguration();
-      await refetchConfigurations();
-    },
-  });
+  const { mutate: updateConfiguration, isLoading: isUpdatingConfiguration } =
+    api.configuration.update.useMutation({
+      onSuccess: async () => {
+        await refetchConfiguration();
+        await refetchConfigurations();
+      },
+    });
 
   const filteredConfigurations = useMemo(() => {
     return configurations
@@ -130,6 +133,11 @@ const ConfigurationPage: NextPage = () => {
         {configuration && configuration.Template && (
           <ConfigurationProvider
             onUpdateConfiguration={handleUpdateConfiguration}
+            isUpdating={
+              isRefetchingConfiguration ||
+              isRefetchingConfigurations ||
+              isUpdatingConfiguration
+            }
             configuration={configuration || {}}
             configurations={filteredConfigurations || []}
             template={configuration.Template}

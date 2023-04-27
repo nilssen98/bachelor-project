@@ -1,8 +1,10 @@
 import type { StackProps } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { HStack, Spinner } from "@chakra-ui/react";
 import { Button, Icon, Stack, StackDivider, Text } from "@chakra-ui/react";
 import { omit } from "lodash-es";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { MdErrorOutline } from "react-icons/md";
+import { MdCheck, MdErrorOutline } from "react-icons/md";
 import { useBrowserContent } from "./hooks/useBrowserContent";
 import { useBrowserController } from "./hooks/useBrowserController";
 
@@ -13,7 +15,7 @@ type Props = {
 } & StackProps;
 
 export default function BrowserToolbar(props: Props) {
-  const { errors } = useBrowserContent();
+  const { errors, isUpdating } = useBrowserContent();
   const {
     toggleTreeView,
     showTreeView,
@@ -100,7 +102,17 @@ export default function BrowserToolbar(props: Props) {
             <Text color={"gray.500"}>No errors</Text>
           )}
         </Button>
-        <Text></Text>
+        <Box flex={1} />
+        {
+          <HStack px={6} spacing={4}>
+            {isUpdating ? (
+              <Spinner size={"sm"} />
+            ) : (
+              <Icon as={MdCheck} boxSize={5} color={"green"} />
+            )}
+            <Text>{isUpdating ? "Saving..." : "Saved"}</Text>
+          </HStack>
+        }
         {/* <InputGroup>
           <InputLeftElement
             pointerEvents={"none"}

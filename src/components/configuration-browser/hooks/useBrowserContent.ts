@@ -13,6 +13,7 @@ export const _useBrowserContent = ({
   template,
   errors,
   onUpdateConfiguration,
+  isUpdating,
   path,
 }: {
   configuration: Configuration;
@@ -20,6 +21,7 @@ export const _useBrowserContent = ({
   template: Template;
   errors: ConfigurationError[];
   onUpdateConfiguration: (newContent: object) => void;
+  isUpdating?: boolean;
   path: string[];
 }) => {
   // This state contains the currently displayed configuration content
@@ -61,6 +63,7 @@ export const _useBrowserContent = ({
     configurations,
     getConfigurationFromPath,
     updateConfigurationContent,
+    isUpdating,
     template,
   };
 };
