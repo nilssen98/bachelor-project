@@ -207,7 +207,7 @@ const TemplatePage: NextPage = () => {
           <GradientAvatar
             w={12}
             h={12}
-            id={template?.name}
+            id={template?.id}
             // icon={<Icon boxSize={7} as={HiDocumentText} />}
           />
           <Heading>{template?.name}</Heading>
