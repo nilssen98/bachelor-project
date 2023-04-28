@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Box,
   Button,
   HStack,
   IconButton,
@@ -122,7 +123,7 @@ export default function AddConfigurationDialog(props: Props) {
             aria-label={"Create new configuration"}
             _hover={{ bg: "transparent" }}
           />
-          <Text fontSize={"md"} fontWeight={400} noOfLines={3}>
+          <Text fontSize={"md"} fontWeight={400}>
             {getText()}
           </Text>
         </VStack>
