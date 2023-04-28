@@ -121,7 +121,7 @@ const ConfigurationPage: NextPage = () => {
                   clickable
                   w={7}
                   h={7}
-                  id={configuration.Template?.name}
+                  id={configuration.Template?.id}
                 />
                 <Heading size={"md"} fontWeight={"semi-bold"}>
                   {configuration.Template?.name}
