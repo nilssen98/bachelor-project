@@ -28,7 +28,7 @@ export default function FileChooserDialog(props: Props) {
     if (props.isLoading) {
       return "Upload in progress";
     } else if (isFileSelected) {
-      return "File uploaded";
+      return "File selected";
     } else {
       return "Upload a file";
     }
