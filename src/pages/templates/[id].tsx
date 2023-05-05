@@ -312,7 +312,7 @@ const TemplatePage: NextPage = () => {
                 <Stack divider={<StackDivider />} spacing={0}>
                   {filteredConfigurations?.map((configuration, idx) => (
                     <ConfigurationListItem
-                      key={idx}
+                      key={configuration.id}
                       configuration={configuration}
                       handleDelete={() => handleDelete(configuration.id)}
                       onEdit={(name) => {
