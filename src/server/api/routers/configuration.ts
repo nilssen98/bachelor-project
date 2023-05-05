@@ -212,7 +212,7 @@ export const configurationRouter = createTRPCRouter({
           userId: ctx.session.user.id,
         },
         data: {
-          ...omit(input, "id", "content"),
+          ...omit(input, "id", "content", "createdAt"),
           content: parsedContent,
           valid: validator.valid,
         },
