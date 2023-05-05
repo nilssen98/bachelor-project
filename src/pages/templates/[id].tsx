@@ -98,7 +98,7 @@ const TemplatePage: NextPage = () => {
     return configurations
       ? configurations.sort(
           (a, b) =>
-            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         )
       : [];
   }, [configurations]);
@@ -470,7 +470,7 @@ const ConfigurationListItem = ({
         <HStack flex={1} justify={"end"}>
           {configuration.updatedAt && (
             <Text color={"whiteAlpha.600"}>
-              created <ReactTimeAgo date={configuration.updatedAt} />
+              created <ReactTimeAgo date={configuration.createdAt} />
             </Text>
           )}
           <Menu isLazy>
