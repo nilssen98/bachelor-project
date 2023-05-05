@@ -115,7 +115,7 @@ export const templateRouter = createTRPCRouter({
           userId: ctx.session.user.id,
         },
         data: {
-          ...omit(input, "id", "content"),
+          ...omit(input, "id", "content", "createdAt"),
           ...(parsedContent ? { content: parsedContent } : {}),
         },
       });
