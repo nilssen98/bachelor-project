@@ -112,7 +112,7 @@ const TemplatesPage: NextPage = () => {
         </HStack>
         <Grid w={"full"} templateColumns="repeat(3, 1fr)" gap={4}>
           {filtered.map((template, idx) => (
-            <GridItem w={"100%"} key={idx}>
+            <GridItem w={"100%"} key={template.id}>
               <TemplateCard
                 id={template.id}
                 name={template.name}
