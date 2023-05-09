@@ -1,0 +1,26 @@
+{
+    "id": 1,
+    "name": "",
+    "isOk": true,
+    "otherProperties": [{
+            "id": 1,
+            "name": "One"
+        },
+        {
+            "id": 2,
+            "name": "Two"
+        },
+        {
+            "id": 3,
+            "name": "Three"
+        }
+    ],
+    "metaData": {
+        "version": "1.2.3",
+        "keywords": [
+            "one",
+            "two",
+            "three"
+        ]
+    }
+}

@@ -80,6 +80,10 @@ Other useful commands:
 
 `-d` Detached mode: Run containers in the background
 
+### Example files
+
+Example files for the schema and a configuration can be found in the [docs/examples](docs/examples) directory.
+
 
 ## Database
 
