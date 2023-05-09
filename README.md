@@ -22,8 +22,8 @@ To get a local copy up and running follow these simple steps.
 
 This is a list of things you need in order to use this application.
 
-* Node.js
-* Yarn
+* Node.js 16
+* Yarn 1 (Classic)
 
 #### Downloading the project
 
