@@ -3,6 +3,22 @@
 This is a repo for the bachelor's degree project in Computer Science at the Norwegian University of Science and Technology (NTNU).
 The project is a full-stack application for creating, managing, and validating JSON configuration files.
 
+## Table of Contents
+- [Built With](#built-with)
+- [Getting Started](#getting-started)
+   - [Prerequisites](#prerequisites)
+   - [Downloading the project](#downloading-the-project)
+   - [Usage methods](#usage-methods)
+      - [Deployment](#deployment-recommended)
+      - [Other usage methods](#other-usage-methods)
+         - [Locally](#locally)
+         - [Docker](#docker)
+   - [Example files](#example-files)
+- [Database](#database)
+   - [Database Schema](#database-schema)
+- [API Endpoint Tests](#api-endpoint-tests)
+- [Acknowledgements](#acknowledgements)
+
 ### Built With
 * [Next.js](https://nextjs.org/) - A React-based framework for building server-rendered or statically-exported React applications.
 * [NextAuth](https://next-auth.js.org/) - A complete open-source authentication solution for Next.js applications.
